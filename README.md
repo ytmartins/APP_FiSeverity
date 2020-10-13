@@ -3,4 +3,4 @@
 Guia prático de uso
 
 ## Abra a ferramenta
-wqpleqwp
+Vamos melhorar essa descrição
