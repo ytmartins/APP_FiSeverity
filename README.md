@@ -1,7 +1,28 @@
-# Aplicativo de Análise da Severidade de Incêndios
+# Aplicativo Análise da Severidade de Incêndios Florestais
 
-Guia prático de uso
+Guia prático para utilização do aplicativo criado no Google Earth Engine
 
-## Abra a ferramenta
-Vamos melhorar essa descrição 
-Aprendendo a operar o github
+### Assista ao vídeo
+
+[INSERIR O VÍDEO]
+
+### Considerações de uso
+
+- Descrever sobre o dNBR
+
+- Descrever o método
+
+- Descrever as aplicações
+
+### Dados de Entrada
+
+- Área de Análise
+- Intervalo anterior e posterior ao incêndio
+
+### Resultados
+
+- dNBR em formato (.TIFF) para importado em GIS. 
+- Estimativas da serveridade do fogo em (hectares)
+- Estimativa da Área Total Queimada (hectares)
+
+API: [LINK DA APLICAÇÃO]
