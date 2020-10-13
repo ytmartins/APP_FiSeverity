@@ -1,8 +1,8 @@
 # Aplicativo Análise da Severidade de Incêndios Florestais
 
-Guia prático para utilização do aplicativo criado no Google Earth Engine
+Informações de utilização do aplicativo criado no Google Earth Engine
 
-### Assista ao vídeo
+### Assista ao guia prático
 
 [INSERIR O VÍDEO]
 
@@ -14,15 +14,15 @@ Guia prático para utilização do aplicativo criado no Google Earth Engine
 
 `Descrever as aplicações`
 
-### Dados de Entrada
+### Entrada de Dados
 
 - [x] Área de Estudos
 - [x] Intervalo antes e após o incêndio
 
 ### Resultados
 
-- dNBR em formato (.TIFF) para importado em GIS. 
-- Estimativas da serveridade do fogo em (hectares)
-- Estimativa da Área Total Queimada (hectares)
+- dNBR em formato (.TIFF) para ser importado em GIS. 
+- Estimativas da classes serveridade do fogo.
+- Estimativa da área total queimada.
 
-Acesso: [LINK DA APLICAÇÃO]
+Acesso: [Link da API]
