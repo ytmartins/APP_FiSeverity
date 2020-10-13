@@ -8,16 +8,16 @@ Guia prático para utilização do aplicativo criado no Google Earth Engine
 
 ### Considerações de uso
 
-- Descrever sobre o dNBR
+- `Descrever sobre o dNBR`
 
-- Descrever o método
+- `Descrever o método`
 
-- Descrever as aplicações
+- `Descrever as aplicações`
 
 ### Dados de Entrada
 
-- Área de Análise
-- Intervalo anterior e posterior ao incêndio
+[x] Área de Análise
+[x] Intervalo anterior e posterior ao incêndio
 
 ### Resultados
 
