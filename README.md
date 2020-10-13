@@ -16,8 +16,8 @@ Guia prático para utilização do aplicativo criado no Google Earth Engine
 
 ### Dados de Entrada
 
-[x] Área de Análise.
-[x] Intervalo anterior e posterior ao incêndio.
+- [x] Área de Estudos
+- [x] Intervalo antes e após o incêndio
 
 ### Resultados
 
