@@ -3,4 +3,5 @@
 Guia prático de uso
 
 ## Abra a ferramenta
-Vamos melhorar essa descrição
+Vamos melhorar essa descrição 
+Aprendendo a operar o github

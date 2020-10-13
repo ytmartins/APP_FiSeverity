@@ -1,4 +1,4 @@
-// Software para Mapeamento da Severidade dos Incêndios Florestias
+// Software para Mapeamento da Severidade dos Incêndios Florestias //
 // Ajustar o UI Padrão
 ui.root.clear();
 var mapPanel = ui.Map();
