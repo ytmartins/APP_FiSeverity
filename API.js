@@ -1,5 +1,6 @@
 // Software para Mapeamento da Severidade dos Incêndios Florestias //
 // Ajustar o UI Padrão
+
 ui.root.clear();
 var mapPanel = ui.Map();
 ui.root.widgets().reset([mapPanel]);
@@ -97,74 +98,44 @@ var tituloSecundario1 = '1. Crie a área de estudo:'
   mainPanel.add(descricaoRotulo4);
   
 
-
-
-
-
-
 ///////////////////////////////////////////////////////////////////////////////
-// Configuração do evento: Passo 1. Desenhar à geometria //////////////////////
+// Parte 1. Desenhar à geometria //////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+var drawingTools = mapPanel.drawingTools();
+drawingTools.setShown(false);
 
-    var drawingTools = mapPanel.drawingTools();
-    drawingTools.setShown(false);
-    while (drawingTools.layers().length() > 0) {
-      var layer = drawingTools.layers().get(0);
-      drawingTools.layers().remove(layer);
-    }
+// Configurações da geometria de estilo da geometria que será desenhada
+var dummyGeometry = ui.Map.GeometryLayer({geometries: null, name: 'aoi_geometry', color: 'ff5c33'});
 
-    // Configurações da geometria de estilo da geometria que será desenhada
-    var dummyGeometry =
-        ui.Map.GeometryLayer({geometries: null, name: 'geometry', color: 'ff5c33'});
+// Adicionar layer com parâmetros prédefinidos
+drawingTools.layers().add(dummyGeometry);
 
-    // Adicionar layer com parâmetros prédefinidos
-    drawingTools.layers().add(dummyGeometry);
+// Defina o modo de desenho de volta para nulo; desliga o modo desenho
+drawingTools.setShape(null);
 
-    // Especificação da função para Limpar geometrias
-    function clearGeometry() {
-      var layers = drawingTools.layers();
-      layers.get(0).geometries().remove(layers.get(0).geometries().get(0));
-    }
+// A escala de redução é baseada na escala do mapa para evitar erros de memória/tempo limite
+var mapScale = Map.getScale();
+var scale = mapScale > 5000 ? mapScale * 2 : 5000;  
 
-    // Função para Limpar geometrias existentes e ativar ferramenta de desenho
-    function drawPolygon() {
-      clearGeometry();
-      drawingTools.setShape('polygon');
-      drawingTools.draw();
-    }
+// Simbolos para representação visual
+var symbol = {
+  polygon: '🔶',
+  engine: '✅',
+};
 
-    // Obtenha a geometria desenhada; vai definir a região de redução
-    var aoi = drawingTools.layers().get(0).getEeObject();
+// Cria o botão e o evento para desenhar geometria  
+var controlPanel = ui.Button({
+      label: symbol.polygon +' Desenhar Área de Interesse',
+      onClick: drawPolygon,
+    });
 
-    // Defina o modo de desenho de volta para nulo; desliga o modo desenho
-    drawingTools.setShape(null);
-
-    // A escala de redução é baseada na escala do mapa para evitar erros de memória/tempo limite
-    var mapScale = Map.getScale();
-    var scale = mapScale > 5000 ? mapScale * 2 : 5000;  
-
-    // Simbolos para representação visual
-    var symbol = {
-      polygon: '🔶',
-      engine: '✅',
-    };
-    
-    // Cria o botão e o evento para desenhar geometria  
-    var controlPanel = ui.Button({
-          label: symbol.polygon + ' Desenhar à Geometria',
-          onClick: drawPolygon,
-        });
-
-    // Adicionar botão de desenho no painel principal
-    mainPanel.add(controlPanel);
-
-
-
+// Adicionar botão de desenho no painel principal
+mainPanel.add(controlPanel);
 
 
 
 //////////////////////////////////////////////////////////////////////////
-// Configuração do evento: Passo 1. Desenhar à geometria /////////////////
+// Descrição Painel Esquerdo: Formulário /////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
 // Adicione título do segundo passo da ferramenta no painel principal (esquerda)
@@ -181,38 +152,25 @@ var tituloSecundario1 = '1. Crie a área de estudo:'
 
 
 
-
-
-
 ///////////////////////////////////////////////////////////////////////////
 // Configuração do evento: Passo 2. Inserir as datas para buscar imagens //
 ///////////////////////////////////////////////////////////////////////////
 
   // Adicione título dos dados de entrada PRÉFOGO
     var descricaoDataPrefogo_text = 
-        'Insira as datas do intervalo Pré Fogo:';
+        'Insira a Data do Início Antes do Fogo:';
     var descricaoPrefogoRotulo = ui.Label (descricaoDataPrefogo_text, estilo_paragrafo);
-    mainPanel.add(descricaoPrefogoRotulo);
 
   // Crie campo para inserir a data do INICIO do intervalo PRÉFOGO 
-    var TextBox_StartPrefire = ui.Textbox({
+    var start_prefire = ui.Textbox({
         value: '',
-        placeholder: 'Data Início > Préfogo aqui...',
-        onChange: function(TextBox_StartPrefire){
-            start_prefire.setValue(TextBox_StartPrefire);
-       }
-    //    onChange: function(start_prefire){
-    //        startPrefireDate.setValue(start_prefire);
-    //   }
+        placeholder: 'Data Início aqui...',
     });
 
   // Crie campo para inserir a data do FINAL do intervalo PRÉFOGO  
-    var TextBox_EndPrefire = ui.Textbox({
+    var end_prefire = ui.Textbox({
         value: '',
-        placeholder: 'Data Fim > Préfogo aqui...',
-        onChange: function(end_prefire){
-            endPrefireDate.setValue(end_prefire);
-        }
+        placeholder: 'Data Fim aqui...',
     });
 
   // Adicione título dos dados de entrada PÓSFOGO
@@ -221,29 +179,24 @@ var tituloSecundario1 = '1. Crie a área de estudo:'
     var descricaoPosfogoRotulo = ui.Label (descricaoDataPosfogo_text, estilo_paragrafo);
 
   // Crie campo para inserir a data do INICIO do intervalo PÓSFOGO
-    var TextBox_StartPostfire = ui.Textbox({
+    var start_postfire = ui.Textbox({
         value: '',
-        placeholder: 'Data Início > Pósfogo aqui...',
-        onChange: function(start_postfire){
-            startPostfireDate.setValue(start_postfire);
-        }
+        placeholder: 'Data Início aqui...',
     });
 
   // Crie campo para inserir a data do FINAL do intervalo PÓSFOGO
-    var TextBox_EndPostfire = ui.Textbox({
+    var end_postfire = ui.Textbox({
         value: '',
-        placeholder: 'Data Fim > Pósfogo aqui...',
-        onChange: function(end_postfire){
-            endPostfireDate.setValue(end_postfire);
-        }
+        placeholder: 'Data Fim aqui...',
     });
 
   // Adicionar os campos no painel principal (esquerda)
-    mainPanel.add (TextBox_StartPrefire);
-    mainPanel.add (TextBox_EndPrefire);
+    mainPanel.add (descricaoPrefogoRotulo);
+    mainPanel.add (start_prefire);
+    mainPanel.add (end_prefire);
     mainPanel.add (descricaoPosfogoRotulo);
-    mainPanel.add (TextBox_StartPostfire);
-    mainPanel.add (TextBox_EndPostfire);
+    mainPanel.add (start_postfire);
+    mainPanel.add (end_postfire);
 
 // Use um PainelDividido para que seja possível autoajuste dos dois paineis
 var splitPanel = ui.SplitPanel({
@@ -256,9 +209,113 @@ var splitPanel = ui.SplitPanel({
 
 // Defina o painelDividido como único na root
 ui.root.widgets().reset([splitPanel]); 
-
 // Centrarlizar o painel do mapa na região (Portugal/Espanha)
 mapPanel.setCenter (-2.50,40.20,6);
+
+// Crie o botão 'Executar'
+var submit = ui.Button({
+  label: symbol.engine + ' Executar dNBR',
+  onClick: process
+})
+
+mapPanel.add(submit);
+
+///////////////////////////////////////////////////////////
+// Processamento da análise começa aqui
+
+//functions:
+
+// Função para limpar edição de polígonos
+function clearGeometry(){
+  var layers = drawingTools.layers();
+  layers.get(0).geometries().remove(layers.get(0).geometries().get(0));
+}
+
+// Função para limpar geometria e ativar ferramenta 
+function drawPolygon(){
+  clearGeometry();
+  drawingTools.setShape('polygon');
+  drawingTools.draw();
+}
+
+// Processos
+function process() {
+  //inputs
+  var aoi = drawingTools.layers().get(0).getEeObject();
+  var start_preF = start_prefire.getValue();
+  var end_preF = end_prefire.getValue();
+  var start_postF = start_postfire.getValue();
+  var end_postF = end_postfire.getValue();
+
+  //sentinel consults
+  var SentinelClip_pre = consult_sen(start_preF, end_preF, aoi, 30);
+  var SentinelClip_post = consult_sen(start_postF, end_postF, aoi, 30);
+
+  //Procedimentos
+  var pre_nbr = SentinelClip_pre.normalizedDifference(['B8A', 'B12']);
+  var post_nbr = SentinelClip_post.normalizedDifference(['B8A', 'B12']);
+  // var dnbr =
+
+  //Outputs
+  mapPanel.addLayer(SentinelClip_pre, {
+    max: 4000,
+    min: 0.0,
+    gama: 1.0,
+    bands: ['B4', 'B3', 'B2']},
+    'Imagem Sentinel 2 RGB PreFire');
+
+  mapPanel.addLayer(SentinelClip_post, {
+    max: 4000,
+    min: 0.0,
+    gamma: 1.0,
+    bands: ['B4', 'B3', 'B2']},
+    'Imagem Sentinel 2 RGB PostFire');
+
+  mapPanel.addLayer(pre_nbr, {
+    max: 2,
+    min: 0,
+    gamma: 1.0,
+    bands: ['nd']},
+    'nbr pre');
+
+  mapPanel.addLayer(post_nbr,{
+    max: 2,
+    min: 0,
+    gamma: 1.0,
+    bands: ['nd']},
+    'nbr post');
+
+  //cleaning edit polygon
+  clearGeometry();
+}
+  
+function consult_sen(start,end,aoi,cloud) {
+  //input:
+  //start = start date
+  //end = end date
+  //aoi = area of interest
+
+  var IMGSentinel = ee.ImageCollection ('COPERNICUS/S2_SR') // Level-2A correction atmosferic
+    .filterDate (start, end)
+    .filterBounds (aoi)
+    .filterMetadata ('CLOUDY_PIXEL_PERCENTAGE', 'Less_Than', cloud );
+  var SentinelFiltro = ee.Image(IMGSentinel.median());
+  var SentinelClip = SentinelFiltro.clip(aoi);
+
+  //Output
+  //mosaic sentinel-2A image between dates
+  return SentinelClip  
+}
+/*
+
+
+
+
+
+
+
+
+
 
 
 
