@@ -65,23 +65,24 @@ var estilo_borda = '1px solid rgba(205, 205, 205, 10.5)';
 
 // Adicione descrição no painel principal (esquerda)
  var descricao1_text =
-        'Esta ferramenta calcula a severidade dos fogos florestais,' +
-        ' os resultados podem apoiar a elaboração de relatórios' +
-        ' e informações para estratégias preventivas.';
+        'O aplicativo utiliza o Normalized Burn Ratio (NBR) e,' +
+        ' compara o antes e o depois do fogo gerando o índice dNBR.' +
+        ' Os resultados apoiam a criação de relatórios de danos' + 
+        ' e base de dados sobre os incêndios florestais.';
     var descricaoRotulo1 = ui.Label(descricao1_text, estilo_paragrafo);
     mainPanel.add(descricaoRotulo1);
 
 // Adicione descrição no painel principal (esquerda)     
  var descricao2_text = 
-        'Os dados gerados são o raster .TIFF para importar em SIG e gerar mapa,' +
-        ' a análise espacial é gerada na execução e pode ser baixada em .CSV, .SVG e .PNG.';
+        'O dado raster gerado (.TIFF) pode ser importado em SIG e gerar mapas,' +
+        ' a análise espacial das classes de serveridade pode ser baixada em .CSV, .SVG e .PNG.';
     var descricaoRotulo2 = ui.Label (descricao2_text, estilo_paragrafo);
     mainPanel.add(descricaoRotulo2);
 
 // Adicione descrição no painel principal (esquerda)
 var descricao3_text = 
-        'As imagens de satélite utilizadas são Sentinel-2(A&B):' +
-        ' Imagens desde: Jun/2015, Resolução temporal: 5 dias, Resolução espacial: 10 metros. Acesso gratuito.';
+        'A imagem de satélite utilizada é Sentinel-2 MSI Level-2A(com correção atmosférica):' +
+        ' Novas imagens a cada: 5 dias, resolução espacial: 20 metros.';
     var descricaoRotulo3 = ui.Label (descricao3_text, estilo_paragrafo);
     mainPanel.add(descricaoRotulo3);
 
@@ -93,7 +94,7 @@ var descricaoRotulolink = ui.Label (descricaolink_text, estilo_paragrafo, infour
 mainPanel.add(descricaoRotulolink);
 
 // Adicione título do primeiro passo da ferramenta no painel principal (esquerda)
-var tituloSecundario1 = '1. Crie a área de estudo:'
+var tituloSecundario1 = 'Passo 1: Crie a área de interesse'
     var descricaoRotulo4 = ui.Label(tituloSecundario1, paragrafo_titulo);
   mainPanel.add(descricaoRotulo4);
   
@@ -139,14 +140,14 @@ mainPanel.add(controlPanel);
 //////////////////////////////////////////////////////////////////////////
 
 // Adicione título do segundo passo da ferramenta no painel principal (esquerda)
-    var tituloSecundario2 = '2. Defina os intervalos entre o incêndio:'
+    var tituloSecundario2 = 'Passo 2: Defina as datas entre o incêndio'
     var descricaoRotulo5 = ui.Label(tituloSecundario2, paragrafo_titulo);
     mainPanel.add(descricaoRotulo5);
 
 // Adicione descrição no painel principal (esquerda)
     var descricao4_text = 
-      'A ferramenta busca as imagens de satélite entre os intervalo definido.    ' +
-      '   O formato deve ser: AAAA-MM-DD. Tenha atenção.';
+      'A ferramenta buscará as imagens de satélite entre os intervalo definido.' +
+      ' Caso não encontre imagens, aumente o intervalo.';
     var descricaoRotulo6 = ui.Label(descricao4_text, estilo_subparagrafo);
     mainPanel.add(descricaoRotulo6);
 
@@ -306,24 +307,24 @@ function consult_sen(start,end,aoi,cloud) {
   //mosaic sentinel-2A image between dates
   return SentinelClip  
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ///////////////////////////////////////////////////////////
 // Processamento da análise começa aqui ///////////////////
 ///////////////////////////////////////////////////////////
