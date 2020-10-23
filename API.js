@@ -351,11 +351,6 @@ function consult_sen(start,end,aoi,cloud) {
   return SentinelClip  
 }
 
-
-
-
-
-
 // Legenda com as classes dNBR (USGS) //Credit: UN-SPIDER(ONU) start
 // set position of panel
 var legend = ui.Panel({
@@ -401,14 +396,14 @@ var makeRow = function(color, name) {
       })};
  
 //  Palette with the colors
-var palette =['7a8737', 'acbe4d', '0ae042', 'fff70b', 'ffaf38', 'ff641b', 'a41fd6', 'ffffff'];
+var palette =['7a8737', 'acbe4d', '0ae042', 'fff70b', 'ffaf38', 'ff641b', 'a41fd6'];
  
 // name of the legend
-var names = ['Enhanced Regrowth, High','Enhanced Regrowth, Low','Unburned', 'Low Severity',
-'Moderate-low Severity', 'Moderate-high Severity', 'High Severity', 'NA'];
+var names = ['Alta Regeneração','Baixa Regeneração','Não Queimada', 'Baixa Severidade',
+'Moderada-Baixa Severidade', 'Moderada-Alta Severidade', 'Alta Severidade'];
  
 // Add color and and names
-for (var i = 0; i < 8; i++) {
+for (var i = 0; i < 7; i++) {
   legend.add(makeRow(palette[i], names[i]));
   }  
  
