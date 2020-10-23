@@ -255,7 +255,10 @@ function process() {
   //Procedimentos
   var pre_nbr = SentinelClip_pre.normalizedDifference(['B8A', 'B12']);
   var post_nbr = SentinelClip_post.normalizedDifference(['B8A', 'B12']);
-  // var dnbr =
+
+  //Cálculo dNBR
+  var dNBR_unscaled = pre_nbr.subtract(post_nbr);
+  var dNBR = dNBR_unscaled.multiply(1000);
 
   //Outputs
   mapPanel.addLayer(SentinelClip_pre, {
@@ -286,6 +289,12 @@ function process() {
     bands: ['nd']},
     'nbr post');
 
+  mapPanel.addLayer(dNBR,{
+    max: 1000,
+    min: -1000,
+    palette: ['white', 'black']},
+    'dNBR greyscale');
+  
   //cleaning edit polygon
   clearGeometry();
 }
