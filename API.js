@@ -239,6 +239,23 @@ function drawPolygon(){
   drawingTools.draw();
 }
 
+//Credit: UN-SPIDER(ONU) start
+// Function to mask clouds from the pixel quality band of Sentinel-2 SR data.
+function maskS2sr(image) {
+  // Bits 10 and 11 are clouds and cirrus, respectively.
+  var cloudBitMask = ee.Number(2).pow(10).int();
+  var cirrusBitMask = ee.Number(2).pow(11).int();
+  // Get the pixel QA band.
+  var qa = image.select('QA60');
+  // All flags should be set to zero, indicating clear conditions.
+  var mask = qa.bitwiseAnd(cloudBitMask).eq(0)
+      .and(qa.bitwiseAnd(cirrusBitMask).eq(0));
+  // Return the masked image, scaled to TOA reflectance, without the QA bands.
+  return image.updateMask(mask)
+      .copyProperties(image, ["system:time_start"]);
+} //Credit: UN-SPIDER(ONU) end
+
+
 // Processos
 function process() {
   //inputs
@@ -249,8 +266,8 @@ function process() {
   var end_postF = end_postfire.getValue();
 
   //sentinel consults
-  var SentinelClip_pre = consult_sen(start_preF, end_preF, aoi, 30);
-  var SentinelClip_post = consult_sen(start_postF, end_postF, aoi, 30);
+  var SentinelClip_pre = consult_sen(start_preF, end_preF, aoi, 30, (maskS2sr));
+  var SentinelClip_post = consult_sen(start_postF, end_postF, aoi, 30, (maskS2sr));
 
   //Procedimentos
   var pre_nbr = SentinelClip_pre.normalizedDifference(['B8A', 'B12']);
@@ -294,7 +311,24 @@ function process() {
     min: -1000,
     palette: ['white', 'black']},
     'dNBR greyscale');
+
+// Define an SLD style of discrete intervals to apply to the image.
+var sld_intervals =
+  '<RasterSymbolizer>' +
+    '<ColorMap type="intervals" extended="false" >' +
+      '<ColorMapEntry color="#ffffff" quantity="-500" label="-500"/>' +
+      '<ColorMapEntry color="#7a8737" quantity="-250" label="-250" />' +
+      '<ColorMapEntry color="#acbe4d" quantity="-100" label="-100" />' +
+      '<ColorMapEntry color="#0ae042" quantity="100" label="100" />' +
+      '<ColorMapEntry color="#fff70b" quantity="270" label="270" />' +
+      '<ColorMapEntry color="#ffaf38" quantity="440" label="440" />' +
+      '<ColorMapEntry color="#ff641b" quantity="660" label="660" />' +
+      '<ColorMapEntry color="#a41fd6" quantity="2000" label="2000" />' +
+    '</ColorMap>' +
+  '</RasterSymbolizer>';
   
+  mapPanel.addLayer(dNBR.sldStyle(sld_intervals), {}, 'dNBR classified');
+
   //cleaning edit polygon
   clearGeometry();
 }
