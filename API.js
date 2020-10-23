@@ -259,16 +259,16 @@ function process() {
 
   //Outputs
   mapPanel.addLayer(SentinelClip_pre, {
-    max: 4000,
+    max: 2000,
     min: 0.0,
-    gama: 1.0,
+    gama: 1.5,
     bands: ['B4', 'B3', 'B2']},
     'Imagem Sentinel 2 RGB PreFire');
 
   mapPanel.addLayer(SentinelClip_post, {
-    max: 4000,
+    max: 2000,
     min: 0.0,
-    gamma: 1.0,
+    gamma: 1.5,
     bands: ['B4', 'B3', 'B2']},
     'Imagem Sentinel 2 RGB PostFire');
 
