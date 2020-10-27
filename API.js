@@ -65,24 +65,24 @@ var estilo_borda = '1px solid rgba(205, 205, 205, 10.5)';
 
 // Adicione descrição no painel principal (esquerda)
  var descricao1_text =
-        'O aplicativo utiliza o Normalized Burn Ratio (NBR) e,' +
-        ' compara o antes e o depois do fogo gerando o índice dNBR.' +
-        ' Os resultados apoiam a criação de relatórios de danos' + 
-        ' e base de dados sobre os incêndios florestais.';
+        'O aplicativo utiliza o Normalized Burn Ratio (NBR) para' +
+        ' comparar o antes e o depois do fogo e gerar o índice dNBR.' +
+        ' Os resultados apoiam de relatórios de danos na vegetação' + 
+        ' e base de dados sobre os fogos florestais.';
     var descricaoRotulo1 = ui.Label(descricao1_text, estilo_paragrafo);
     mainPanel.add(descricaoRotulo1);
 
 // Adicione descrição no painel principal (esquerda)     
  var descricao2_text = 
-        'O dado raster gerado (.TIFF) pode ser importado em SIG e gerar mapas,' +
-        ' a análise espacial das classes de serveridade pode ser baixada em .CSV, .SVG e .PNG.';
+        'O dado tipo raster gerado (.TIFF) pode ser importado em SIG para criar mapas.' +
+        ' A análise espacial da serveridade pode ser baixada em .CSV, .SVG e .PNG.';
     var descricaoRotulo2 = ui.Label (descricao2_text, estilo_paragrafo);
     mainPanel.add(descricaoRotulo2);
 
 // Adicione descrição no painel principal (esquerda)
 var descricao3_text = 
-        'A imagem de satélite utilizada é Sentinel-2 MSI Level-2A(com correção atmosférica):' +
-        ' Novas imagens a cada: 5 dias, resolução espacial: 20 metros.';
+        'A imagem de satélite utilizada é Sentinel-2 MSI Level-2A (com correção atmosférica)' +
+        ' com novas imagens a cada: 5 dias, resolução espacial: 10 metros.';
     var descricaoRotulo3 = ui.Label (descricao3_text, estilo_paragrafo);
     mainPanel.add(descricaoRotulo3);
 
@@ -146,7 +146,7 @@ mainPanel.add(controlPanel);
 
 // Adicione descrição no painel principal (esquerda)
     var descricao4_text = 
-      'A ferramenta buscará as imagens de satélite entre os intervalo definido.' +
+      'O aplicativo busca as imagens de satélite entre os intervalos definidos.' +
       ' Caso não encontre imagens, aumente o intervalo.';
     var descricaoRotulo6 = ui.Label(descricao4_text, estilo_subparagrafo);
     mainPanel.add(descricaoRotulo6);
@@ -157,46 +157,58 @@ mainPanel.add(controlPanel);
 // Configuração do evento: Passo 2. Inserir as datas para buscar imagens //
 ///////////////////////////////////////////////////////////////////////////
 
-  // Adicione título dos dados de entrada PRÉFOGO
-    var descricaoDataPrefogo_text = 
-        'Insira a Data do Início Antes do Fogo:';
-    var descricaoPrefogoRotulo = ui.Label (descricaoDataPrefogo_text, estilo_paragrafo);
+  //Título separador de input de data (Start - Prefire)
+    var descricaoStartDataPrefogo_text = 
+        'Insira a Data do Início (Préfogo):';
+    var descricaoStartPrefogoRotulo = ui.Label (descricaoStartDataPrefogo_text, estilo_paragrafo);
 
   // Crie campo para inserir a data do INICIO do intervalo PRÉFOGO 
     var start_prefire = ui.Textbox({
         value: '',
-        placeholder: 'Data Início aqui...',
+        placeholder: 'YYYY-MM-DD',
     });
+
+  //Título separador de input de data (End - Prefire)
+    var descricaoEndDataPrefogo_text = 
+        'Insira a Data do Fim (Préfogo):';
+    var descricaoEndPrefogoRotulo = ui.Label (descricaoEndDataPrefogo_text, estilo_paragrafo);
 
   // Crie campo para inserir a data do FINAL do intervalo PRÉFOGO  
     var end_prefire = ui.Textbox({
         value: '',
-        placeholder: 'Data Fim aqui...',
+        placeholder: 'YYYY-MM-DD',
     });
 
   // Adicione título dos dados de entrada PÓSFOGO
-    var descricaoDataPosfogo_text = 
-        'Insira as datas do intervalo Pós Fogo:';
-    var descricaoPosfogoRotulo = ui.Label (descricaoDataPosfogo_text, estilo_paragrafo);
+    var descricaoStartDataPosfogo_text = 
+        'Insira a Data do Início (Pósfogo):';
+    var descricaoStartPosfogoRotulo = ui.Label (descricaoStartDataPosfogo_text, estilo_paragrafo);
 
   // Crie campo para inserir a data do INICIO do intervalo PÓSFOGO
     var start_postfire = ui.Textbox({
         value: '',
-        placeholder: 'Data Início aqui...',
+        placeholder: 'YYYY-MM-DD',
     });
+
+  // Adicione título dos dados de entrada PÓSFOGO
+    var descricaoEndDataPosfogo_text = 
+      'Insira a Data do Fim (Pósfogo):';
+    var descricaoEndPosfogoRotulo = ui.Label (descricaoEndDataPosfogo_text, estilo_paragrafo);
 
   // Crie campo para inserir a data do FINAL do intervalo PÓSFOGO
     var end_postfire = ui.Textbox({
         value: '',
-        placeholder: 'Data Fim aqui...',
+        placeholder: 'YYYY-MM-DD',
     });
 
   // Adicionar os campos no painel principal (esquerda)
-    mainPanel.add (descricaoPrefogoRotulo);
+    mainPanel.add (descricaoStartPrefogoRotulo);
     mainPanel.add (start_prefire);
+    mainPanel.add (descricaoEndPrefogoRotulo)
     mainPanel.add (end_prefire);
-    mainPanel.add (descricaoPosfogoRotulo);
+    mainPanel.add (descricaoStartPosfogoRotulo);
     mainPanel.add (start_postfire);
+    mainPanel.add (descricaoEndPosfogoRotulo);
     mainPanel.add (end_postfire);
 
 // Use um PainelDividido para que seja possível autoajuste dos dois paineis
@@ -266,15 +278,15 @@ function process() {
   var end_postF = end_postfire.getValue();
 
   //sentinel consults
-  var SentinelClip_pre = consult_sen(start_preF, end_preF, aoi, 30, (maskS2sr));
-  var SentinelClip_post = consult_sen(start_postF, end_postF, aoi, 30, (maskS2sr));
+  var SentinelClip_pre = consult_sen(start_preF, end_preF, aoi, 30); //.map(mask2sr)
+  var SentinelClip_post = consult_sen(start_postF, end_postF, aoi, 30);
 
-  //Procedimentos
+  //Procedimentos NBR = (NIR-SWIR2) / (NIR+SWIR2)
   var pre_nbr = SentinelClip_pre.normalizedDifference(['B8A', 'B12']);
   var post_nbr = SentinelClip_post.normalizedDifference(['B8A', 'B12']);
 
   //Cálculo dNBR
-  var dNBR_unscaled = pre_nbr.subtract(post_nbr);
+  var dNBR_unscaled = pre_nbr.subtract(post_nbr); //
   var dNBR = dNBR_unscaled.multiply(1000);
 
   //Outputs
@@ -332,7 +344,8 @@ var sld_intervals =
   //cleaning edit polygon
   clearGeometry();
 }
-  
+ 
+
 function consult_sen(start,end,aoi,cloud) {
   //input:
   //start = start date
@@ -342,7 +355,7 @@ function consult_sen(start,end,aoi,cloud) {
   var IMGSentinel = ee.ImageCollection ('COPERNICUS/S2_SR') // Level-2A correction atmosferic
     .filterDate (start, end)
     .filterBounds (aoi)
-    .filterMetadata ('CLOUDY_PIXEL_PERCENTAGE', 'Less_Than', cloud );
+    .filterMetadata ('CLOUDY_PIXEL_PERCENTAGE', 'Less_Than', cloud);
   var SentinelFiltro = ee.Image(IMGSentinel.median());
   var SentinelClip = SentinelFiltro.clip(aoi);
 
@@ -409,6 +422,23 @@ for (var i = 0; i < 7; i++) {
  
 // add legend to map (alternatively you can also print the legend to the console)
 mapPanel.add(legend); //Credit: UN-SPIDER(ONU) end
+
+///////////////////////////////////////////////////////////
+//Exportar os dados
+/*
+var id = dNBR.id().getInfo();
+      
+Export.image.toDrive({image: dNBR, scale: 30, description: id, fileNamePrefix: 'dNBR',
+  region: area, maxPixels: 1e10});
+*/
+
+
+
+
+
+
+
+
 
 
 
@@ -652,6 +682,8 @@ function setLegend(legend) {
 
 // Set the initial legend.
 setLegend(layerProperties[layerSelect.getValue()].legend);
+
+
 
 
 
