@@ -342,7 +342,27 @@ var sld_intervals =
   mapPanel.addLayer(dNBR.sldStyle(sld_intervals), {}, 'dNBR classified');
 
   //cleaning edit polygon
-  clearGeometry();
+  //clearGeometry();
+
+  var id = dNBR.id().getInfo();
+      
+Export.image.toDrive({
+    image: dNBR, 
+    scale: 10, 
+    description: id, 
+    fileNamePrefix: 'dNBR',
+    region: aoi, 
+    maxPixels: 1e10
+  });
+
+var feature = ee.FeatureCollection([ee.Feature(aoi)]);
+  Export.table.toDrive({
+    collection: feature,
+    description: 'Export_AOI',
+    fileFormat: 'KML'
+  });
+  
+  
 }
  
 
