@@ -351,24 +351,25 @@ var sld_intervals =
   //cleaning edit polygon
   clearGeometry();
 
-  var id = dNBR.id().getInfo();
+  //var id = dNBR.id().getInfo();
       
-Export.image.toDrive({
-    image: dNBR, 
+  Export.image.toDrive({
+    image: dNBR,
+    description: 'Export_dNBR', 
     scale: 10, 
-    description: id, 
-    fileNamePrefix: 'dNBR',
+    fileNamePrefix: 'Export_dNBR',
     region: aoi, 
     maxPixels: 1e10
   });
 
-var feature = ee.FeatureCollection([ee.Feature(aoi)]);
+  var feature = ee.FeatureCollection([ee.Feature(aoi)]);
   Export.table.toDrive({
     collection: feature,
     description: 'Export_AOI',
     fileFormat: 'KML'
   });
-  
+
+  mapPanel.centerObject(aoi);
   
 }
  
@@ -449,16 +450,6 @@ for (var i = 0; i < 7; i++) {
  
 // add legend to map (alternatively you can also print the legend to the console)
 mapPanel.add(legend); //Credit: UN-SPIDER(ONU) end
-
-///////////////////////////////////////////////////////////
-//Exportar os dados
-/*
-var id = dNBR.id().getInfo();
-      
-Export.image.toDrive({image: dNBR, scale: 30, description: id, fileNamePrefix: 'dNBR',
-  region: area, maxPixels: 1e10});
-*/
-
 
 
 
