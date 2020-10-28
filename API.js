@@ -290,6 +290,12 @@ function process() {
   var dNBR = dNBR_unscaled.multiply(1000);
 
   //Outputs
+  mapPanel.addLayer(aoi,{
+    color: 'ff5c33',
+    strokeWidth: 5,
+    transparent: 70}, 
+    'Area of Interest');
+
   mapPanel.addLayer(SentinelClip_pre, {
     max: 2000,
     min: 0.0,
@@ -324,6 +330,7 @@ function process() {
     palette: ['white', 'black']},
     'dNBR greyscale');
 
+
 // Define an SLD style of discrete intervals to apply to the image.
 var sld_intervals =
   '<RasterSymbolizer>' +
@@ -342,7 +349,7 @@ var sld_intervals =
   mapPanel.addLayer(dNBR.sldStyle(sld_intervals), {}, 'dNBR classified');
 
   //cleaning edit polygon
-  //clearGeometry();
+  clearGeometry();
 
   var id = dNBR.id().getInfo();
       
