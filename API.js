@@ -351,8 +351,7 @@ var sld_intervals =
   //cleaning edit polygon
   clearGeometry();
 
-  //var id = dNBR.id().getInfo();
-      
+  //export layers
   Export.image.toDrive({
     image: dNBR,
     description: 'Export_dNBR', 
