@@ -251,9 +251,27 @@ function drawPolygon(){
   drawingTools.draw();
 }
 
-//Credit: UN-SPIDER(ONU) start
-// Function to mask clouds from the pixel quality band of Sentinel-2 SR data.
-function maskS2sr(image) {
+//Function to consult sentinel-2 images
+function consult_sen(start,end,aoi,cloud) {
+  //input:
+  //start = start date
+  //end = end date
+  //aoi = area of interest
+  //cloud = cloud max in image
+
+//ImageCollection Sentinel-2 Level2A
+var ImCol = 'COPERNICUS/S2_SR'
+var imagery = ee.ImageCollection(ImCol);
+  var IMGSentinel = ee.ImageCollection (imagery // Level-2A correction atmosferic
+    .filterDate (start, end)
+    .filterBounds (aoi)
+    .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', cloud))
+    .map(maskS2sr));
+    //.median());
+ 
+  //Credit: UN-SPIDER(ONU) start
+  // Function to mask clouds from the pixel quality band of Sentinel-2 SR data.
+  function maskS2sr(image) {
   // Bits 10 and 11 are clouds and cirrus, respectively.
   var cloudBitMask = ee.Number(2).pow(10).int();
   var cirrusBitMask = ee.Number(2).pow(11).int();
@@ -263,9 +281,21 @@ function maskS2sr(image) {
   var mask = qa.bitwiseAnd(cloudBitMask).eq(0)
       .and(qa.bitwiseAnd(cirrusBitMask).eq(0));
   // Return the masked image, scaled to TOA reflectance, without the QA bands.
-  return image.updateMask(mask)
+  return image.updateMask(mask)//.divide(10000);
       .copyProperties(image, ["system:time_start"]);
-} //Credit: UN-SPIDER(ONU) end
+  } //Credit: UN-SPIDER(ONU) end
+ 
+
+  //Aplica a máscara de nuvem
+  var SentinelFiltro = IMGSentinel.map(maskS2sr); 
+  var SentinelClip = SentinelFiltro.mosaic().clip(aoi);
+ 
+
+  //Output
+  //mosaic sentinel-2A image between dates
+  return SentinelClip  
+}
+
 
 
 // Processos
@@ -278,8 +308,8 @@ function process() {
   var end_postF = end_postfire.getValue();
 
   //sentinel consults
-  var SentinelClip_pre = consult_sen(start_preF, end_preF, aoi, 30); //.map(mask2sr)
-  var SentinelClip_post = consult_sen(start_postF, end_postF, aoi, 30);
+  var SentinelClip_pre = consult_sen(start_preF, end_preF, aoi, 20);
+  var SentinelClip_post = consult_sen(start_postF, end_postF, aoi, 20);
 
   //Procedimentos NBR = (NIR-SWIR2) / (NIR+SWIR2)
   var pre_nbr = SentinelClip_pre.normalizedDifference(['B8A', 'B12']);
@@ -331,8 +361,8 @@ function process() {
     'dNBR greyscale');
 
 
-// Define an SLD style of discrete intervals to apply to the image.
-var sld_intervals =
+  // Define an SLD style of discrete intervals to apply to the image.
+  var sld_intervals =
   '<RasterSymbolizer>' +
     '<ColorMap type="intervals" extended="false" >' +
       '<ColorMapEntry color="#ffffff" quantity="-500" label="-500"/>' +
@@ -373,23 +403,7 @@ var sld_intervals =
 }
  
 
-function consult_sen(start,end,aoi,cloud) {
-  //input:
-  //start = start date
-  //end = end date
-  //aoi = area of interest
 
-  var IMGSentinel = ee.ImageCollection ('COPERNICUS/S2_SR') // Level-2A correction atmosferic
-    .filterDate (start, end)
-    .filterBounds (aoi)
-    .filterMetadata ('CLOUDY_PIXEL_PERCENTAGE', 'Less_Than', cloud);
-  var SentinelFiltro = ee.Image(IMGSentinel.median());
-  var SentinelClip = SentinelFiltro.clip(aoi);
-
-  //Output
-  //mosaic sentinel-2A image between dates
-  return SentinelClip  
-}
 
 // Legenda com as classes dNBR (USGS) //Credit: UN-SPIDER(ONU) start
 // set position of panel
@@ -449,7 +463,6 @@ for (var i = 0; i < 7; i++) {
  
 // add legend to map (alternatively you can also print the legend to the console)
 mapPanel.add(legend); //Credit: UN-SPIDER(ONU) end
-
 
 
 
