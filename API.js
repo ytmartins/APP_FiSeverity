@@ -399,7 +399,7 @@ function process() {
   });
 
   mapPanel.centerObject(aoi);
-  
+  mapPanel.setOptions('HYBRID');
 }
  
 
