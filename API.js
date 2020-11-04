@@ -265,23 +265,26 @@ var imagery = ee.ImageCollection(ImCol);
   var IMGSentinel = ee.ImageCollection (imagery // Level-2A correction atmosferic
     .filterDate (start, end)
     .filterBounds (aoi)
-    .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', cloud))
-    .map(maskS2sr));
+    .map(maskS2sr))
+    .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', cloud));
     //.median());
  
   //Credit: UN-SPIDER(ONU) start
   // Function to mask clouds from the pixel quality band of Sentinel-2 SR data.
   function maskS2sr(image) {
-  // Bits 10 and 11 are clouds and cirrus, respectively.
-  var cloudBitMask = ee.Number(2).pow(10).int();
-  var cirrusBitMask = ee.Number(2).pow(11).int();
+  
   // Get the pixel QA band.
   var qa = image.select('QA60');
+
+  // Bits 10 and 11 are clouds and cirrus, respectively.
+  var cloudBitMask = ee.Number(1).pow(10).int();
+  var cirrusBitMask = ee.Number(1).pow(11).int();
+
   // All flags should be set to zero, indicating clear conditions.
   var mask = qa.bitwiseAnd(cloudBitMask).eq(0)
       .and(qa.bitwiseAnd(cirrusBitMask).eq(0));
   // Return the masked image, scaled to TOA reflectance, without the QA bands.
-  return image.updateMask(mask)//.divide(10000);
+  return image.updateMask(mask)//.divide(10000);    //erro na implementação do '.divide(10000);'
       .copyProperties(image, ["system:time_start"]);
   } //Credit: UN-SPIDER(ONU) end
  
@@ -312,8 +315,8 @@ function process() {
   var SentinelClip_post = consult_sen(start_postF, end_postF, aoi, 20);
 
   //Procedimentos NBR = (NIR-SWIR2) / (NIR+SWIR2)
-  var pre_nbr = SentinelClip_pre.normalizedDifference(['B8A', 'B12']);
-  var post_nbr = SentinelClip_post.normalizedDifference(['B8A', 'B12']);
+  var pre_nbr = SentinelClip_pre.normalizedDifference(['B8', 'B12']);
+  var post_nbr = SentinelClip_post.normalizedDifference(['B8', 'B12']);
 
   //Cálculo dNBR
   var dNBR_unscaled = pre_nbr.subtract(post_nbr); //
