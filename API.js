@@ -1,6 +1,7 @@
-// Software para Mapeamento da Severidade dos Incêndios Florestias
-// Ajustar o UI Padrão
+// API to Mapping Burn Severity in Forest Fire events
+// credit: Yuri Tomaz Martins
 
+// Ajustar o UI Padrão
 ui.root.clear();
 var mapPanel = ui.Map();
 ui.root.widgets().reset([mapPanel]);
