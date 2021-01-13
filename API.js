@@ -66,10 +66,10 @@ var estilo_borda = '1px solid rgba(205, 205, 205, 10.5)';
 
 // Adicione descrição no painel principal (esquerda)
  var descricao1_text =
-    'O aplicativo compara imagens de satélite de antes e o depois do incêndio ' +
-    ' e gera um índice de severidade da área ardida.' +
-    ' Os resultados podem compor relatórios de danos' + 
-    ' e subsidiar banco de dados.';
+    'O aplicativo compara imagens de satélite de antes e depois do incêndio ' +
+    ' e gera uma análise da severidade da área ardida.' +
+    ' Os resultados podem apoiar relatórios de danos' + 
+    ' e subsidiar banco de dados dos incêndios.';
     var descricaoRotulo1 = ui.Label(descricao1_text, estilo_paragrafo);
     mainPanel.add(descricaoRotulo1);
 /*
