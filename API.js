@@ -66,24 +66,24 @@ var estilo_borda = '1px solid rgba(205, 205, 205, 10.5)';
 
 // Adicione descrição no painel principal (esquerda)
  var descricao1_text =
-        'O aplicativo utiliza o Normalized Burn Ratio (NBR) para' +
-        ' comparar o antes e o depois do fogo e gerar o índice dNBR.' +
-        ' Os resultados apoiam de relatórios sobre os danos' + 
-        ' e geram dados para gestão preventiva dos incêndios.';
+    'O aplicativo compara imagens de satélite de antes e o depois do incêndio ' +
+    ' e gera um índice de severidade da área ardida.' +
+    ' Os resultados podem compor relatórios de danos' + 
+    ' e subsidiar banco de dados.';
     var descricaoRotulo1 = ui.Label(descricao1_text, estilo_paragrafo);
     mainPanel.add(descricaoRotulo1);
 
 // Adicione descrição no painel principal (esquerda)     
  var descricao2_text = 
-        'O dado tipo raster gerado (.TIFF) pode ser importado em SIG para criar mapas.' +
-        ' A análise espacial da serveridade pode ser baixada em .CSV, .SVG e .PNG.';
+    'Os dados gerados são um raster (.TIFF) que pode ser importado em SIG para compor mapas' +
+    ' e as análises espaciais podem ser baixadas em .CSV, .SVG e .PNG.';
     var descricaoRotulo2 = ui.Label (descricao2_text, estilo_paragrafo);
     mainPanel.add(descricaoRotulo2);
 
 // Adicione descrição no painel principal (esquerda)
 var descricao3_text = 
-        'A imagem de satélite utilizada é Sentinel-2 MSI Level-2A (com correção atmosférica)' +
-        ' com novas imagens a cada: 5 dias, resolução espacial: 10 metros.';
+        'A imagem de satélite utilizada é Sentinel-2 MSI Level-2A (com correção atmosférica).' +
+        ' Nova imagem a cada: 5 dias, resolução espacial: 10 metros.';
     var descricaoRotulo3 = ui.Label (descricao3_text, estilo_paragrafo);
     mainPanel.add(descricaoRotulo3);
 
