@@ -68,8 +68,8 @@ var estilo_borda = '1px solid rgba(205, 205, 205, 10.5)';
  var descricao1_text =
         'O aplicativo utiliza o Normalized Burn Ratio (NBR) para' +
         ' comparar o antes e o depois do fogo e gerar o índice dNBR.' +
-        ' Os resultados apoiam de relatórios de danos na vegetação' + 
-        ' e base de dados sobre os fogos florestais.';
+        ' Os resultados apoiam de relatórios sobre os danos' + 
+        ' e geram dados para gestão preventiva dos incêndios.';
     var descricaoRotulo1 = ui.Label(descricao1_text, estilo_paragrafo);
     mainPanel.add(descricaoRotulo1);
 
