@@ -61,7 +61,7 @@ var estilo_borda = '1px solid rgba(205, 205, 205, 10.5)';
   });
 
 // Adicione o titulo da ferramenta no painel principal (esquerda)
- var tituloPrincipal1 = ui.Label('Mapeamento > Incêndios Florestais > índice dNBR', estilo_titulo);
+ var tituloPrincipal1 = ui.Label('Aplicativo > FiSeverity', estilo_titulo);
  mainPanel.add(tituloPrincipal1);
 
 // Adicione descrição no painel principal (esquerda)
@@ -72,18 +72,18 @@ var estilo_borda = '1px solid rgba(205, 205, 205, 10.5)';
     ' e subsidiar banco de dados.';
     var descricaoRotulo1 = ui.Label(descricao1_text, estilo_paragrafo);
     mainPanel.add(descricaoRotulo1);
-
+/*
 // Adicione descrição no painel principal (esquerda)     
  var descricao2_text = 
     'Os dados gerados são um raster (.TIFF) que pode ser importado em SIG para compor mapas' +
     ' e as análises espaciais podem ser baixadas em .CSV, .SVG e .PNG.';
     var descricaoRotulo2 = ui.Label (descricao2_text, estilo_paragrafo);
     mainPanel.add(descricaoRotulo2);
-
+*/
 // Adicione descrição no painel principal (esquerda)
 var descricao3_text = 
-        'A imagem de satélite utilizada é Sentinel-2 MSI Level-2A (com correção atmosférica).' +
-        ' Nova imagem a cada: 5 dias, resolução espacial: 10 metros.';
+    'A imagem de satélite utilizada é Sentinel-2 MSI Level-2A (com correção atmosférica).' +
+    ' Nova imagem a cada: 5 dias, resolução espacial: 10 metros.';
     var descricaoRotulo3 = ui.Label (descricao3_text, estilo_paragrafo);
     mainPanel.add(descricaoRotulo3);
 
