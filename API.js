@@ -61,7 +61,7 @@
         style: {
           stretch: 'horizontal',
           height: '60%',
-          width: '400px',
+          width: '415px',
           backgroundColor: colors.grey,
           border: estilo_borda,
           position: 'top-left',
@@ -167,15 +167,15 @@
 // Titulo Intervalo
 var mylabel = ui.Label({
   value: ' Intervalo Préfogo ',
-  style: {fontSize: '16px', fontWeight: 'bold', padding: '6px 0px 0px 5px', margin:'0', backgroundColor: colors.grey}
+  style: {fontSize: '16px', fontWeight: 'bold', padding: '6px 3px 0px 5px', margin:'0', backgroundColor: colors.grey}
 });
 // Barra de estilização
 var centerdivider = ui.Label({
   value: ' | ',
-  style: {color: 'd3d3d3', fontSize: '18px', padding: '4px 5px 0 5px', margin:'0', backgroundColor: colors.grey}
+  style: {color: 'd3d3d3', fontSize: '18px', padding: '5px 5px 0px 5px', margin:'0', backgroundColor: colors.grey}
 });
 // Primeira data 
-var mytextbox = ui.Textbox({
+var start_prefire = ui.Textbox({
   placeholder: 'YYYY-MM-DD',
   style: {fontSize: '', width: '110px', padding: '4px 0px 0px 5px', margin: '', backgroundColor: colors.grey},
   onChange: function(value) {
@@ -188,22 +188,66 @@ var findlabel = ui.Label({
   style: {fontSize: '12px', padding: '9px 0px 0px 5px', margin:'0', backgroundColor: colors.grey}
 });
 // Segunda data
-var mytextbox2 = ui.Textbox({
+var end_prefire = ui.Textbox({
+  placeholder: 'YYYY-MM-DD',
+  style: {fontSize: '', width: '110px', padding: '4px 0px 0px 5px', margin: '', backgroundColor: colors.grey},
+  onChange: function(value) {
+      //do stuff
+  }
+});
+// Criar o agrupamento
+var abovemappanel = ui.Panel({
+  widgets: [mylabel, centerdivider, start_prefire, findlabel, end_prefire],
+  layout: ui.Panel.Layout.flow('horizontal'),
+  style: {position: 'top-left', height: '34px', padding: '0', margin: '10px 0px 0px 0px', backgroundColor: colors.grey},
+});
+
+var wrapper = ui.Panel({
+  widgets: [abovemappanel],
+  layout: ui.Panel.Layout.absolute(),
+  style: {height: '34px', padding: '0', margin: '0'},
+});
+//---------------------------------------------------------------------------------------------------------------------
+
+var mylabel2 = ui.Label({
+  value: ' Intervalo Pósfogo ',
+  style: {fontSize: '16px', fontWeight: 'bold', padding: '6px 0px 0px 5px', margin:'0', backgroundColor: colors.grey}
+});
+// Barra de estilização
+var centerdivider2 = ui.Label({
+  value: '  | ',
+  style: {color: 'd3d3d3', fontSize: '18px', padding: '4px 5px 0 5px', margin:'0', backgroundColor: colors.grey}
+});
+// Primeira data - Pósfogo
+var start_postfire = ui.Textbox({
+  placeholder: 'YYYY-MM-DD',
+  style: {fontSize: '', width: '110px', padding: '4px 0px 0px 5px', margin: '', backgroundColor: colors.grey},
+  onChange: function(value) {
+      //do stuff
+  }
+});
+// Divisor das datas
+var findlabel2 = ui.Label({
+  value: 'Até',
+  style: {fontSize: '12px', padding: '9px 0px 0px 5px', margin:'0', backgroundColor: colors.grey}
+});
+// Segunda data - Pósfogo
+var end_postfire = ui.Textbox({
   placeholder: 'YYYY-MM-DD',
   style: {fontSize: '', width: '110px', padding: '4px 0px 0 5px', margin: '', backgroundColor: colors.grey},
   onChange: function(value) {
       //do stuff
   }
 });
-
-var abovemappanel = ui.Panel({
-  widgets: [mylabel, centerdivider, mytextbox, findlabel, mytextbox2],
+// Criar o agrupamento
+var abovemappanel2 = ui.Panel({
+  widgets: [mylabel2, centerdivider2, start_postfire, findlabel2, end_postfire],
   layout: ui.Panel.Layout.flow('horizontal'),
-  style: {position: 'top-left', height: '34px', padding: '0', margin: '-10px 0 0 0', backgroundColor: colors.grey},
+  style: {position: 'top-left', height: '34px', padding: '0', margin: '10px 0 0 0', backgroundColor: colors.grey},
 });
 
-var wrapper = ui.Panel({
-  widgets: [abovemappanel],
+var wrapper2 = ui.Panel({
+  widgets: [abovemappanel2],
   layout: ui.Panel.Layout.absolute(),
   style: {height: '34px', padding: '0', margin: '0'},
 });
@@ -212,63 +256,64 @@ ui.root.setLayout(ui.Panel.Layout.flow('vertical'));
 ui.root.insert(0, wrapper); 
 */
 // EXPERIMENTAÇAO ----------------------------------------------------------------------------------------------------------------------------
-
+/*
     // Criar o campo para INSERIR a data de INICIO do intervalo PREFOGO
       var start_prefire = ui.Textbox({
           value: '',
           placeholder: 'YYYY-MM-DD',
           style: {width: '95px'}
       });
-
+*/
   // Adicionar o título com a descrição do intervalo
     var descricaoEndDataPrefogo_text = 
         'Intervalo Préfogo (Fim):';
       var descricaoEndPrefogoRotulo = ui.Label (descricaoEndDataPrefogo_text, estilo_paragrafo);
-
+/*
     // Criar o campo para INSERIR a data do FINAL do intervalo PREFOGO
       var end_prefire = ui.Textbox({
           value: '',
           placeholder: 'YYYY-MM-DD',
           style: {width: '95px'}
       });
-
+*/
   // Adicionar o título com a descrição do intervalo
     var descricaoStartDataPosfogo_text = 
         'Intervalo Pósfogo (Início):';
       var descricaoStartPosfogoRotulo = ui.Label (descricaoStartDataPosfogo_text, estilo_paragrafo);
-
+/*
     // Criar o campo para INSERIR a data de INICIO do intervalo POSFOGO
       var start_postfire = ui.Textbox({
           value: '',
           placeholder: 'YYYY-MM-DD',
           style: {width: '95px'}
       });
-
+*/
   // Adicionar o título com a descrição do intervalo
     var descricaoEndDataPosfogo_text = 
         'Intervalo Pósfogo (Fim):';
       var descricaoEndPosfogoRotulo = ui.Label (descricaoEndDataPosfogo_text, estilo_paragrafo);
-
+/*
     // Criar o campo para INSERIR a data do FINAL do intervalo POSFOGO
       var end_postfire = ui.Textbox({
           value: '',
           placeholder: 'YYYY-MM-DD',
           style: {width: '95px'}
       });
-
+*/
   // Adicionar os campos no painel (da esquerda)
       //mainPanel.add (descricaoStartPrefogoRotulo);
-      mainPanel.add (start_prefire);
-      mainPanel.add (descricaoEndPrefogoRotulo)
-      mainPanel.add (end_prefire);
-      mainPanel.add (descricaoStartPosfogoRotulo);
-      mainPanel.add (start_postfire);
-      mainPanel.add (descricaoEndPosfogoRotulo);
-      mainPanel.add (end_postfire);
+      //mainPanel.add (start_prefire);
+      //mainPanel.add (descricaoEndPrefogoRotulo)
+      //mainPanel.add (end_prefire);
+      //mainPanel.add (descricaoStartPosfogoRotulo);
+      //mainPanel.add (start_postfire);
+      //mainPanel.add (descricaoEndPosfogoRotulo);
+      //mainPanel.add (end_postfire);
 
 
 // EXPERIMENTAÇAO ----------------------------------------------------------------------------------------------------------------------------
       mainPanel.add (abovemappanel)
+      mainPanel.add (abovemappanel2)
       //mainPanel.add (wrapper)
 // EXPERIMENTAÇAO ----------------------------------------------------------------------------------------------------------------------------
 
