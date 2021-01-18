@@ -158,9 +158,60 @@
 
 // Parte 7: Passo 2. Criar evento para Inserir as Datas de Interesse ---------------------
   // Adicionar o título com a descrição do intervalo
+/*
     var descricaoStartDataPrefogo_text = 
         'Intervalo Préfogo (Início):';
       var descricaoStartPrefogoRotulo = ui.Label (descricaoStartDataPrefogo_text, estilo_paragrafo);
+*/
+// EXPERIMENTAÇAO ----------------------------------------------------------------------------------------------------------------------------
+// Titulo Intervalo
+var mylabel = ui.Label({
+  value: ' Intervalo Préfogo ',
+  style: {fontSize: '16px', fontWeight: 'bold', padding: '6px 0px 0px 5px', margin:'0', backgroundColor: colors.grey}
+});
+// Barra de estilização
+var centerdivider = ui.Label({
+  value: ' | ',
+  style: {color: 'd3d3d3', fontSize: '18px', padding: '4px 5px 0 5px', margin:'0', backgroundColor: colors.grey}
+});
+// Primeira data 
+var mytextbox = ui.Textbox({
+  placeholder: 'YYYY-MM-DD',
+  style: {fontSize: '', width: '110px', padding: '4px 0px 0px 5px', margin: '', backgroundColor: colors.grey},
+  onChange: function(value) {
+      //do stuff
+  }
+});
+// Divisor das datas
+var findlabel = ui.Label({
+  value: 'Até',
+  style: {fontSize: '12px', padding: '9px 0px 0px 5px', margin:'0', backgroundColor: colors.grey}
+});
+// Segunda data
+var mytextbox2 = ui.Textbox({
+  placeholder: 'YYYY-MM-DD',
+  style: {fontSize: '', width: '110px', padding: '4px 0px 0 5px', margin: '', backgroundColor: colors.grey},
+  onChange: function(value) {
+      //do stuff
+  }
+});
+
+var abovemappanel = ui.Panel({
+  widgets: [mylabel, centerdivider, mytextbox, findlabel, mytextbox2],
+  layout: ui.Panel.Layout.flow('horizontal'),
+  style: {position: 'top-left', height: '34px', padding: '0', margin: '-10px 0 0 0', backgroundColor: colors.grey},
+});
+
+var wrapper = ui.Panel({
+  widgets: [abovemappanel],
+  layout: ui.Panel.Layout.absolute(),
+  style: {height: '34px', padding: '0', margin: '0'},
+});
+/*
+ui.root.setLayout(ui.Panel.Layout.flow('vertical'));
+ui.root.insert(0, wrapper); 
+*/
+// EXPERIMENTAÇAO ----------------------------------------------------------------------------------------------------------------------------
 
     // Criar o campo para INSERIR a data de INICIO do intervalo PREFOGO
       var start_prefire = ui.Textbox({
@@ -206,7 +257,7 @@
       });
 
   // Adicionar os campos no painel (da esquerda)
-      mainPanel.add (descricaoStartPrefogoRotulo);
+      //mainPanel.add (descricaoStartPrefogoRotulo);
       mainPanel.add (start_prefire);
       mainPanel.add (descricaoEndPrefogoRotulo)
       mainPanel.add (end_prefire);
@@ -214,6 +265,12 @@
       mainPanel.add (start_postfire);
       mainPanel.add (descricaoEndPosfogoRotulo);
       mainPanel.add (end_postfire);
+
+
+// EXPERIMENTAÇAO ----------------------------------------------------------------------------------------------------------------------------
+      mainPanel.add (abovemappanel)
+      //mainPanel.add (wrapper)
+// EXPERIMENTAÇAO ----------------------------------------------------------------------------------------------------------------------------
 
 
 // Parte 8: Criar o conteúdo do painel (do mapa) -----------------------
@@ -460,47 +517,5 @@
     mapPanel.add(legend);
   // Creditos de criação: UN-SPIDER(ONU) - Fim
 
-/*
-EXPERIMENTAÇÃO
-*/
 
-/*
-// Implementar data lado a lado
-var app = {};
-
-app.createConstants = function() {
-  app.HELPER_TEXT_STYLE = {
-  margin: '8px 0 -8px 8px',
-  //fontSize: '12px',
-  color: 'gray',
-  stretch: 'horizontal'
-  };
-};
-
-app.filters.panel = ui.Panel({
-  widgets: [ // entra as datas como estão escritas inicialmente
-//ex
-startDate: ui.Textbox({
-  placeholder: 'YYYY-MM-DD',
-  value: '2017-12-27',
-  // onChange: app.refreshMapLayer,
-  style: {width: '90px'}
-}),
-
-app.filters.panel = ui.mainPanel({
-  widgets: [
-
-mainPanel([
-  ui.Label('Reference Dates:', app.HELPER_TEXT_STYLE),
-  app.filters.start_prefire,
-  ui.Label('to'),
-  app.filters.start_postfire
-])
-  ]
-};
-
-*/
-
-/*
-EXPERIMENTAÇÃO
-*/
+  
