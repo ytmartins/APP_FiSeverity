@@ -91,9 +91,9 @@
   // Adicionar descrição geral do objetivo no painel (da esquerda)
     var descricao1_text =
         'O aplicativo compara imagens de satélite de antes e depois do incêndio ' +
-        ' e gera uma análise da severidade da área ardida.' +
+        ' e gera uma análise de severidade da área ardida.' +
         ' Os resultados podem apoiar relatórios de danos' + 
-        ' e subsidiar banco de dados dos incêndios.';
+        ' e subsidiar base de dados sobre os incêndios.';
       var descricaoRotulo1 = ui.Label(descricao1_text, estilo_paragrafo);
       mainPanel.add(descricaoRotulo1);
 
