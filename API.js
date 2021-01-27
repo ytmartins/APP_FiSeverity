@@ -49,6 +49,7 @@
     var symbol = {
         polygon: '🔶',
         engine: '✅',
+        pan: '🤚'
     };
 
   // Predefinir o estilo das bordas
@@ -156,167 +157,98 @@
       var descricaoRotulo6 = ui.Label(descricao4_text, estilo_subparagrafo);
       mainPanel.add(descricaoRotulo6);
 
-// Parte 7: Passo 2. Criar evento para Inserir as Datas de Interesse ---------------------
-  // Adicionar o título com a descrição do intervalo
-/*
-    var descricaoStartDataPrefogo_text = 
-        'Intervalo Préfogo (Início):';
-      var descricaoStartPrefogoRotulo = ui.Label (descricaoStartDataPrefogo_text, estilo_paragrafo);
-*/
-// EXPERIMENTAÇAO ----------------------------------------------------------------------------------------------------------------------------
-// Titulo Intervalo
-var mylabel = ui.Label({
-  value: ' Intervalo Préfogo ',
-  style: {fontSize: '16px', fontWeight: 'bold', padding: '6px 3px 0px 5px', margin:'0', backgroundColor: colors.grey}
-});
-// Barra de estilização
-var centerdivider = ui.Label({
-  value: ' | ',
-  style: {color: 'd3d3d3', fontSize: '18px', padding: '5px 5px 0px 5px', margin:'0', backgroundColor: colors.grey}
-});
-// Primeira data 
-var start_prefire = ui.Textbox({
-  placeholder: 'YYYY-MM-DD',
-  style: {fontSize: '', width: '110px', padding: '4px 0px 0px 5px', margin: '', backgroundColor: colors.grey},
-  onChange: function(value) {
-      //do stuff
-  }
-});
-// Divisor das datas
-var findlabel = ui.Label({
-  value: 'Até',
-  style: {fontSize: '12px', padding: '9px 0px 0px 5px', margin:'0', backgroundColor: colors.grey}
-});
-// Segunda data
-var end_prefire = ui.Textbox({
-  placeholder: 'YYYY-MM-DD',
-  style: {fontSize: '', width: '110px', padding: '4px 0px 0px 5px', margin: '', backgroundColor: colors.grey},
-  onChange: function(value) {
-      //do stuff
-  }
-});
-// Criar o agrupamento
-var abovemappanel = ui.Panel({
-  widgets: [mylabel, centerdivider, start_prefire, findlabel, end_prefire],
-  layout: ui.Panel.Layout.flow('horizontal'),
-  style: {position: 'top-left', height: '34px', padding: '0', margin: '10px 0px 0px 0px', backgroundColor: colors.grey},
-});
+// Parte 7: Passo 2. Criar evento para Inserir as Datas de Interesse no painel (da esquerda)---------------------
+  // Criar o input do intervalo Préfogo
+    // Adicionar título do input de intervalo Préfogo 
+      var tituloPrefogo = ui.Label({
+        value: ' Intervalo Préfogo ',
+        style: {fontSize: '16px', fontWeight: 'bold', padding: '6px 3px 0px 5px', margin:'0', backgroundColor: colors.grey}
+      });
 
-var wrapper = ui.Panel({
-  widgets: [abovemappanel],
-  layout: ui.Panel.Layout.absolute(),
-  style: {height: '34px', padding: '0', margin: '0'},
-});
-//---------------------------------------------------------------------------------------------------------------------
+    // Adicionar barra de estilização
+      var centerDivider1 = ui.Label({
+        value: ' | ',
+        style: {color: 'd3d3d3', fontSize: '18px', padding: '5px 5px 0px 5px', margin:'0', backgroundColor: colors.grey}
+      });
 
-var mylabel2 = ui.Label({
-  value: ' Intervalo Pósfogo ',
-  style: {fontSize: '16px', fontWeight: 'bold', padding: '6px 0px 0px 5px', margin:'0', backgroundColor: colors.grey}
-});
-// Barra de estilização
-var centerdivider2 = ui.Label({
-  value: '  | ',
-  style: {color: 'd3d3d3', fontSize: '18px', padding: '4px 5px 0 5px', margin:'0', backgroundColor: colors.grey}
-});
-// Primeira data - Pósfogo
-var start_postfire = ui.Textbox({
-  placeholder: 'YYYY-MM-DD',
-  style: {fontSize: '', width: '110px', padding: '4px 0px 0px 5px', margin: '', backgroundColor: colors.grey},
-  onChange: function(value) {
-      //do stuff
-  }
-});
-// Divisor das datas
-var findlabel2 = ui.Label({
-  value: 'Até',
-  style: {fontSize: '12px', padding: '9px 0px 0px 5px', margin:'0', backgroundColor: colors.grey}
-});
-// Segunda data - Pósfogo
-var end_postfire = ui.Textbox({
-  placeholder: 'YYYY-MM-DD',
-  style: {fontSize: '', width: '110px', padding: '4px 0px 0 5px', margin: '', backgroundColor: colors.grey},
-  onChange: function(value) {
-      //do stuff
-  }
-});
-// Criar o agrupamento
-var abovemappanel2 = ui.Panel({
-  widgets: [mylabel2, centerdivider2, start_postfire, findlabel2, end_postfire],
-  layout: ui.Panel.Layout.flow('horizontal'),
-  style: {position: 'top-left', height: '34px', padding: '0', margin: '10px 0 0 0', backgroundColor: colors.grey},
-});
-
-var wrapper2 = ui.Panel({
-  widgets: [abovemappanel2],
-  layout: ui.Panel.Layout.absolute(),
-  style: {height: '34px', padding: '0', margin: '0'},
-});
-/*
-ui.root.setLayout(ui.Panel.Layout.flow('vertical'));
-ui.root.insert(0, wrapper); 
-*/
-// EXPERIMENTAÇAO ----------------------------------------------------------------------------------------------------------------------------
-/*
-    // Criar o campo para INSERIR a data de INICIO do intervalo PREFOGO
+    // Adicionar a data Start-Prefire
       var start_prefire = ui.Textbox({
-          value: '',
-          placeholder: 'YYYY-MM-DD',
-          style: {width: '95px'}
+        placeholder: 'YYYY-MM-DD',
+        style: {fontSize: '', width: '110px', padding: '4px 0px 0px 5px', margin: '', backgroundColor: colors.grey},
+        onChange: function(value) {
+            //pode personalizar
+        }
       });
-*/
-  // Adicionar o título com a descrição do intervalo
-    var descricaoEndDataPrefogo_text = 
-        'Intervalo Préfogo (Fim):';
-      var descricaoEndPrefogoRotulo = ui.Label (descricaoEndDataPrefogo_text, estilo_paragrafo);
-/*
-    // Criar o campo para INSERIR a data do FINAL do intervalo PREFOGO
+
+    // Adicionar divisor de datas
+      var dateDivider1 = ui.Label({
+        value: 'Até',
+        style: {fontSize: '12px', padding: '9px 0px 0px 5px', margin:'0', backgroundColor: colors.grey}
+      });
+
+    // Adicionar a data End-Prefire
       var end_prefire = ui.Textbox({
-          value: '',
-          placeholder: 'YYYY-MM-DD',
-          style: {width: '95px'}
+        placeholder: 'YYYY-MM-DD',
+        style: {fontSize: '', width: '110px', padding: '4px 0px 0px 5px', margin: '', backgroundColor: colors.grey},
+        onChange: function(value) {
+            //pode personalizar
+        }
       });
-*/
-  // Adicionar o título com a descrição do intervalo
-    var descricaoStartDataPosfogo_text = 
-        'Intervalo Pósfogo (Início):';
-      var descricaoStartPosfogoRotulo = ui.Label (descricaoStartDataPosfogo_text, estilo_paragrafo);
-/*
-    // Criar o campo para INSERIR a data de INICIO do intervalo POSFOGO
+
+    // Criar o agrupamento e estilização do Pre-Fire
+      var groupPrefire = ui.Panel({
+        widgets: [tituloPrefogo, centerDivider1, start_prefire, dateDivider1, end_prefire],
+        layout: ui.Panel.Layout.flow('horizontal'),
+        style: {position: 'top-left', height: '34px', padding: '0', margin: '10px 0px 0px 0px', backgroundColor: colors.grey},
+      });
+
+  // Criar o input do intervalo Pósfogo
+    // Adicionar título do input de intervalo Pósfogo 
+      var tituloPosfogo = ui.Label({
+        value: ' Intervalo Pósfogo ',
+        style: {fontSize: '16px', fontWeight: 'bold', padding: '6px 0px 0px 5px', margin:'0', backgroundColor: colors.grey}
+      });
+
+    // Adicionar barra de estilização
+      var centerDivider2 = ui.Label({
+        value: '  | ',
+        style: {color: 'd3d3d3', fontSize: '18px', padding: '4px 5px 0 5px', margin:'0', backgroundColor: colors.grey}
+      });
+
+    // Adicionar a data Start-Postfire
       var start_postfire = ui.Textbox({
-          value: '',
-          placeholder: 'YYYY-MM-DD',
-          style: {width: '95px'}
+        placeholder: 'YYYY-MM-DD',
+        style: {fontSize: '', width: '110px', padding: '4px 0px 0px 5px', margin: '', backgroundColor: colors.grey},
+        onChange: function(value) {
+            //pode personalizar
+        }
       });
-*/
-  // Adicionar o título com a descrição do intervalo
-    var descricaoEndDataPosfogo_text = 
-        'Intervalo Pósfogo (Fim):';
-      var descricaoEndPosfogoRotulo = ui.Label (descricaoEndDataPosfogo_text, estilo_paragrafo);
-/*
-    // Criar o campo para INSERIR a data do FINAL do intervalo POSFOGO
+
+    // Adicionar divisor de datas
+      var dateDivider2 = ui.Label({
+        value: 'Até',
+        style: {fontSize: '12px', padding: '9px 0px 0px 5px', margin:'0', backgroundColor: colors.grey}
+      });
+
+    // Adicionar a data End-Postfire
       var end_postfire = ui.Textbox({
-          value: '',
-          placeholder: 'YYYY-MM-DD',
-          style: {width: '95px'}
+        placeholder: 'YYYY-MM-DD',
+        style: {fontSize: '', width: '110px', padding: '4px 0px 0 5px', margin: '', backgroundColor: colors.grey},
+        onChange: function(value) {
+            //pode personalizar
+        }
       });
-*/
-  // Adicionar os campos no painel (da esquerda)
-      //mainPanel.add (descricaoStartPrefogoRotulo);
-      //mainPanel.add (start_prefire);
-      //mainPanel.add (descricaoEndPrefogoRotulo)
-      //mainPanel.add (end_prefire);
-      //mainPanel.add (descricaoStartPosfogoRotulo);
-      //mainPanel.add (start_postfire);
-      //mainPanel.add (descricaoEndPosfogoRotulo);
-      //mainPanel.add (end_postfire);
 
+    // Criar o agrupamento e estilização do Post-Fire
+      var groupPostfire = ui.Panel({
+        widgets: [tituloPosfogo, centerDivider2, start_postfire, dateDivider2, end_postfire],
+        layout: ui.Panel.Layout.flow('horizontal'),
+        style: {position: 'top-left', height: '34px', padding: '0', margin: '10px 0 0 0', backgroundColor: colors.grey},
+      });
 
-// EXPERIMENTAÇAO ----------------------------------------------------------------------------------------------------------------------------
-      mainPanel.add (abovemappanel)
-      mainPanel.add (abovemappanel2)
-      //mainPanel.add (wrapper)
-// EXPERIMENTAÇAO ----------------------------------------------------------------------------------------------------------------------------
-
+  // Inserir os grupos no painel (da esquerda)
+      mainPanel.add (groupPrefire)
+      mainPanel.add (groupPostfire)
 
 // Parte 8: Criar o conteúdo do painel (do mapa) -----------------------
   // Criar o botão 'Executar'
@@ -324,6 +256,7 @@ ui.root.insert(0, wrapper);
       label: symbol.engine + ' Executar dNBR',
       onClick: process // 'process' é o algoritmo de processamento do aplicativo
     });
+    
   // Adicionar o 'Executar' no painel (do mapa)
     mapPanel.add(submit);
 
@@ -436,14 +369,14 @@ ui.root.insert(0, wrapper);
         min: 0,
         gamma: 1.0,
         bands: ['nd']},
-        'nbr PréFogo');
+        'NBR PréFogo');
 
       mapPanel.addLayer(post_nbr,{
         max: 2,
         min: 0,
         gamma: 1.0,
         bands: ['nd']},
-        'nbr PósFogo');
+        'NBR PósFogo');
 
       mapPanel.addLayer(dNBR,{
         max: 1000,
