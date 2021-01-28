@@ -1,5 +1,11 @@
-// API FiSeverity - mapping the severity of forest fires
-// credit: Yuri Tomaz Martins
+//----------------------------------------------------------------------------------
+//------------ API FiSeverity - mapping the severity of forest fires  --------------
+//----------------------------------------------------------------------------------
+// Documentation: @github
+// Author: Yuri Tomaz Martins (yuritomazmartins@hotmail.com)
+// Application: FiSeverity can be used to assess and map the severity 
+// of forest fires to support stakeholders in fire management and prevention.
+//----------------------------------------------------------------------------------
 
 // Parte 1: Ajustar a User-Interface UI
   ui.root.clear();
@@ -8,7 +14,7 @@
 
 // Parte 2: Predefinições de estilo ------------------------------------------------
   // Criar a coleção de cores
-    var colors = {'orange': '#ff751a','transparent':'#11ffee00', 'grey':'#F8F9FA'};
+    var colors = {'orange': '#F67529','transparent':'#11ffee00', 'grey':'#F8F9FA'};
 
   // Predefinir o estilo do título
     var estilo_titulo = {
@@ -49,7 +55,8 @@
     var symbol = {
         polygon: '🔶',
         engine: '✅',
-        pan: '🤚'
+        pan: '🤚',
+        fire: '🔥'
     };
 
   // Predefinir o estilo das bordas
@@ -256,7 +263,7 @@
       label: symbol.engine + ' Executar dNBR',
       onClick: process // 'process' é o algoritmo de processamento do aplicativo
     });
-    
+
   // Adicionar o 'Executar' no painel (do mapa)
     mapPanel.add(submit);
 
