@@ -7,10 +7,29 @@
 // of forest fires to support stakeholders in fire management and prevention.     //
 //--------------------------------------------------------------------------------//
 
+
+
+
+
+
+
+
 // Parte 1: Ajustar a User-Interface UI
-  ui.root.clear();
+  //ui.root.clear();
   var mapPanel = ui.Map();
-  ui.root.widgets().reset([mapPanel]);
+  // ui.root.widgets().reset([mapPanel]);
+
+//---------------------------------------------------------------------------------
+// Note: The basemap darkstyle code is based on the project by Tianjia Liu.
+// Credits: Tianjia Liu (tianjialiu@g.harvard.edu) 
+//var baseMap = require('users/tl2581/packages:baseMap.js')
+var baseMap = require('users/yurigaufrrj/packages:darkMap.js')
+mapPanel.drawingTools().setShown(false);
+mapPanel.setOptions('Dark', {'Dark': baseMap.darkTheme});
+mapPanel.setControlVisibility({layerList: false, zoomControl: false});
+//---------------------------------------------------------------------------------
+
+
 
 // Parte 2: Predefinições de estilo ------------------------------------------------
   // Criar a coleção de cores
@@ -21,7 +40,7 @@
         margin: '14px 0px 0px 105px',
         fontWeight: 'bold',
         fontSize: '30px',
-        border: '1px solid LightGrey',
+        //border: '1px solid silver',
         width: '200px',
         padding: '1px',
         textAlign: 'center',
@@ -60,11 +79,15 @@
         polygon: '🔶',
         engine: '✅',
         pan: '🤚',
-        fire: '🔥'
+        fire: '🔥',
+        info: 'ℹ️',
+        reset1: '♻️',
+        reset2: '♻',
+        reset3: '🔄'
     };
 
   // Predefinir o estilo das bordas
-    var estilo_borda = '1px solid rgba(205, 205, 205, 10.5)';
+    var estilo_borda = '1px solid silver';
 
 // Parte 3: Configurar a User-Interface e interação entre paineis -------------------
   // Criar e predefinir o painel (da esquerda)
@@ -102,7 +125,7 @@
 
   // Adicionar descrição geral do objetivo no painel (da esquerda)
     var descricao1_text =
-        'O aplicativo pode ser usado para avaliar e mapear ' +   
+        ' O aplicativo pode ser usado para avaliar e mapear ' +   
         'a severidade dos incêndios florestais para apoiar ' +
         'as partes interessadas na gestão e prevenção de incêndios florestais.';
       var descricaoRotulo1 = ui.Label(descricao1_text, estilo_paragrafo);
@@ -144,25 +167,140 @@
   // Configurar a redução para evitar erro de memória/tempo limite
     var mapScale = Map.getScale();
     var scale = mapScale > 5000 ? mapScale * 2 : 5000;
-
+/*
   // Criar o botão e o evento para desenhar geometria  
-    var controlPanel = ui.Button({
-          label: symbol.polygon +' Desenhar Área de Interesse',
+    var drawControl = ui.Button({
+          label: symbol.polygon +' Desenhar / Resetar',
           onClick: drawPolygon,
     });
+*/
+//-------------------------- EXPERIMENTACAO ---------------------------------------------------------------------------------
+
+var drawControl = ui.Button({
+  label: symbol.polygon +' Desenhar',
+  onClick: drawPolygon,
+});
+
+
+var resetControl = ui.Button({
+  label: symbol.reset3 +' Refazer',
+  onClick: function() {
+    clearGeometry()
+  }
+});
+
+ // Função para parar de desenhar
+ function panMove() {
+  drawingTools.stop();
+ }
+
+/*
+var panControl = ui.Button({
+  label: symbol.pan + ' Mover',
+  onClick: panMove(),
+});
+*/
+var panControl = ui.Button({
+  label: symbol.pan + ' Mover',
+  onClick: function() {
+    panMove()
+  }
+});
+
+
+/*
+var resetControl = ui.Button({
+  label: 'Resetar',
+  onClick: function() {
+    while (map.layers().length() > 0) {
+      map.layers().map(clearLayers);
+    }
+    if (counter > 0) {map.remove(plotPanelParent)}
+  }
+});
+*/
+
+var groupDraw = ui.Panel({
+  widgets: [drawControl, resetControl, panControl],
+  layout: ui.Panel.Layout.flow('horizontal'),
+  style: {position: 'top-left', height: '40px', padding: '0', margin: '0px 0 0 0', backgroundColor: colors.grey},
+});
+
+mainPanel.add(groupDraw);
+
+/*
+var drawPanel = ui.Panel([drawControl, resetControl], ui.Panel.Layout.Flow('horizontal'),
+    {stretch: 'horizontal', margin: '-5px 0px 0px 15px'})
+  ]);
+
+return mainPanel.add(drawPanel);
+
+
+
+
+
+
+var groupPostfire = ui.Panel({
+  widgets: [tituloPosfogo, centerDivider2, start_postfire, dateDivider2, end_postfire],
+  layout: ui.Panel.Layout.flow('horizontal'),
+  style: {position: 'top-left', height: '34px', padding: '0', margin: '10px 0 0 0', backgroundColor: colors.grey},
+});
+
+
+//-----------------------------------
+/*
+var setDrawBounds = function(map) {
+  var drawButton = ui.Button({
+    label: symbol.polygon +' Desenhar / Resetar',
+    onClick: function() {
+      drawMode = !drawMode;
+      drawButton.setLabel(drawMode ? 'Stop Drawing': 'Start Drawing');
+      if (drawMode) {
+        while (map.layers().length() > 0) {
+        map.layers().map(clearLayers);
+      }
+     }
+    };
+*/
+/*
+var resetControl = ui.Button({
+  label: 'Reset',
+  onClick: function() {
+    while (map.layers().length() > 0) {
+      map.layers().map(clearLayers);
+    }
+    if (counter > 0) {map.remove(plotPanelParent)}
+  }
+});
+
+var drawLabel = ui.Label('Draw a polygon on the map!',
+{margin: '3px 8px 6px 23px', fontSize: '11.5px'});
+
+var drawPanel = ui.Panel([
+  drawLabel, ui.Panel([drawControl, resetControl], ui.Panel.Layout.Flow('horizontal'),
+    {stretch: 'horizontal', margin: '-5px 0px 0px 15px'})
+  ]);
+
+  return mainPanel.add(drawPanel);
+//};
+*/
+
+
+
+//-------------------------- EXPERIMENTACAO -------------------------------------------------------------------------------------
 
   // Adicionar botão de desenho no painel (da esquerda)
-    mainPanel.add(controlPanel);
+    //mainPanel.add(drawControl);
 
 // Parte 6: Continuaçao. Criar o conteúdo do painel (da esquerda) -----------------------
   // Adicionar título do segundo processo de input no painel (da esquerda)
-    var tituloSecundario2 = 'Passo 2: Defina as datas entre o incêndio'
+    var tituloSecundario2 = 'Passo 2: Defina as datas dos intervalos'
       var descricaoRotulo5 = ui.Label(tituloSecundario2, paragrafo_titulo);
       mainPanel.add(descricaoRotulo5);
 
   // Adicionar subparagrafo com instruções no painel (da esquerda)
     var descricao4_text = 
-        'Nota: As imagens de satélite são buscadas pelo intervalo definido,' +
+        'Nota: A busca pelas imagens de satélite usa o intervalo definido,' +  
         ' caso não encontre imagens disponíveis aumente os dias.';
       var descricaoRotulo6 = ui.Label(descricao4_text, estilo_subparagrafo);
       //mainPanel.add(descricaoRotulo6);
@@ -261,15 +399,50 @@
       mainPanel.add (groupPostfire);
       mainPanel.add(descricaoRotulo6);
 
-// Parte 8: Criar o conteúdo do painel (do mapa) -----------------------
+
+// Parte 8: Passo 3. Criar evento para executar a ferramenta no painel (da esquerda) ---------------------
+  // Adicionar título do processo para executar a ferramenta (da esquerda) 
+    var tituloSecundario3 = 'Passo 3: Execute a Análise da Severidade'
+    var descricaoRotulo7 = ui.Label(tituloSecundario3, paragrafo_titulo);
+    mainPanel.add(descricaoRotulo7);
+
+
   // Criar o botão 'Executar'
     var submit = ui.Button({
-      label: symbol.engine + ' Executar dNBR',
+      label: symbol.engine + ' Executar',
       onClick: process // 'process' é o algoritmo de processamento do aplicativo
     });
 
   // Adicionar o 'Executar' no painel (do mapa)
-    mapPanel.add(submit);
+    //mapPanel.add(submit);
+    //mainPanel.add(submit);
+
+
+//------------------------------------------------------------------------------------------- EXPERIMENTACAO
+  // Criar o botão 'Resetar API'
+  var resetAll = ui.Button({
+    label: 'Resetar',
+    onClick: function() {
+      resetAPI()
+    }
+  });
+
+  // Função para parar de desenhar //------------------------------------------------- PRECISA IMPLEMENTAR RESET API
+    function resetAPI() {
+      
+    }
+
+
+    var groupProcess = ui.Panel({
+      widgets: [submit, resetAll],
+      layout: ui.Panel.Layout.flow('horizontal'),
+      style: {position: 'top-left', height: '40px', padding: '0', margin: '0px 0 0 0', backgroundColor: colors.grey},
+    });
+    
+    mainPanel.add(groupProcess);
+//---------------------------------------------------------------------------------------------- EXPERIMENTACAO
+
+
 
 // Parte 9: Criar as funções do aplicativo ------------------------------
   // Função para limpar 'drawingTools'
@@ -414,6 +587,9 @@
 
     // Limpar a edição de geometria (para dar destaque as saídas no 'layer manager')
       clearGeometry();
+    // Desativar o modo desenho
+      drawingTools.stop();
+
 
     // Exportar os produtos da análise
     // Exportar o dNBR (tipo .TIFF)
