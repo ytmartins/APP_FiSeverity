@@ -26,9 +26,9 @@
 var baseMap = require('users/yurigaufrrj/packages:darkMap.js')
 mapPanel.drawingTools().setShown(false);
 mapPanel.setOptions('Dark', {'Dark': baseMap.darkTheme});
-mapPanel.setControlVisibility({layerList: false, zoomControl: false});
+mapPanel.setControlVisibility({layerList: true, zoomControl: false});
 //---------------------------------------------------------------------------------
-
+var oldMap = ui.root.widgets().get(true)
 
 
 // Parte 2: Predefinições de estilo ------------------------------------------------
@@ -429,7 +429,8 @@ var drawPanel = ui.Panel([
 
   // Função para parar de desenhar //------------------------------------------------- PRECISA IMPLEMENTAR RESET API
     function resetAPI() {
-      
+      ui.root.clear();
+      ui.root.add(oldMap);
     }
 
 
