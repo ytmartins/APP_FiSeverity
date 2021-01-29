@@ -22,13 +22,11 @@
 //---------------------------------------------------------------------------------
 // Note: The basemap darkstyle code is based on the project by Tianjia Liu.
 // Credits: Tianjia Liu (tianjialiu@g.harvard.edu) 
-//var baseMap = require('users/tl2581/packages:baseMap.js')
 var baseMap = require('users/yurigaufrrj/packages:darkMap.js')
 mapPanel.drawingTools().setShown(false);
 mapPanel.setOptions('Dark', {'Dark': baseMap.darkTheme});
 mapPanel.setControlVisibility({layerList: true, zoomControl: false});
 //---------------------------------------------------------------------------------
-var oldMap = ui.root.widgets().get(true)
 
 
 // Parte 2: Predefinições de estilo ------------------------------------------------
@@ -427,10 +425,12 @@ var drawPanel = ui.Panel([
     }
   });
 
-  // Função para parar de desenhar //------------------------------------------------- PRECISA IMPLEMENTAR RESET API
+  // Função para parar de desenhar //------------------------------------------------- PRECISA IMPLEMENTAR REBOOT API
     function resetAPI() {
-      ui.root.clear();
-      ui.root.add(oldMap);
+      //ui.root.clear();
+      //ui.root.widgets().reset([splitPanel,mainPanel,mapPanel]);
+      ui.root.widgets().reset();
+
     }
 
 
