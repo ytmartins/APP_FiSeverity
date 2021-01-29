@@ -428,9 +428,12 @@ var drawPanel = ui.Panel([
   // Função para parar de desenhar //------------------------------------------------- PRECISA IMPLEMENTAR REBOOT API
     function resetAPI() {
       //ui.root.clear();
-      //ui.root.widgets().reset([splitPanel,mainPanel,mapPanel]);
-      ui.root.widgets().reset();
-
+      //ui.root.reset([]);
+      //ui.root.add([splitPanel,mainPanel,mapPanel]);
+      //ui.root.add([splitPanel,mainPanel,mapPanel]);
+      //ui.root.setLayout([splitPanel,mainPanel,mapPanel]);
+      mapPanel.clear();
+      ui.root.add([mapPanel]);
     }
 
 
