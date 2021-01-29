@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------------
-//------------ API FiSeverity - mapping the severity of forest fires  --------------
-//----------------------------------------------------------------------------------
-// Documentation: @github
-// Author: Yuri Tomaz Martins (yuritomazmartins@hotmail.com)
-// Application: FiSeverity can be used to assess and map the severity 
-// of forest fires to support stakeholders in fire management and prevention.
-//----------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------//
+//------------ API FiSeverity - mapping the severity of forest fires  ------------//
+//--------------------------------------------------------------------------------//
+// Documentation: @github                                                         //
+// Author: Yuri Tomaz Martins (yuritomazmartins@hotmail.com)                      //
+// Application: FiSeverity can be used to assess and map the severity             //
+// of forest fires to support stakeholders in fire management and prevention.     //
+//--------------------------------------------------------------------------------//
 
 // Parte 1: Ajustar a User-Interface UI
   ui.root.clear();
@@ -18,9 +18,13 @@
 
   // Predefinir o estilo do título
     var estilo_titulo = {
+        margin: '14px 0px 0px 105px',
         fontWeight: 'bold',
         fontSize: '30px',
+        border: '1px solid LightGrey',
+        width: '200px',
         padding: '1px',
+        textAlign: 'center',
         color: colors.orange,
         backgroundColor: colors.transparent,
     };
@@ -69,7 +73,7 @@
         style: {
           stretch: 'horizontal',
           height: '60%',
-          width: '415px',
+          width: '417px',
           backgroundColor: colors.grey,
           border: estilo_borda,
           position: 'top-left',
@@ -93,23 +97,22 @@
 
 // Parte 4 - Criar o conteúdo do painel (da esquerda) ---------------------
   // Adicionar o titulo do aplicativo no painel (da esquerda)
-    var tituloPrincipal1 = ui.Label('Aplicativo > FiSeverity', estilo_titulo);
+    var tituloPrincipal1 = ui.Label('FiSeverity', estilo_titulo);
       mainPanel.add(tituloPrincipal1);
 
   // Adicionar descrição geral do objetivo no painel (da esquerda)
     var descricao1_text =
-        'O aplicativo compara imagens de satélite de antes e depois do incêndio ' +
-        ' e gera uma análise de severidade da área ardida.' +
-        ' Os resultados podem apoiar relatórios de danos' + 
-        ' e subsidiar base de dados sobre os incêndios.';
+        'O aplicativo pode ser usado para avaliar e mapear ' +   
+        'a severidade dos incêndios florestais para apoiar ' +
+        'as partes interessadas na gestão e prevenção de incêndios florestais.';
       var descricaoRotulo1 = ui.Label(descricao1_text, estilo_paragrafo);
       mainPanel.add(descricaoRotulo1);
 
   // Adicionar descrição geral do produto usado no painel (da esquerda)
     var descricao3_text = 
-        'A imagem de satélite utilizada é Sentinel-2 MSI Level-2A (com correção atmosférica).' +
-        ' Nova imagem a cada: 5 dias, resolução espacial: 10 metros.';
-      var descricaoRotulo3 = ui.Label (descricao3_text, estilo_paragrafo);
+        'Nota: A imagem de satélite utilizada é Sentinel-2 MSI Level-2A ' +
+        ' e tem novas imagem a cada: 5 dias e resolução espacial de: 20 metros.';
+      var descricaoRotulo3 = ui.Label (descricao3_text, estilo_subparagrafo);
       mainPanel.add(descricaoRotulo3);
 
   // Adicionar hiperlink com o acesso a mais informações no painel (da esquerda)
@@ -159,17 +162,17 @@
 
   // Adicionar subparagrafo com instruções no painel (da esquerda)
     var descricao4_text = 
-        'As imagens de satélite são buscadas pelo intervalo definido.' +
-        ' Caso não encontre imagens disponíveis, aumente o intervalo.';
+        'Nota: As imagens de satélite são buscadas pelo intervalo definido,' +
+        ' caso não encontre imagens disponíveis aumente os dias.';
       var descricaoRotulo6 = ui.Label(descricao4_text, estilo_subparagrafo);
-      mainPanel.add(descricaoRotulo6);
+      //mainPanel.add(descricaoRotulo6);
 
 // Parte 7: Passo 2. Criar evento para Inserir as Datas de Interesse no painel (da esquerda)---------------------
   // Criar o input do intervalo Préfogo
     // Adicionar título do input de intervalo Préfogo 
       var tituloPrefogo = ui.Label({
         value: ' Intervalo Préfogo ',
-        style: {fontSize: '16px', fontWeight: 'bold', padding: '6px 3px 0px 5px', margin:'0', backgroundColor: colors.grey}
+        style: {fontSize: '16px', fontWeight: 'bold', padding: '6px 3px 0px 9px', margin:'0', backgroundColor: colors.grey}
       });
 
     // Adicionar barra de estilização
@@ -181,7 +184,7 @@
     // Adicionar a data Start-Prefire
       var start_prefire = ui.Textbox({
         placeholder: 'YYYY-MM-DD',
-        style: {fontSize: '', width: '110px', padding: '4px 0px 0px 5px', margin: '', backgroundColor: colors.grey},
+        style: {fontSize: '', width: '110px', padding: '4px 0px 0px 5px', margin: '0', backgroundColor: colors.grey},
         onChange: function(value) {
             //pode personalizar
         }
@@ -196,7 +199,7 @@
     // Adicionar a data End-Prefire
       var end_prefire = ui.Textbox({
         placeholder: 'YYYY-MM-DD',
-        style: {fontSize: '', width: '110px', padding: '4px 0px 0px 5px', margin: '', backgroundColor: colors.grey},
+        style: {fontSize: '', width: '110px', padding: '4px 0px 0px 5px', margin: '0', backgroundColor: colors.grey},
         onChange: function(value) {
             //pode personalizar
         }
@@ -213,7 +216,7 @@
     // Adicionar título do input de intervalo Pósfogo 
       var tituloPosfogo = ui.Label({
         value: ' Intervalo Pósfogo ',
-        style: {fontSize: '16px', fontWeight: 'bold', padding: '6px 0px 0px 5px', margin:'0', backgroundColor: colors.grey}
+        style: {fontSize: '16px', fontWeight: 'bold', padding: '6px 0px 0px 9px', margin:'0', backgroundColor: colors.grey}
       });
 
     // Adicionar barra de estilização
@@ -225,7 +228,7 @@
     // Adicionar a data Start-Postfire
       var start_postfire = ui.Textbox({
         placeholder: 'YYYY-MM-DD',
-        style: {fontSize: '', width: '110px', padding: '4px 0px 0px 5px', margin: '', backgroundColor: colors.grey},
+        style: {fontSize: '', width: '110px', padding: '4px 0px 0px 5px', margin: '0', backgroundColor: colors.grey},
         onChange: function(value) {
             //pode personalizar
         }
@@ -240,7 +243,7 @@
     // Adicionar a data End-Postfire
       var end_postfire = ui.Textbox({
         placeholder: 'YYYY-MM-DD',
-        style: {fontSize: '', width: '110px', padding: '4px 0px 0 5px', margin: '', backgroundColor: colors.grey},
+        style: {fontSize: '', width: '110px', padding: '4px 0px 0 5px', margin: '0', backgroundColor: colors.grey},
         onChange: function(value) {
             //pode personalizar
         }
@@ -254,8 +257,9 @@
       });
 
   // Inserir os grupos no painel (da esquerda)
-      mainPanel.add (groupPrefire)
-      mainPanel.add (groupPostfire)
+      mainPanel.add (groupPrefire);
+      mainPanel.add (groupPostfire);
+      mainPanel.add(descricaoRotulo6);
 
 // Parte 8: Criar o conteúdo do painel (do mapa) -----------------------
   // Criar o botão 'Executar'
