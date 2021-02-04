@@ -132,7 +132,7 @@ mapPanel.setControlVisibility({layerList: true, zoomControl: false});
   // Adicionar descrição geral do produto usado no painel (da esquerda)
     var descricao3_text = 
         'Nota: A imagem de satélite utilizada é Sentinel-2 MSI Level-2A ' +
-        ' e tem novas imagem a cada: 5 dias e resolução espacial de: 20 metros.';
+        ' e tem novas imagens a cada: 5 dias e resolução espacial de: 20 metros.';
       var descricaoRotulo3 = ui.Label (descricao3_text, estilo_subparagrafo);
       mainPanel.add(descricaoRotulo3);
 
@@ -149,7 +149,7 @@ mapPanel.setControlVisibility({layerList: true, zoomControl: false});
       mainPanel.add(descricaoRotulo4);
 
 // Parte 5: Passo 1. Criar evento para Desenhar a Área de Interesse -------------------- 
-  // Predefinir a drawingTools da User-Interface
+  // Predefinir a drawingTools da User-Interface https://developers.google.com/earth-engine/tutorials/community/drawing-tools-region-reduction
     var drawingTools = mapPanel.drawingTools();
     drawingTools.setShown(false);
 
@@ -619,7 +619,7 @@ var drawPanel = ui.Panel([
     
     // Configurar a User-Interface após ativar o 'Executar'
       mapPanel.centerObject(aoi);
-      mapPanel.setOptions('HYBRID');
+      //mapPanel.setOptions('HYBRID');
 
 
 //------------------------------------------------------------------------------------------------------------ EXPERIMENTACAO
@@ -685,28 +685,108 @@ var drawPanel = ui.Panel([
 
 
 
+
+
+
+
+
+
+
     //----------------------------------------------------------------------------------------------------------------------------------
 
+    //var dNBRChart = dNBR_unscaled.multiply(1000);
 
-    var thresholdsChart = ee.Image([-251, -101, 99, 269, 439, 659, 2000]);
+    var thresholdsChart = ee.Image([-1000, -251, -101, 99, 269, 439, 659, 2000]);
     var classifiedChart = dNBR.lt(thresholdsChart);//.reduce('sum').toInt();
+print(thresholdsChart)
 
+//--------------------------------------------------------------------------------
 
-    var classesChart = ['Alta Regeneração','Baixa Regeneração','Não Queimada', 'Baixa Severidade',
+var total = ee.ImageCollection([classifiedChart]).mosaic();
+var paletteChart =[
+  'd7dbdd', // (0) Sem Dados
+  '7a8737', // (1) Alta Regeneração
+  'acbe4d', // (2) Baixa Regeneração
+  '0ae042', // (3) Não Queimada
+  'fff70b', // (4) Baixa Severidade
+  'ffaf38', // (5) Moderada-Baixa Severidade
+  'ff641b', // (6) Moderada-Alta Severidade
+  'a41fd6'  // (7) Alta Severidade
+];
+
+var labelsChart = ['Sem Dados','Alta Regeneração','Baixa Regeneração','Não Queimada', 'Baixa Severidade',
     'Moderada-Baixa Severidade', 'Moderada-Alta Severidade', 'Alta Severidade'];
 
-    var paletteChart =['7a8737', 'acbe4d', '0ae042', 'fff70b', 'ffaf38', 'ff641b', 'a41fd6'];
+/*
+var viz = {
+  min: 0,
+  max: 7,
+  palette: paletteChart,
+  label: labelsChart 
+};
+*/
+//var mainVis = total.visualize(viz);
 
 
+
+
+
+// criar os EQ aqui
   // CHART
 
 
+// tenho que criar os eq para vincular a paleta de cor
 
+//----------------------------------------------------------
+var areaClass = classifiedChart.select([0, 1, 2, 3, 4, 5, 6, 7]).rename(labelsChart); //, paletteChart
+//var areaClass = classifiedChart.rename(labelsChart);
+//var areaClass = classifiedChart.eq(['constant', 'constant_1', 'constant_2', 'constant_3', 'constant_4', 'constant_5', 'constant_6', 'constant_7']).rename(labelsChart);
+//var areaClass = classifiedChart.rename(labelsChart);
+//var areaClass = classifiedChart.lt(thresholdsChart).rename(labelsChart);
+//var areaClass = total.eq([1, 2, 3, 4, 5, 6]).rename(labels);
+var areaEstimate = areaClass.multiply(ee.Image.pixelArea()).divide(10000);
+
+/*
+function chartAreaByClass() {
+  // Make the chart panel visible the first time a geometry is drawn.
+  if (!chartPanel.style().get('shown')) {
+    chartPanel.style().set('shown', true);
+  }
+  // Get the drawn geometry; it will define the reduction region.
+  var aoi = drawingTools.layers().get(0).getEeObject();
+  // Set the drawing mode back to null; turns drawing off.
+  drawingTools.setShape(null);
   // Reduction scale is based on map scale to avoid memory/timeout errors.
   var mapScale = Map.getScale();
   var scale = mapScale > 5000 ? mapScale * 2 : 5000;
+  */  
 
-//----------------------------------------------------------
+  // The original tutorial charts NDVI time series.
+  // Here, I created a chart showing area size by class for the polygon.
+    
+  var chart = ui.Chart.image
+    .regions({
+      image: areaEstimate,
+      regions: aoi,
+      reducer: ee.Reducer.sum(),
+      scale: 20,
+    })
+    .setChartType('PieChart').setOptions({
+      width: 230,
+      height: 170,
+      title: 'Area por Classe (ha)',
+      is3D: false,
+      colors: ['d7dbdd', '7a8737', 'acbe4d', '0ae042', 'fff70b', 'ffaf38', 'ff641b', 'a41fd6'],
+      pieHole: 0.4
+    });
+  // Replace the existing chart in the chart panel with the new chart.
+  //mapPanel.widgets().reset([chart]);
+  //chartPanel.add(chart)
+  chartPanel.widgets().reset([chart])
+
+
+
+
 
 
 
