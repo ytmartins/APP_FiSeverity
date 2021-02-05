@@ -698,7 +698,7 @@ var drawPanel = ui.Panel([
 
     var thresholdsChart = ee.Image([-1000, -251, -101, 99, 269, 439, 659, 2000]);
     var classifiedChart = dNBR.lt(thresholdsChart);//.reduce('sum').toInt();
-print(thresholdsChart)
+//print(thresholdsChart)
 
 //--------------------------------------------------------------------------------
 
@@ -714,8 +714,16 @@ var paletteChart =[
   'a41fd6'  // (7) Alta Severidade
 ];
 
-var labelsChart = ['Sem Dados','Alta Regeneração','Baixa Regeneração','Não Queimada', 'Baixa Severidade',
-    'Moderada-Baixa Severidade', 'Moderada-Alta Severidade', 'Alta Severidade'];
+var labelsChart = [
+  'Sem Dados',
+  'Alta Regeneração',
+  'Baixa Regeneração',
+  'Não Queimada', 
+  'Baixa Severidade',
+  'Moderada-Baixa Severidade', 
+  'Moderada-Alta Severidade', 
+  'Alta Severidade'
+];
 
 /*
 var viz = {
@@ -738,14 +746,16 @@ var viz = {
 // tenho que criar os eq para vincular a paleta de cor
 
 //----------------------------------------------------------
-var areaClass = classifiedChart.select([0, 1, 2, 3, 4, 5, 6, 7]).rename(labelsChart); //, paletteChart
+var areaClass = classifiedChart.select([0, 1, 2, 3, 4, 5, 6, 7]);//.rename(labelsChart);
+//var areaClass = classifiedChart.select([0, 1, 2, 3, 4, 5, 6, 7]).rename(labelsChart).palette(paletteChart); //, paletteChart
 //var areaClass = classifiedChart.rename(labelsChart);
 //var areaClass = classifiedChart.eq(['constant', 'constant_1', 'constant_2', 'constant_3', 'constant_4', 'constant_5', 'constant_6', 'constant_7']).rename(labelsChart);
 //var areaClass = classifiedChart.rename(labelsChart);
 //var areaClass = classifiedChart.lt(thresholdsChart).rename(labelsChart);
 //var areaClass = total.eq([1, 2, 3, 4, 5, 6]).rename(labels);
 var areaEstimate = areaClass.multiply(ee.Image.pixelArea()).divide(10000);
-
+//print(areaClass, 'areaclass')
+print(areaEstimate, 'areaEstimate')
 /*
 function chartAreaByClass() {
   // Make the chart panel visible the first time a geometry is drawn.
@@ -763,7 +773,146 @@ function chartAreaByClass() {
 
   // The original tutorial charts NDVI time series.
   // Here, I created a chart showing area size by class for the polygon.
-    
+
+
+  var labelsChart = [
+    'Alta Regeneração',
+    'Baixa Regeneração',
+    'Não Queimada', 
+    'Baixa Severidade',
+    'Moderada-Baixa Severidade', 
+    'Moderada-Alta Severidade', 
+    'Alta Severidade'
+  ];
+
+  var chart = ui.Chart.image
+  .regions({
+    image: areaEstimate.select([1, 2, 3, 4, 5, 6, 7]),
+    regions: aoi,
+    reducer: ee.Reducer.sum(),
+    scale: 20,
+    xLabels: labelsChart
+    //seriesProperty: 'label',
+    //xLabels: labelsChart
+  })
+
+  //.setChartType('ColumnChart')
+  .setChartType('PieChart')
+  .setOptions({
+    width: 230,
+    height: 170,
+    title: 'Area por Classe (ha)',
+    is3D: false,
+    colors: ([
+      '#7a8737', // (1) Alta Regeneração
+      '#acbe4d', // (2) Baixa Regeneração
+      '#0ae042', // (3) Não Queimada
+      '#fff70b', // (4) Baixa Severidade
+      '#ffaf38', // (5) Moderada-Baixa Severidade
+      '#ff641b', // (6) Moderada-Alta Severidade
+      '#a41fd6'  // (7) Alta Severidade
+    ]),
+    pieHole: 0.4
+  });
+  chartPanel.widgets().reset([chart])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+  var chart =
+    ui.Chart.image
+        .byRegion({
+          image: areaEstimate.select([1, 2, 3, 4, 5, 6, 7]),
+          regions: aoi,
+          reducer: ee.Reducer.sum(),
+          scale: 20,
+          //xProperty: '',
+          //seriesProperty: 'system:index'
+        })
+        .setSeriesNames([
+          'Alta Regeneração',
+          'Baixa Regeneração',
+          'Não Queimada', 
+          'Baixa Severidade',
+          'Moderada-Baixa Severidade', 
+          'Moderada-Alta Severidade', 
+          'Alta Severidade'
+        ])
+        .setChartType('ColumnChart')
+        .setOptions({
+          title: 'Area por Classe (ha)',
+          hAxis:
+              {title: 'Classes de Severidade', titleTextStyle: {italic: false, bold: true}},
+          vAxis: {
+            title: 'hectares',
+            titleTextStyle: {italic: false, bold: false}
+          },
+          colors: [
+            '#7a8737', // (1) Alta Regeneração
+            '#acbe4d', // (2) Baixa Regeneração
+            '#0ae042', // (3) Não Queimada
+            '#fff70b', // (4) Baixa Severidade
+            '#ffaf38', // (5) Moderada-Baixa Severidade
+            '#ff641b', // (6) Moderada-Alta Severidade
+            '#a41fd6'  // (7) Alta Severidade
+          ]
+        });
+        chartPanel.widgets().reset([chart]);
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+/*
   var chart = ui.Chart.image
     .regions({
       image: areaEstimate,
@@ -776,14 +925,27 @@ function chartAreaByClass() {
       height: 170,
       title: 'Area por Classe (ha)',
       is3D: false,
-      colors: ['d7dbdd', '7a8737', 'acbe4d', '0ae042', 'fff70b', 'ffaf38', 'ff641b', 'a41fd6'],
-      pieHole: 0.4
+      //colors: ['d7dbdd', '7a8737', 'acbe4d', '0ae042', 'fff70b', 'ffaf38', 'ff641b', 'a41fd6'],
+      pieHole: 0.4,
+      colors: {
+          0: {color: 'd7dbdd'},
+          1: {color: '7a8737'},
+          2: {color: 'acbe4d'},
+          3: {color: '0ae042'},
+          4: {color: 'fff70b'},
+          5: {color: 'ffaf38'},
+          6: {color: 'ff641b'},
+          7: {color: 'a41fd6'},
+        }
+
+        
+      
     });
   // Replace the existing chart in the chart panel with the new chart.
   //mapPanel.widgets().reset([chart]);
   //chartPanel.add(chart)
   chartPanel.widgets().reset([chart])
-
+*/
 
 
 
