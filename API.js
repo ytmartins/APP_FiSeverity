@@ -21,7 +21,6 @@ mapPanel.setOptions('Dark', { 'Dark': baseMap.darkTheme });
 mapPanel.setControlVisibility({ layerList: true, zoomControl: false });
 //---------------------------------------------------------------------------------
 
-
 // Parte 2: Predefinições de estilo ------------------------------------------------
 // Criar a coleção de cores
 var colors = { 'orange': '#F67529', 'transparent': '#11ffee00', 'grey': '#F8F9FA' };
@@ -199,7 +198,6 @@ var groupDraw = ui.Panel({
 // Adicionar agrupamento no painel (da esquerda)
 mainPanel.add(groupDraw);
 
-
 // Parte 6: Continuaçao. Criar o conteúdo do painel (da esquerda) -----------------------
 // Adicionar título do segundo processo de input no painel (da esquerda)
 var tituloSecundario2 = 'Passo 2: Defina os dias dos intervalos'
@@ -212,7 +210,6 @@ var descricao4_text =
   ' caso não encontre imagens disponíveis aumente os dias.';
 var descricaoRotulo6 = ui.Label(descricao4_text, estilo_subparagrafo);
 //mainPanel.add(descricaoRotulo6);
-
 
 // Parte 7: Passo 2. Criar evento para Inserir as Datas de Interesse no painel (da esquerda)---------------------
 // Criar o input do intervalo Préfogo
@@ -308,7 +305,6 @@ mainPanel.add(groupPrefire);
 mainPanel.add(groupPostfire);
 mainPanel.add(descricaoRotulo6);
 
-
 // Parte 8: Passo 3. Criar evento para executar a ferramenta no painel (da esquerda) ---------------------
 // Adicionar título do processo para executar a ferramenta (da esquerda) 
 var tituloSecundario3 = 'Passo 3: Execute a análise da severidade'
@@ -330,9 +326,9 @@ var resetAll = ui.Button({
   }
 });
 
-// Função para parar de desenhar //------------------------------------------------- PRECISA IMPLEMENTAR REBOOT API ou LIMPAR CHART+LAYERS
+// Função para parar de desenhar //--------------------------------------------------------------------- PRECISA IMPLEMENTAR REBOOT API ou LIMPAR CHART+LAYERS
 function resetAPI() {
-  // inserir aqui ----------------------------------------------------------------------- implementar aqui
+  // inserir aqui --------------------------------------------------------------------------------------------------------------------------- implementar aqui
 }
 
 // Criar o agrupamento e estilização do 'Process'
@@ -344,7 +340,6 @@ var groupProcess = ui.Panel({
 
 // Inserir o grupo no painel (da esquerda)
 mainPanel.add(groupProcess);
-
 
 // Parte 9: Criar as funções do aplicativo ------------------------------
 // Função para limpar 'drawingTools'
@@ -406,7 +401,6 @@ function consult_sen(start, end, aoi, cloud) {
   // Gerar o mosaico com imagens Sentinel-2A entre as datas
   return SentinelClip
 }
-
 
 // Parte 10: Criar os processos do aplicativo ------------------------------
 // Criar a função com o processo principal do aplicativo
@@ -523,25 +517,8 @@ function process() {
   mapPanel.centerObject(aoi);
   //mapPanel.setOptions('HYBRID');
 
-
-  //------------------------------------------------------------------------------------------------------------ EXPERIMENTACAO
-
-
-
-
-
-  //----------------------------------------------------------------------------------------------------------------------------------
-
-
-  // Chart para colocar somatório de área queimada-------- CHART PARA SOMAR ÁREA QUEIMADA
-
-
-
-
-
-
-
-
+//------------------------------------------------------------------------------------------------------------------------------ EXPERIMENTACAO
+// Parte 11: Criar Chart com áreas mensuradas por classe  -------------------------
   // Jogar esse painel dentro da função 'process'
   var chartPanel = ui.Panel({
     style: {
@@ -554,15 +531,12 @@ function process() {
   mapPanel.add(chartPanel);
 
 
-
   //var dNBRChart = dNBR_unscaled.multiply(1000);
-
   var thresholdsChart = ee.Image([-1000, -251, -101, 99, 269, 439, 659, 2000]);
   var classifiedChart = dNBR.lt(thresholdsChart);//.reduce('sum').toInt();
   //print(thresholdsChart)
 
-  //--------------------------------------------------------------------------------
-
+  // Criar as classificações para organização dos dados
   var total = ee.ImageCollection([classifiedChart]).mosaic();
   var paletteChart = [
     'd7dbdd', // (0) Sem Dados
@@ -596,16 +570,7 @@ function process() {
   //var mainVis = total.visualize(viz);
   */
 
-
-
-
-  // criar os EQ aqui
-  // CHART
-
-
-  // tenho que criar os eq para vincular a paleta de cor
-
-  //----------------------------------------------------------
+  // Estimar o cálculo de área para cada classe
   var areaClass = classifiedChart.select([0, 1, 2, 3, 4, 5, 6, 7]);
   //var areaClass = classifiedChart.select([0, 1, 2, 3, 4, 5, 6, 7]);//.rename(labelsChart).get(labeschar);
   //var areaClass = classifiedChart.eq([0, 1, 2, 3, 4, 5, 6, 7]);//.rename(labelsChart);
@@ -619,27 +584,8 @@ function process() {
   var areaEstimate = areaClass.multiply(ee.Image.pixelArea()).divide(10000);
   //print(areaClass, 'areaclass')
   print(areaEstimate, 'areaEstimate')
-  /*
-  function chartAreaByClass() {
-    // Make the chart panel visible the first time a geometry is drawn.
-    if (!chartPanel.style().get('shown')) {
-      chartPanel.style().set('shown', true);
-    }
-    // Get the drawn geometry; it will define the reduction region.
-    var aoi = drawingTools.layers().get(0).getEeObject();
-    // Set the drawing mode back to null; turns drawing off.
-    drawingTools.setShape(null);
-    // Reduction scale is based on map scale to avoid memory/timeout errors.
-    var mapScale = Map.getScale();
-    var scale = mapScale > 5000 ? mapScale * 2 : 5000;
-    */
 
-  // The original tutorial charts NDVI time series.
-  // Here, I created a chart showing area size by class for the polygon.
-
-
-
-
+  // Criar o Chart com as áreas estimadas por classe
   var chart = ui.Chart.image
     .regions({
       image: areaEstimate.select([1, 2, 3, 4, 5, 6, 7]),
@@ -670,25 +616,6 @@ function process() {
     });
   chartPanel.widgets().reset([chart])
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   var chartPanel2 = ui.Panel({
     style: {
       height: '50px',
@@ -705,243 +632,9 @@ function process() {
     'Área Ardida: 00.000 (ha)';
   var descricaoRotuloSoma = ui.Label(descricaoSoma_text, estilo_paragrafo);
   chartPanel2.add(descricaoRotuloSoma);
-
-
-
-
-
-
-
-
-
-
-  /*
-    var chart =
-      ui.Chart.image
-          .byRegion({
-            image: areaEstimate.select([1, 2, 3, 4, 5, 6, 7]),
-            regions: aoi,
-            reducer: ee.Reducer.sum(),
-            scale: 20,
-            //xProperty: '',
-            //seriesProperty: 'system:index'
-          })
-          .setSeriesNames([
-            'Alta Regeneração',
-            'Baixa Regeneração',
-            'Não Queimada', 
-            'Baixa Severidade',
-            'Moderada-Baixa Severidade', 
-            'Moderada-Alta Severidade', 
-            'Alta Severidade'
-          ])
-          .setChartType('ColumnChart')
-          .setOptions({
-            title: 'Area por Classe (ha)',
-            hAxis:
-                {title: 'Classes de Severidade', titleTextStyle: {italic: false, bold: true}},
-            vAxis: {
-              title: 'hectares',
-              titleTextStyle: {italic: false, bold: false}
-            },
-            colors: [
-              '#7a8737', // (1) Alta Regeneração
-              '#acbe4d', // (2) Baixa Regeneração
-              '#0ae042', // (3) Não Queimada
-              '#fff70b', // (4) Baixa Severidade
-              '#ffaf38', // (5) Moderada-Baixa Severidade
-              '#ff641b', // (6) Moderada-Alta Severidade
-              '#a41fd6'  // (7) Alta Severidade
-            ]
-          });
-          chartPanel.widgets().reset([chart]);
-  */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  /*
-    var chart = ui.Chart.image
-      .regions({
-        image: areaEstimate,
-        regions: aoi,
-        reducer: ee.Reducer.sum(),
-        scale: 20,
-      })
-      .setChartType('PieChart').setOptions({
-        width: 230,
-        height: 170,
-        title: 'Area por Classe (ha)',
-        is3D: false,
-        //colors: ['d7dbdd', '7a8737', 'acbe4d', '0ae042', 'fff70b', 'ffaf38', 'ff641b', 'a41fd6'],
-        pieHole: 0.4,
-        colors: {
-            0: {color: 'd7dbdd'},
-            1: {color: '7a8737'},
-            2: {color: 'acbe4d'},
-            3: {color: '0ae042'},
-            4: {color: 'fff70b'},
-            5: {color: 'ffaf38'},
-            6: {color: 'ff641b'},
-            7: {color: 'a41fd6'},
-          }
-  
-          
-        
-      });
-    // Replace the existing chart in the chart panel with the new chart.
-    //mapPanel.widgets().reset([chart]);
-    //chartPanel.add(chart)
-    chartPanel.widgets().reset([chart])
-  */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  /*
-  var chart = ui.Chart.image
-                  .regions({
-                    image: ee.Image.pixelArea().add(classified),
-                    regions: aoi,
-                    reducer: ee.Reducer.mean(),
-                    scale: scale,
-                    seriesProperty: 'label',
-                    xLabels: labels
-                  })
-                  .setChartType('PieChart')
-                  .setOptions({
-                    title: 'Average Monthly Precipitation for Forest Ecoregion',
-                    colors: [
-                      '604791', '1d6b99', '39a8a7', '0f8755', '76b349', 'f0af07',
-                      'e37d05'],
-                    pieHole: 0.4
-                  });
-  chartPanel.add(chart)
-  */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  /*
-    // The original tutorial charts NDVI time series.
-    // Here, I created a chart showing area size by class for the polygon.
-    var chart = ui.Chart.image
-      .byClass({
-        image: classified,
-        classBand: 'classification',
-        region: aoi,
-        reducer: ee.Reducer.sum(),
-        scale: 20
-      })
-      .setSeriesNames(
-      labels) //(['Oil palm','Rubber', 'Other trees', 'Shrub', 'Bare', 'Water'])
-      .setChartType('PieChart')
-      .setOptions({
-        width: 350,
-        height: 350,
-        title: 'Area by class (ha)',
-        legend: {
-          position: 'none'
-        },
-        vAxis: {
-          title: 'Hectare'
-        },
-        series: {
-          0: {
-            color: 'ff0000'
-          }, // oil palm
-          1: {
-            color: '9933ff'
-          }, // rubber
-          2: {
-            color: '008000'
-          }, // other trees
-          3: {
-            color: 'lime'
-          }, // shrub
-          4: {
-            color: 'yellow'
-          }, // bare
-          5: {
-            color: '0000ff'
-          }, // water
-        }
-      });
-    // Replace the existing chart in the chart panel with the new chart.
-    chartPanel.widgets().reset([chart]);
-  */
-
-
-
-
-
-
-
-
-
-
-
-  //------------------------------------------------------------------------------------------------------------ EXPERIMENTACAO
-
 }
 
-// Parte 11: Criar a Legenda com as classes dNBR (USGS) -------------------------
+// Parte 12: Criar a Legenda com as classes dNBR (USGS) -------------------------
 //------------------------------------------------ Creditos: UN-SPIDER(ONU) - Inicio
 // Configurar a posição do painel (da legenda)
 var legend = ui.Panel({
@@ -1007,27 +700,7 @@ for (var i = 0; i < 8; i++) {
 
 // Adicionar Legenda ao mapa
 mapPanel.add(legend);
-  //------------------------------------------------ Creditos: UN-SPIDER(ONU) - Fim
-
-
-
-
-
-//----------------------- Experimento  ----------------------------- Implementação CHART
-
-// Chart para colocar somatório de área queimada-------- CHART PARA SOMAR ÁREA QUEIMADA
-
-/*
-var chartPanel2 = ui.Panel({
-  style: {
-    height: '50px',
-    width: '225px',
-    position: 'bottom-right',
-    shown: true
-  }
-});
-mapPanel.add(chartPanel2);
-*/
+//------------------------------------------------ Creditos: UN-SPIDER(ONU) - Fim
 
 
 
@@ -1036,40 +709,10 @@ mapPanel.add(chartPanel2);
 
 
 
-
-
-// Contruir o CHART
-/*
-// CHART RESULTS:
-var options = {
-  lineWidth: 1,
-  pointSize: 2,
-  hAxis: {title: ''},
-  vAxis: {title: ''},
-  title: 'Áreas por Classe de Severidade',
-  series: {
-    0: { color: 'red'},
-    1: { color: 'green'},
-    2: { color: 'blue'}
-  }
-};
-
-var areaChart = ui.Chart.image.byClass({
-  image: ee.Image.pixelArea().addBands(dNBR),
-  classBand: 'classification',
-  region: geometry,
-  scale: 30,
-  reducer: ee.Reducer.sum()
-}).setOptions(options)
-  .setSeriesNames(['urban', 'vegetation', 'water']);
-print(areaChart);
-*/
-
-
+// Exemplo de estatística cálculo de área
 
 
 /*
-
     // Seperate result into 8 burn severity classes
     var thresholds = ee.Image([-1000, -251, -101, 99, 269, 439, 659, 2000]);
     var classified = dNBR.lt(thresholds).reduce('sum').toInt();
