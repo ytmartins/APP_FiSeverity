@@ -17,7 +17,7 @@ var mapPanel = ui.Map();
 var baseMap = require('users/yurigaufrrj/packages:darkMap.js')
 mapPanel.drawingTools().setShown(false);
 mapPanel.setOptions('Dark', { 'Dark': baseMap.darkTheme });
-mapPanel.setControlVisibility({ layerList: true, zoomControl: false });
+mapPanel.setControlVisibility({ layerList: true, zoomControl: true });
 //----------------------------------------------------------------------------------
 
 // Parte 2: Predefinições de estilo ------------------------------------------------
@@ -85,7 +85,7 @@ var mainPanel = ui.Panel({
   style: {
     stretch: 'horizontal',
     height: '60%',
-    width: '417px',
+    width: '410px',
     backgroundColor: colors.grey,
     border: estilo_borda,
     position: 'top-left',
@@ -114,15 +114,15 @@ mainPanel.add(tituloPrincipal1);
 
 // Adicionar descrição geral do objetivo no painel (da esquerda)
 var descricao1_text =
-  ' O aplicativo pode ser usado para avaliar e mapear ' +
-  'a severidade dos incêndios florestais para apoiar ' +
-  'as partes interessadas na gestão e prevenção de incêndios florestais.';
+  ' FiSeverity avalia e mapeia ' +
+  'a severidade da cicatriz do fogo. Fornece ' +
+  'informações sobre os incêndios florestais para os interessados e gestores ambientais.';
 var descricaoRotulo1 = ui.Label(descricao1_text, estilo_paragrafo);
 mainPanel.add(descricaoRotulo1);
 
 // Adicionar descrição geral do produto usado no painel (da esquerda)
 var descricao3_text =
-  'Nota: A imagem de satélite utilizada é Sentinel-2 MSI Level-2A ' +
+  'nota: o produto de satélite utilizado é Sentinel-2 MSI Level-2A ' +
   ' e tem novas imagens a cada: 5 dias e resolução espacial de: 20 metros.';
 var descricaoRotulo3 = ui.Label(descricao3_text, estilo_subparagrafo);
 mainPanel.add(descricaoRotulo3);
@@ -205,8 +205,8 @@ mainPanel.add(descricaoRotulo5);
 
 // Adicionar subparagrafo com instruções no painel (da esquerda)
 var descricao4_text =
-  'Nota: A busca pelas imagens de satélite usa o intervalo definido,' +
-  ' caso não encontre imagens disponíveis aumente os dias.';
+  'nota: a busca por imagens de satélite usa o intervalo definido,' +
+  ' se não encontrar imagens disponíveis: aumente os dias do intervalo.';
 var descricaoRotulo6 = ui.Label(descricao4_text, estilo_subparagrafo);
 //mainPanel.add(descricaoRotulo6);
 
@@ -322,13 +322,20 @@ var resetAll = ui.Button({
   label: ' Limpar',
   onClick: function () {
     resetAPI()
+    //mapPanel.clear()
   }
 });
 
 // Função para parar de desenhar //--------------------------------------------------------------------- PRECISA IMPLEMENTAR REBOOT API ou LIMPAR CHART+LAYERS
 function resetAPI() {
+  mapPanel.clear(),
+  mapPanel.setOptions('Dark', { 'Dark': baseMap.darkTheme }),
+  mapPanel.setControlVisibility({ layerList: true, zoomControl: true }),
+  drawingTools.setShown(false),
+  mapPanel.add(legend)
   // inserir aqui --------------------------------------------------------------------------------------------------------------------------- implementar aqui
 }
+
 
 // Criar o agrupamento e estilização do 'Process'
 var groupProcess = ui.Panel({
@@ -559,14 +566,14 @@ function process() {
     '6-Moderada-Alta Severidade',
     '7-Alta Severidade'
   ];
-  print(total, 'Total Printado')
+  //print(total, 'Total Printado')
   var areaClass = total.eq([1, 2, 3, 4, 5, 6, 7]).rename(labelsChart);
-  var areaClass2 = total.eq([1, 2, 3, 4, 5, 6, 7])//.rename(labelsChart);
-  print(areaClass, 'areaClass Printado com name')
-  print(areaClass2, 'areaClass Printado sem nome')
+  //var areaClass2 = total.eq([1, 2, 3, 4, 5, 6, 7])//.rename(labelsChart);
+  //print(areaClass, 'areaClass Printado com name')
+  //print(areaClass2, 'areaClass Printado sem nome')
   var areaEstimate = areaClass.multiply(ee.Image.pixelArea()).divide(10000);
-  var areaEstimate2 = areaClass2.multiply(ee.Image.pixelArea()).divide(10000);
-  print(areaEstimate, 'areaEstimate Printado')
+  //var areaEstimate2 = areaClass2.multiply(ee.Image.pixelArea()).divide(10000);
+  //print(areaEstimate, 'areaEstimate Printado')
   //function chartAreaByClass() {
     // Make the chart panel visible the first time a geometry is drawn.
     //if (!chartPanel.style().get('shown')) {
