@@ -85,7 +85,7 @@ var mainPanel = ui.Panel({
   style: {
     stretch: 'horizontal',
     height: '60%',
-    width: '410px',
+    width: '410px', //'410px' fica ajustado
     backgroundColor: colors.grey,
     border: estilo_borda,
     position: 'top-left',
@@ -115,15 +115,14 @@ mainPanel.add(tituloPrincipal1);
 // Adicionar descrição geral do objetivo no painel (da esquerda)
 var descricao1_text =
   ' FiSeverity avalia e mapeia ' +
-  'a severidade da cicatriz do fogo. Fornece ' +
-  'informações sobre os incêndios florestais para os interessados e gestores ambientais.';
+  'a severidade dos incêndios florestais com tecnologia de computação em nuvem.';
 var descricaoRotulo1 = ui.Label(descricao1_text, estilo_paragrafo);
 mainPanel.add(descricaoRotulo1);
 
 // Adicionar descrição geral do produto usado no painel (da esquerda)
 var descricao3_text =
   'nota: o produto de satélite utilizado é Sentinel-2 MSI Level-2A ' +
-  ' e tem novas imagens a cada: 5 dias e resolução espacial de: 20 metros.';
+  ' e tem novas imagens a cada 5 dias e resolução espacial 20 metros.';
 var descricaoRotulo3 = ui.Label(descricao3_text, estilo_subparagrafo);
 mainPanel.add(descricaoRotulo3);
 
@@ -132,10 +131,10 @@ var descricaolink_text =
   '+ Info';
 var infourl = 'https://github.com/yuritmartins/burnseverity';
 var descricaoRotulolink = ui.Label(descricaolink_text, estilo_paragrafo, infourl);
-mainPanel.add(descricaoRotulolink);
+//mainPanel.add(descricaoRotulolink);
 
 // Adicionar título do primeiro processo de input no painel (da esquerda)
-var tituloSecundario1 = 'Passo 1: Crie a área de interesse'
+var tituloSecundario1 = 'Passo 1: Defina a área de interesse'
 var descricaoRotulo4 = ui.Label(tituloSecundario1, paragrafo_titulo);
 mainPanel.add(descricaoRotulo4);
 
@@ -197,16 +196,31 @@ var groupDraw = ui.Panel({
 // Adicionar agrupamento no painel (da esquerda)
 mainPanel.add(groupDraw);
 
+// Adicionar descrição dos botões usado no painel (da esquerda)
+var descricaoButton_text =
+  'Desenhar: Fechar a área com duplo-clique ou unir o ponto inicial.'+
+  ' Apagar: Eliminar a área desenhada para criar nova área no mapa.'+
+  ' Mover: Cancelar o modo desenho para movimentar o mapa.';
+var descricaoRotuloButton = ui.Label(descricaoButton_text, estilo_subparagrafo);
+mainPanel.add(descricaoRotuloButton);
+
 // Parte 6: Continuaçao. Criar o conteúdo do painel (da esquerda) -----------------------
 // Adicionar título do segundo processo de input no painel (da esquerda)
-var tituloSecundario2 = 'Passo 2: Defina os dias dos intervalos'
+var tituloSecundario2 = 'Passo 2: Defina os intervalos'
 var descricaoRotulo5 = ui.Label(tituloSecundario2, paragrafo_titulo);
 mainPanel.add(descricaoRotulo5);
 
+// Adicionar descrição do intervalo no painel (da esquerda)
+var descricaoIntervalo_text =
+  'neste passo defina os intervalos de préfogo (anterior ao incêndio) e ' +
+  ' pósfogo (posterior ao incêndio) para criar a análise de severidade.';
+var descricaoRotuloIntervalo = ui.Label(descricaoIntervalo_text, estilo_subparagrafo);
+mainPanel.add(descricaoRotuloIntervalo);
+
 // Adicionar subparagrafo com instruções no painel (da esquerda)
 var descricao4_text =
-  'nota: a busca por imagens de satélite usa o intervalo definido,' +
-  ' se não encontrar imagens disponíveis: aumente os dias do intervalo.';
+  'nota: caso não encontre imagens disponíveis,' +
+  ' aumente os intervalos. como sugestão use no mínimo 15 dias de intervalo.';
 var descricaoRotulo6 = ui.Label(descricao4_text, estilo_subparagrafo);
 //mainPanel.add(descricaoRotulo6);
 
@@ -346,6 +360,13 @@ var groupProcess = ui.Panel({
 
 // Inserir o grupo no painel (da esquerda)
 mainPanel.add(groupProcess);
+
+// Adicionar descrição do intervalo no painel (da esquerda)
+var descricaoOutput_text =
+  'nota: verifique se a área de interesse está desenhada. ' +
+  '';
+var descricaoRotuloOutput = ui.Label(descricaoOutput_text, estilo_subparagrafo);
+mainPanel.add(descricaoRotuloOutput);
 
 // Parte 9: Criar as funções do aplicativo ------------------------------
 // Função para limpar 'drawingTools'
@@ -557,6 +578,7 @@ function process() {
   mapPanel.add(chartPanel);
 
   var total = ee.ImageCollection([dNBR]).mosaic()
+  //var total = ee.ImageCollection(dNBR) //.mosaic()
   var labelsChart = [
     '1-Alta Regeneração',
     '2-Baixa Regeneração',
