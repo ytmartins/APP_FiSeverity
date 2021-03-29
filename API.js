@@ -49,7 +49,7 @@ var paragrafo_titulo = {
 // Predefinir o estilo texto (de paragrafo)
 var estilo_paragrafo = {
   fontSize: '15px',
-  fontWeight: '60',
+  fontWeight: 'bold',
   color: 'grey',
   padding: '1px',
   backgroundColor: colors.transparent,
@@ -59,7 +59,7 @@ var estilo_paragrafo = {
 var estilo_subparagrafo = {
   fontSize: '13px',
   fontWeight: '50',
-  color: '#9E9E9E',
+  color: '#616a6b', //'#9E9E9E',
   backgroundColor: colors.transparent,
 };
 
@@ -115,14 +115,14 @@ mainPanel.add(tituloPrincipal1);
 // Adicionar descrição geral do objetivo no painel (da esquerda)
 var descricao1_text =
   ' FiSeverity avalia e mapeia ' +
-  'a severidade dos incêndios florestais com tecnologia de computação em nuvem.';
+  'a severidade dos incêndios florestais com tecnologia de computação em nuvem';
 var descricaoRotulo1 = ui.Label(descricao1_text, estilo_paragrafo);
 mainPanel.add(descricaoRotulo1);
 
 // Adicionar descrição geral do produto usado no painel (da esquerda)
 var descricao3_text =
-  'nota: o produto de satélite utilizado é Sentinel-2 MSI Level-2A ' +
-  ' e tem novas imagens a cada 5 dias e resolução espacial 20 metros.';
+  'nota: o produto de satélite utilizado é Sentinel-2 MSI Level-2A, ' +
+  ' tem novas imagens a cada 5 dias com resolução espacial 20 metros.';
 var descricaoRotulo3 = ui.Label(descricao3_text, estilo_subparagrafo);
 mainPanel.add(descricaoRotulo3);
 
@@ -198,9 +198,9 @@ mainPanel.add(groupDraw);
 
 // Adicionar descrição dos botões usado no painel (da esquerda)
 var descricaoButton_text =
-  'Desenhar: Fechar a área com duplo-clique ou unir o ponto inicial.'+
-  ' Apagar: Eliminar a área desenhada para criar nova área no mapa.'+
-  ' Mover: Cancelar o modo desenho para movimentar o mapa.';
+  'Desenhar: Fecha a área com duplo-clique ou unir ao ponto inicial.'+
+  ' Apagar: Elimina a área desenhada para criar uma nova no mapa.'+
+  ' Mover: Desativa o modo desenho para movimentar o mapa.';
 var descricaoRotuloButton = ui.Label(descricaoButton_text, estilo_subparagrafo);
 mainPanel.add(descricaoRotuloButton);
 
@@ -213,7 +213,7 @@ mainPanel.add(descricaoRotulo5);
 // Adicionar descrição do intervalo no painel (da esquerda)
 var descricaoIntervalo_text =
   'neste passo defina os intervalos de préfogo (anterior ao incêndio) e ' +
-  ' pósfogo (posterior ao incêndio) para criar a análise de severidade.';
+  ' pósfogo (posterior ao incêndio) para gerar a análise de severidade.';
 var descricaoRotuloIntervalo = ui.Label(descricaoIntervalo_text, estilo_subparagrafo);
 mainPanel.add(descricaoRotuloIntervalo);
 
@@ -320,7 +320,7 @@ mainPanel.add(descricaoRotulo6);
 
 // Parte 8: Passo 3. Criar evento para executar a ferramenta no painel (da esquerda) ---------------------
 // Adicionar título do processo para executar a ferramenta (da esquerda) 
-var tituloSecundario3 = 'Passo 3: Execute a análise da severidade'
+var tituloSecundario3 = 'Passo 3: Execute a análise de severidade'
 var descricaoRotulo7 = ui.Label(tituloSecundario3, paragrafo_titulo);
 mainPanel.add(descricaoRotulo7);
 
@@ -340,7 +340,7 @@ var resetAll = ui.Button({
   }
 });
 
-// Função para parar de desenhar //--------------------------------------------------------------------- PRECISA IMPLEMENTAR REBOOT API ou LIMPAR CHART+LAYERS
+// Função para parar de desenhar
 function resetAPI() {
   mapPanel.clear(),
   mapPanel.setOptions('Dark', { 'Dark': baseMap.darkTheme }),
@@ -457,7 +457,7 @@ function process() {
     strokeWidth: 5,
     transparent: 70
   },
-    'Área de Interesse');
+    'Área de Interesse', true);
 
   mapPanel.addLayer(SentinelClip_pre, {
     max: 2000,
@@ -526,7 +526,7 @@ function process() {
   Export.image.toDrive({
     image: dNBR,
     description: 'Export_dNBR',
-    scale: 10,
+    scale: 20,
     fileNamePrefix: 'Export_dNBR',
     region: aoi,
     maxPixels: 1e10
@@ -551,104 +551,11 @@ function process() {
 
 
 
+//---------------------------------------------INICIO EXPERIMENTACAO--------------------------------------------------
 
 
+/// INICIO ESTIMATIVA PARA O CONSOLE
 
-
-
-
-
-
-
-
-
- //------------------------------------------------------------------------------------------------------------------------------ EXPERIMENTACAO
-
-
-
-  // Criar o painel do Chart
-  var chartPanel = ui.Panel({
-    style: {
-      height: '200px',
-      width: '225px',
-      position: 'bottom-right',
-      shown: true
-    }
-  });
-  mapPanel.add(chartPanel);
-
-  var total = ee.ImageCollection([dNBR]).mosaic()
-  //var total = ee.ImageCollection(dNBR) //.mosaic()
-  var labelsChart = [
-    '1-Alta Regeneração',
-    '2-Baixa Regeneração',
-    '3-Não Queimada',
-    '4-Baixa Severidade',
-    '5-Moderada-Baixa Severidade',
-    '6-Moderada-Alta Severidade',
-    '7-Alta Severidade'
-  ];
-  //print(total, 'Total Printado')
-  var areaClass = total.eq([1, 2, 3, 4, 5, 6, 7]).rename(labelsChart);
-  //var areaClass2 = total.eq([1, 2, 3, 4, 5, 6, 7])//.rename(labelsChart);
-  //print(areaClass, 'areaClass Printado com name')
-  //print(areaClass2, 'areaClass Printado sem nome')
-  var areaEstimate = areaClass.multiply(ee.Image.pixelArea()).divide(10000);
-  //var areaEstimate2 = areaClass2.multiply(ee.Image.pixelArea()).divide(10000);
-  //print(areaEstimate, 'areaEstimate Printado')
-  //function chartAreaByClass() {
-    // Make the chart panel visible the first time a geometry is drawn.
-    //if (!chartPanel.style().get('shown')) {
-    //  chartPanel.style().set('shown', true);
-    //}
-    // Get the drawn geometry; it will define the reduction region.
-    //var aoi = drawingTools.layers().get(0).getEeObject();
-    // Set the drawing mode back to null; turns drawing off.
-    //drawingTools.setShape(null);
-    // Reduction scale is based on map scale to avoid memory/timeout errors.
-    //var mapScale = Map.getScale();
-    //var scale = mapScale > 5000 ? mapScale * 2 : 5000;
-      
-    // The original tutorial charts NDVI time series.
-    // Here, I created a chart showing area size by class for the polygon.
-
-    var chart = ui.Chart.image
-    .regions({
-      image: areaEstimate,
-      regions: aoi,
-      reducer: ee.Reducer.count(),
-      scale: 30,
-    })
-    .setChartType('PieChart').setOptions({
-      width: 230,
-      height: 170,
-      title: 'Area por Classe (ha)',
-      is3D: true,
-      colors: ([
-        '#7a8737', // (1) Alta Regeneração
-        '#acbe4d', // (2) Baixa Regeneração
-        '#0ae042', // (3) Não Queimada
-        '#fff70b', // (4) Baixa Severidade
-        '#ffaf38', // (5) Moderada-Baixa Severidade
-        '#ff641b', // (6) Moderada-Alta Severidade
-        '#a41fd6'  // (7) Alta Severidade
-      ]),
-    });
-    // Replace the existing chart in the chart panel with the new chart.
-    chartPanel.widgets().reset([chart]);
-  //}
-
-}
-
-
-
-
-
-
-
-
-
-/*
 // Seperate result into 8 burn severity classes
 var thresholds = ee.Image([-1000, -251, -101, 99, 269, 439, 659, 2000]);
 var classified = dNBR.lt(thresholds).reduce('sum').toInt();
@@ -687,16 +594,16 @@ arealist.push({Class: name, Pixels: pix, Hectares: hect, Percentage: perc});
 // severity classes in different order
 var labelsChart = [
   'Sem Dados',
-  'Alta Regeneração',
-  'Baixa Regeneração',
-  'Não Queimada',
-  'Baixa Severidade',
-  'Moderada-Baixa Severidade',
+  'Alta Severidade',
   'Moderada-Alta Severidade',
-  'Alta Severidade'
+  'Moderada-Baixa Severidade',
+  'Baixa Severidade',
+  'Não Queimada',
+  'Baixa Regeneração',
+  'Alta Regeneração',
 ];
 
-var paletteChart = [
+var paletteChart = [ // ----------------------------------- Talvez precisa ajustar
   'd7dbdd', // (0) Sem Dados
   '7a8737', // (1) Alta Regeneração
   'acbe4d', // (2) Baixa Regeneração
@@ -708,11 +615,25 @@ var paletteChart = [
 ];
 
 // execute function for each class
-for (var i = 0; i < 7; i++) {
+for (var i = 0; i < 8; i++) {
   areacount(i, labelsChart[i]);
   }
 
 print('Burned Area by Severity Class', arealist, '--> click list objects for individual classes');
+
+// Calculo da área de interesse em Hectares
+var areaAOI = ee.Image(1).clip(aoi).reduceRegion(ee.Reducer.sum(), aoi, 10)
+print('Area de Interesse em Hectares', ee.Number(areaAOI.get('constant')).multiply(100).divide(10000))
+
+/// FIM ESTIMATIVA PARA O CONSOLE
+
+
+
+
+
+
+
+
 
   // Criar o painel do Chart
   var chartPanel = ui.Panel({
@@ -725,33 +646,67 @@ print('Burned Area by Severity Class', arealist, '--> click list objects for ind
   });
   mapPanel.add(chartPanel);
 
-  var areaClass = allpix.eq([-1000, -251, -101, 99, 269, 439, 659, 2000]).rename(labelsChart)
-  var areaEstimate = areaClass.multiply(ee.Image.pixelArea()).divide(10000)
+  var total = ee.ImageCollection(dNBR).mosaic()
+  //var total = ee.ImageCollection(dNBR) //.mosaic()
+  var labelsChart = [
+    '0-Sem Dados',
+    '1-Alta Severidade',
+    '2-Moderada-Alta Severidade',
+    '3-Moderada-Baixa Severidade',
+    '4-Baixa Severidade',
+    '5-Não Queimada',
+    '6-Baixa Regeneração',
+    '7-Alta Regeneração',
+  ];
+  //print(total, 'Total Printado')
+  var areaClass = total.eq([0, 1, 2, 3, 4, 5, 6, 7])//.rename(labelsChart); //https://developers.google.com/earth-engine/apidocs/ee-image-eq
+  //print(areaClass);
 
-  var chart = ui.Chart.image
-  .regions({
-    image: areaEstimate,
-    regions: aoi,
-    reducer: ee.Reducer.sum(),
-    scale: 30,
-  })
-  .setChartType('PieChart').setOptions({
-    width: 250,
-    height: 350,
-    title: 'Area by class (ha)',
-    is3D: true,
-    colors: paletteChart,
-    //pieHole: 0.4
-  });
-
-  chartPanel.widgets().reset([chart])
-*/
+  var areaEstimate = areaClass.multiply(ee.Image.pixelArea()).divide(10000);
+  //print(areaEstimate);
+  
 
 
 
 
 
-  //------------------------------------------------------------------------------------------------------------------------------ EXPERIMENTACAO  
+  // CHART
+    var chart = ui.Chart.image
+    .region({
+      image: areaEstimate,
+      regions: aoi,
+      reducer: ee.Reducer.mean(),
+      scale: 30,
+      xProperty: labelsChart,
+    })
+    .setChartType('PieChart')
+    .setOptions({
+      width: 230,
+      height: 170,
+      title: 'Area por Classe (ha)',
+      is3D: true,
+      colors: ([
+        'd7dbdd', // (0) Sem Dados
+        'a41fd6', // (7) Alta Severidade
+        'ff641b', // (6) Moderada-Alta Severidade
+        'ffaf38', // (5) Moderada-Baixa Severidade
+        'fff70b', // (4) Baixa Severidade
+        '0ae042', // (3) Não Queimada
+        'acbe4d', // (2) Baixa Regeneração
+        '7a8737', // (1) Alta Regeneração
+      ]),
+    });
+    // Replace the existing chart in the chart panel with the new chart.
+    chartPanel.widgets().reset([chart]);
+  //}
+
+
+}
+
+//---------------------------------------------FIM EXPERIMENTACAO--------------------------------------------------
+
+
+
 
 
 
@@ -809,26 +764,26 @@ print('Burned Area by Severity Class', arealist, '--> click list objects for ind
 
   // Predefinir a paleta com Cores de cada Classes de Severidade (modelo USGS)
   var palette = [
-    'd7dbdd', 
-    '7a8737', 
-    'acbe4d', 
-    '0ae042', 
-    'fff70b', 
-    'ffaf38', 
-    'ff641b', 
-    'a41fd6'
+    'd7dbdd', // (0) Sem Dados
+    'a41fd6', // (7) Alta Severidade
+    'ff641b', // (6) Moderada-Alta Severidade
+    'ffaf38', // (5) Moderada-Baixa Severidade
+    'fff70b', // (4) Baixa Severidade
+    '0ae042', // (3) Não Queimada
+    'acbe4d', // (2) Baixa Regeneração
+    '7a8737', // (1) Alta Regeneração
   ];
 
   // Predefinir os Nomes de cada Classe de Severidade (modelo USGS)
   var names = [
-    'Sem Dados', 
-    'Alta Regeneração', 
-    'Baixa Regeneração', 
-    'Não Queimada', 
+    'Sem Dados',
+    'Alta Severidade',
+    'Moderada-Alta Severidade',
+    'Moderada-Baixa Severidade',
     'Baixa Severidade',
-    'Moderada-Baixa Severidade', 
-    'Moderada-Alta Severidade', 
-    'Alta Severidade'
+    'Não Queimada',
+    'Baixa Regeneração',
+    'Alta Regeneração',
   ];
 
   // Adicionar as Cores e os Nomes de cada Classes de Severidade (modelo USGS)
@@ -839,129 +794,3 @@ print('Burned Area by Severity Class', arealist, '--> click list objects for ind
   // Adicionar Legenda ao mapa
   mapPanel.add(legend);
   //------------------------------------------------ Creditos: UN-SPIDER(ONU) - Fim
-
-
-
-
-
-/* // RESIDUOS DE CODIGO //
-
-  // Parte 11: Criar Chart com áreas mensuradas por classe  (evento 'process')
-  // Criar o painel do Chart
-  var chartPanel = ui.Panel({
-    style: {
-      height: '200px',
-      width: '225px',
-      position: 'bottom-right',
-      shown: true
-    }
-  });
-  mapPanel.add(chartPanel);
-
-
-
-  //var dNBRChart = dNBR_unscaled.multiply(1000);
-  var thresholdsChart = ee.Image([-1000, -251, -101, 99, 269, 439, 659, 2000]);
-  var classifiedChart = dNBR.lt(thresholdsChart);//.reduce('sum').toInt();
-  //print(thresholdsChart)
-
-  // Criar as classificações para organização dos dados
-  var total = ee.ImageCollection([classifiedChart]).mosaic();
-  var paletteChart = [
-    'd7dbdd', // (0) Sem Dados
-    '7a8737', // (1) Alta Regeneração
-    'acbe4d', // (2) Baixa Regeneração
-    '0ae042', // (3) Não Queimada
-    'fff70b', // (4) Baixa Severidade
-    'ffaf38', // (5) Moderada-Baixa Severidade
-    'ff641b', // (6) Moderada-Alta Severidade
-    'a41fd6'  // (7) Alta Severidade
-  ];
-
-  var labelsChart = [
-    'Sem Dados',
-    'Alta Regeneração',
-    'Baixa Regeneração',
-    'Não Queimada',
-    'Baixa Severidade',
-    'Moderada-Baixa Severidade',
-    'Moderada-Alta Severidade',
-    'Alta Severidade'
-  ];
-
-
-  var viz = {
-    min: 0,
-    max: 7,
-    palette: paletteChart,
-    label: labelsChart 
-  };
-  //var mainVis = total.visualize(viz);
-
-
-  // Estimar o cálculo de área para cada classe
-  var areaClass = classifiedChart.select([0, 1, 2, 3, 4, 5, 6, 7]);
-  //var areaClass = classifiedChart.select([0, 1, 2, 3, 4, 5, 6, 7]);//.rename(labelsChart).get(labeschar);
-  //var areaClass = classifiedChart.eq([0, 1, 2, 3, 4, 5, 6, 7]);//.rename(labelsChart);
-  //var areaClass = classifiedChart.select([0, 1, 2, 3, 4, 5, 6, 7]);//.rename(labelsChart);
-  //var areaClass = classifiedChart.select([0, 1, 2, 3, 4, 5, 6, 7]).rename(labelsChart).palette(paletteChart); //, paletteChart
-  //var areaClass = classifiedChart.rename(labelsChart);
-  //var areaClass = classifiedChart.eq(['constant', 'constant_1', 'constant_2', 'constant_3', 'constant_4', 'constant_5', 'constant_6', 'constant_7']).rename(labelsChart);
-  //var areaClass = classifiedChart.rename(labelsChart);
-  //var areaClass = classifiedChart.lt(thresholdsChart).rename(labelsChart);
-  //var areaClass = total.eq([1, 2, 3, 4, 5, 6]).rename(labels);
-  var areaEstimate = areaClass.multiply(ee.Image.pixelArea()).divide(10000);
-  //print(areaClass, 'areaclass')
-  print(areaEstimate, 'areaEstimate')
-
-  // Criar o Chart com as áreas estimadas por classe
-  var chart = ui.Chart.image
-    .regions({
-      image: areaEstimate.select([1, 2, 3, 4, 5, 6, 7]),
-      regions: aoi,
-      reducer: ee.Reducer.sum(),
-      scale: 20,
-      //seriesProperty: 'label',
-      //xLabels: labelsChart
-    })
-
-    //.setChartType('ColumnChart')
-    .setChartType('PieChart') 
-    .setOptions({
-      width: 230,
-      height: 170,
-      title: 'Area por Classe (ha)',
-      is3D: false,
-      colors: ([
-        '#7a8737', // (1) Alta Regeneração
-        '#acbe4d', // (2) Baixa Regeneração
-        '#0ae042', // (3) Não Queimada
-        '#fff70b', // (4) Baixa Severidade
-        '#ffaf38', // (5) Moderada-Baixa Severidade
-        '#ff641b', // (6) Moderada-Alta Severidade
-        '#a41fd6'  // (7) Alta Severidade
-      ]),
-      pieHole: 0.4
-    });
-  // Inserir o Chart no ChartPanel
-  chartPanel.widgets().reset([chart])
-
-
-
-  var chartPanel2 = ui.Panel({
-    style: {
-      height: '50px',
-      width: '225px',
-      position: 'bottom-right',
-      shown: true
-    }
-  });
-
-  mapPanel.add(chartPanel2, 'Área Ardida Total: 00.000 (ha)');
-
-
-  var descricaoSoma_text =
-    'Área Ardida: 00.000 (ha)';
-  var descricaoRotuloSoma = ui.Label(descricaoSoma_text, estilo_paragrafo);
-  chartPanel2.add(descricaoRotuloSoma);
-*/
