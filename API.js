@@ -555,7 +555,6 @@ function process() {
 
 
 /// INICIO ESTIMATIVA PARA O CONSOLE
-
 // Seperate result into 8 burn severity classes
 var thresholds = ee.Image([-1000, -251, -101, 99, 269, 439, 659, 2000]);
 var classified = dNBR.lt(thresholds).reduce('sum').toInt();
@@ -619,21 +618,14 @@ for (var i = 0; i < 8; i++) {
   areacount(i, labelsChart[i]);
   }
 
-print('Burned Area by Severity Class', arealist, '--> click list objects for individual classes');
+print('Área Ardida por Classe de Severidade', arealist, '--> clique na lista de objetos para cada classe');
+
+
 
 // Calculo da área de interesse em Hectares
 var areaAOI = ee.Image(1).clip(aoi).reduceRegion(ee.Reducer.sum(), aoi, 10)
 print('Area de Interesse em Hectares', ee.Number(areaAOI.get('constant')).multiply(100).divide(10000))
-
 /// FIM ESTIMATIVA PARA O CONSOLE
-
-
-
-
-
-
-
-
 
   // Criar o painel do Chart
   var chartPanel = ui.Panel({
@@ -646,8 +638,10 @@ print('Area de Interesse em Hectares', ee.Number(areaAOI.get('constant')).multip
   });
   mapPanel.add(chartPanel);
 
-  var total = ee.ImageCollection(dNBR).mosaic()
-  //var total = ee.ImageCollection(dNBR) //.mosaic()
+
+  
+
+  // CHART
   var labelsChart = [
     '0-Sem Dados',
     '1-Alta Severidade',
@@ -658,33 +652,35 @@ print('Area de Interesse em Hectares', ee.Number(areaAOI.get('constant')).multip
     '6-Baixa Regeneração',
     '7-Alta Regeneração',
   ];
-  //print(total, 'Total Printado')
-  var areaClass = total.eq([0, 1, 2, 3, 4, 5, 6, 7])//.rename(labelsChart); //https://developers.google.com/earth-engine/apidocs/ee-image-eq
-  //print(areaClass);
-
-  var areaEstimate = areaClass.multiply(ee.Image.pixelArea()).divide(10000);
-  //print(areaEstimate);
-  
 
 
+  print(dNBR)
+  // CHART https://groups.google.com/g/google-earth-engine-developers/c/k5HCj6ruKkA/m/zsTp4LdKBgAJ
+  var count = allpix.eq([0,1,2,3,4,5,6,7]).rename(labelsChart);
+  print(count)
+  var total = count.multiply(ee.Image.pixelArea()).divide(10000);
+  var area = total.reduceRegion({
+    reducer:ee.Reducer.sum(),
+     geometry:aoi,
+     scale:30,
+     maxPixels: 1e11,
+    bestEffort:true,
+    });
 
+    var area_pxa = ee.Number(area);
 
-
-  // CHART
     var chart = ui.Chart.image
-    .region({
-      image: areaEstimate,
+    .regions({
+      image: total,
       regions: aoi,
-      reducer: ee.Reducer.mean(),
+      reducer: ee.Reducer.sum(),
       scale: 30,
-      xProperty: labelsChart,
     })
-    .setChartType('PieChart')
-    .setOptions({
+    .setChartType('PieChart').setOptions({
       width: 230,
       height: 170,
       title: 'Area por Classe (ha)',
-      is3D: true,
+      is3D: false,
       colors: ([
         'd7dbdd', // (0) Sem Dados
         'a41fd6', // (7) Alta Severidade
@@ -696,12 +692,18 @@ print('Area de Interesse em Hectares', ee.Number(areaAOI.get('constant')).multip
         '7a8737', // (1) Alta Regeneração
       ]),
     });
+
+
     // Replace the existing chart in the chart panel with the new chart.
+    print(area_pxa)
     chartPanel.widgets().reset([chart]);
   //}
 
 
 }
+
+
+
 
 //---------------------------------------------FIM EXPERIMENTACAO--------------------------------------------------
 
