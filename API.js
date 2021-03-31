@@ -408,8 +408,8 @@ function consult_sen(start, end, aoi, cloud) {
     var qa = image.select('QA60');
 
     // Bits 10 são 'nuvens' e 11 são 'cirrus'
-    var cloudBitMask = ee.Number(1).pow(10).int();
-    var cirrusBitMask = ee.Number(1).pow(11).int();
+    var cloudBitMask = ee.Number(2).pow(10).int();
+    var cirrusBitMask = ee.Number(2).pow(11).int();
 
     // Todos devem ser definidos como (0), indicando condições claras.
     var mask = qa.bitwiseAnd(cloudBitMask).eq(0)
