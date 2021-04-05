@@ -59,7 +59,7 @@ var estilo_paragrafo = {
 var estilo_subparagrafo = {
   fontSize: '13px',
   fontWeight: '50',
-  color: '#616a6b', //'#9E9E9E',
+  color: '#515a5a',//'#616a6b', //'#9E9E9E',
   backgroundColor: colors.transparent,
 };
 
@@ -69,7 +69,7 @@ var symbol = {
   engine: '✅',
   pan: '🤚',
   fire: '🔥',
-  info: 'ℹ️',
+  info: '👉',
   reset1: '♻️',
   reset2: '♻',
   reset3: '🔄'
@@ -125,13 +125,6 @@ var descricao3_text =
   ' tem novas imagens a cada 5 dias com resolução espacial 20 metros.';
 var descricaoRotulo3 = ui.Label(descricao3_text, estilo_subparagrafo);
 mainPanel.add(descricaoRotulo3);
-
-// Adicionar hiperlink com o acesso a mais informações no painel (da esquerda)
-var descricaolink_text =
-  '+ Info';
-var infourl = 'https://github.com/yuritmartins/burnseverity';
-var descricaoRotulolink = ui.Label(descricaolink_text, estilo_paragrafo, infourl);
-//mainPanel.add(descricaoRotulolink);
 
 // Adicionar título do primeiro processo de input no painel (da esquerda)
 var tituloSecundario1 = 'Passo 1: Defina a área de interesse'
@@ -363,10 +356,17 @@ mainPanel.add(groupProcess);
 
 // Adicionar descrição do intervalo no painel (da esquerda)
 var descricaoOutput_text =
-  'nota: verifique se a área de interesse está desenhada. ' +
+  'nota: verifique se a área de interesse está desenhada ao executar. ' +
   '';
 var descricaoRotuloOutput = ui.Label(descricaoOutput_text, estilo_subparagrafo);
 mainPanel.add(descricaoRotuloOutput);
+
+// Adicionar hiperlink com o acesso a mais informações no painel (da esquerda)
+var descricaolink_text =
+  symbol.info + ' Exemplos de incêndios em Portugal';
+var infourl = 'https://www.notion.so/Estudos-de-Caso-Portugal-94740db606d74beeb1214a2891bf1158';
+var descricaoRotulolink = ui.Label(descricaolink_text, estilo_paragrafo, infourl);
+mainPanel.add(descricaoRotulolink);
 
 // Parte 9: Criar as funções do aplicativo ------------------------------
 // Função para limpar 'drawingTools'
