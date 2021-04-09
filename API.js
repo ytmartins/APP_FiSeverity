@@ -8,142 +8,146 @@
 //--------------------------------------------------------------------------------//
 
 // Parte 1: Ajustar a User-Interface UI
-//ui.root.clear();
+// ui.root.clear();
 var mapPanel = ui.Map();
 // ui.root.widgets().reset([mapPanel]);
 
 //----------------------------------------------------------------------------------
 // Note: The basemap darkstyle code is based on the project by Tianjia Liu.
-var baseMap = require('users/yurigaufrrj/packages:darkMap.js')
+var baseMap = require("users/yurigaufrrj/packages:darkMap.js");
 mapPanel.drawingTools().setShown(false);
-mapPanel.setOptions('Dark', { 'Dark': baseMap.darkTheme });
+mapPanel.setOptions("Dark", { Dark: baseMap.darkTheme });
 mapPanel.setControlVisibility({ layerList: true, zoomControl: true });
 //----------------------------------------------------------------------------------
 
 // Parte 2: Predefinições de estilo ------------------------------------------------
-// Criar a coleção de cores
-var colors = { 'orange': '#F67529', 'transparent': '#11ffee00', 'grey': '#F8F9FA' };
+// Crie a coleção de cores
+var colors = { orange: "#F67529", transparent: "#11ffee00", grey: "#F8F9FA" };
 
-// Predefinir o estilo do título
+// Predefina o estilo do título
 var estilo_titulo = {
-  margin: '14px 0px 0px 105px',
-  fontWeight: 'bold',
-  fontSize: '30px',
+  margin: "14px 0px 0px 105px",
+  fontWeight: "bold",
+  fontSize: "30px",
   //border: '1px solid silver',
-  width: '200px',
-  padding: '1px',
-  textAlign: 'center',
+  width: "200px",
+  padding: "1px",
+  textAlign: "center",
   color: colors.orange,
   backgroundColor: colors.transparent,
 };
 
-// Predefinir o estilo do título de parágrafo
+// Predefina o estilo do título de parágrafo
 var paragrafo_titulo = {
-  fontSize: '18px',
-  fontWeight: 'bold',
-  color: 'black',
-  padding: '1px',
+  fontSize: "18px",
+  fontWeight: "bold",
+  color: "black",
+  padding: "1px",
   backgroundColor: colors.transparent,
 };
 
-// Predefinir o estilo texto (de paragrafo)
+// Predefina o estilo texto (de paragrafo)
 var estilo_paragrafo = {
-  fontSize: '15px',
-  fontWeight: 'bold',
-  color: 'grey',
-  padding: '1px',
+  fontSize: "15px",
+  fontWeight: "bold",
+  color: "grey",
+  padding: "1px",
   backgroundColor: colors.transparent,
 };
 
-// Predefinir o estilo de texto (de subparagrafo)
+// Predefina o estilo de texto (de subparagrafo)
 var estilo_subparagrafo = {
-  fontSize: '13px',
-  fontWeight: '50',
-  color: '#515a5a',//'#616a6b', //'#9E9E9E',
+  fontSize: "13px",
+  fontWeight: "50",
+  color: "#515a5a", //'#616a6b', //'#9E9E9E',
   backgroundColor: colors.transparent,
 };
 
-// Criar a coleção de ícones 
+// Crie a coleção de ícones
 var symbol = {
-  polygon: '🔶',
-  engine: '✅',
-  pan: '🤚',
-  fire: '🔥',
-  info: '👉',
-  reset1: '♻️',
-  reset2: '♻',
-  reset3: '🔄'
+  polygon: "🔶",
+  engine: "✅",
+  pan: "🤚",
+  fire: "🔥",
+  info: "👉",
+  reset1: "♻️",
+  reset2: "♻",
+  reset3: "🔄",
 };
 
 // Predefinir o estilo das bordas
-var estilo_borda = '1px solid silver';
+var estilo_borda = "1px solid silver";
 
 // Parte 3: Configurar a User-Interface e interação entre paineis -------------------
-// Criar e predefinir o painel (da esquerda)
+// Crie e predefinir o painel (da esquerda)
 var mainPanel = ui.Panel({
-  layout: ui.Panel.Layout.flow('vertical', true),
+  layout: ui.Panel.Layout.flow("vertical", true),
   style: {
-    stretch: 'horizontal',
-    height: '60%',
-    width: '410px', //'410px' fica ajustado
+    stretch: "horizontal",
+    height: "60%",
+    width: "410px", //'410px' fica ajustado
     backgroundColor: colors.grey,
     border: estilo_borda,
-    position: 'top-left',
-  }
+    position: "top-left",
+  },
 });
 
-// Usar um PainelDividido para possibilitar o autoajuste dos dois paineis
+// Use um PainelDividido para possibilitar o autoajuste dos dois paineis
 var splitPanel = ui.SplitPanel({
   firstPanel: mainPanel,
   secondPanel: mapPanel,
-  orientation: 'horizontal',
+  orientation: "horizontal",
   wipe: false,
-  style: { stretch: 'both' }
+  style: { stretch: "both" },
 });
 
-// Definir o painelDividido como único na root
+// Defina o painelDividido como único na root
 ui.root.widgets().reset([splitPanel]);
 
-// Centralizar o 'mapPanel' na região (Portugal/Espanha)
-mapPanel.setCenter(-2.50, 40.20, 6);
+// Centralize o 'mapPanel' na região (Portugal/Espanha)
+mapPanel.setCenter(-2.5, 40.2, 6);
 
 // Parte 4 - Criar o conteúdo do painel (da esquerda) ---------------------
-// Adicionar o titulo do aplicativo no painel (da esquerda)
-var tituloPrincipal1 = ui.Label('FiSeverity', estilo_titulo);
+// Adicione o titulo do aplicativo no painel (da esquerda)
+var tituloPrincipal1 = ui.Label("FiSeverity", estilo_titulo);
 mainPanel.add(tituloPrincipal1);
 
-// Adicionar descrição geral do objetivo no painel (da esquerda)
+// Adicione descrição geral do objetivo no painel (da esquerda)
 var descricao1_text =
-  ' FiSeverity avalia e mapeia ' +
-  'a severidade dos incêndios florestais com tecnologia de computação em nuvem';
+  " FiSeverity avalia e mapeia " +
+  "a severidade dos incêndios florestais com tecnologia de computação em nuvem";
 var descricaoRotulo1 = ui.Label(descricao1_text, estilo_paragrafo);
 mainPanel.add(descricaoRotulo1);
 
-// Adicionar descrição geral do produto usado no painel (da esquerda)
+// Adicione descrição geral do produto usado no painel (da esquerda)
 var descricao3_text =
-  'nota: o produto de satélite utilizado é Sentinel-2 MSI Level-2A, ' +
-  ' tem novas imagens a cada 5 dias com resolução espacial 20 metros.';
+  "nota: o produto de satélite utilizado é Sentinel-2 MSI Level-2A, " +
+  " tem novas imagens a cada 5 dias com resolução espacial 20 metros.";
 var descricaoRotulo3 = ui.Label(descricao3_text, estilo_subparagrafo);
 mainPanel.add(descricaoRotulo3);
 
-// Adicionar título do primeiro processo de input no painel (da esquerda)
-var tituloSecundario1 = 'Passo 1: Defina a área de interesse'
+// Adicione título do primeiro processo de input no painel (da esquerda)
+var tituloSecundario1 = "Passo 1: Defina a área de interesse";
 var descricaoRotulo4 = ui.Label(tituloSecundario1, paragrafo_titulo);
 mainPanel.add(descricaoRotulo4);
 
-// Parte 5: Passo 1. Criar evento para Desenhar a Área de Interesse -------------------- 
-// Predefinir a drawingTools da User-Interface 
+// Parte 5: Passo 1. Criar evento para Desenhar a Área de Interesse --------------------
+// Predefina a drawingTools da User-Interface
 // https://developers.google.com/earth-engine/tutorials/community/drawing-tools-region-reduction
 var drawingTools = mapPanel.drawingTools();
 drawingTools.setShown(false);
 
-// Predefinir o estilo da geometria criada
-var dummyGeometry = ui.Map.GeometryLayer({ geometries: null, name: 'aoi_geometry', color: '#ff5c33' });
+// Predefina o estilo da geometria criada
+var dummyGeometry = ui.Map.GeometryLayer({
+  geometries: null,
+  name: "aoi_geometry",
+  color: "#ff5c33",
+});
 
-// Adicionar a geometria no 'layer manager' da User-Interface
+// Adicione a geometria no 'layer manager' da User-Interface
 drawingTools.layers().add(dummyGeometry);
 
-// Desligar o modo desenho
+// Desligue o modo desenho
 drawingTools.setShape(null);
 
 /*
@@ -154,16 +158,16 @@ drawingTools.setShape(null);
 
 // Função para criar o desenho
 var drawControl = ui.Button({
-  label: symbol.polygon + ' Desenhar',
+  label: symbol.polygon + " Desenhar",
   onClick: drawPolygon,
 });
 
 // Função para Apagar o desenho
 var resetControl = ui.Button({
-  label: symbol.reset3 + ' Apagar',
+  label: symbol.reset3 + " Apagar",
   onClick: function () {
-    clearGeometry()
-  }
+    clearGeometry();
+  },
 });
 
 // Função para parar de desenhar
@@ -173,200 +177,297 @@ function panMove() {
 
 // Botão para ativar 'panMove'
 var panControl = ui.Button({
-  label: symbol.pan + ' Mover',
+  label: symbol.pan + " Mover",
   onClick: function () {
-    panMove()
-  }
+    panMove();
+  },
 });
 
-// Criar o agrupamento para desenhar
+// Crie o agrupamento para desenhar
 var groupDraw = ui.Panel({
   widgets: [drawControl, resetControl, panControl],
-  layout: ui.Panel.Layout.flow('horizontal'),
-  style: { position: 'top-left', height: '40px', padding: '0', margin: '0px 0 0 0', backgroundColor: colors.grey },
+  layout: ui.Panel.Layout.flow("horizontal"),
+  style: {
+    position: "top-left",
+    height: "40px",
+    padding: "0",
+    margin: "0px 0 0 0",
+    backgroundColor: colors.grey,
+  },
 });
 
-// Adicionar agrupamento no painel (da esquerda)
+// Adicione agrupamento no painel (da esquerda)
 mainPanel.add(groupDraw);
 
-// Adicionar descrição dos botões usado no painel (da esquerda)
+// Adicione descrição dos botões usado no painel (da esquerda)
 var descricaoButton_text =
-  'Desenhar: Fecha a área com duplo-clique ou unir ao ponto inicial.'+
-  ' Apagar: Elimina a área desenhada para criar uma nova no mapa.'+
-  ' Mover: Desativa o modo desenho para movimentar o mapa.';
+  "Desenhar: Fecha a área com duplo-clique ou unir ao ponto inicial." +
+  " Apagar: Elimina a área desenhada para criar uma nova no mapa." +
+  " Mover: Desativa o modo desenho para movimentar o mapa.";
 var descricaoRotuloButton = ui.Label(descricaoButton_text, estilo_subparagrafo);
 mainPanel.add(descricaoRotuloButton);
 
 // Parte 6: Continuaçao. Criar o conteúdo do painel (da esquerda) -----------------------
-// Adicionar título do segundo processo de input no painel (da esquerda)
-var tituloSecundario2 = 'Passo 2: Defina os intervalos'
+// Adicione título do segundo processo de input no painel (da esquerda)
+var tituloSecundario2 = "Passo 2: Defina os intervalos";
 var descricaoRotulo5 = ui.Label(tituloSecundario2, paragrafo_titulo);
 mainPanel.add(descricaoRotulo5);
 
-// Adicionar descrição do intervalo no painel (da esquerda)
+// Adicione descrição do intervalo no painel (da esquerda)
 var descricaoIntervalo_text =
-  'neste passo defina os intervalos de préfogo (anterior ao incêndio) e ' +
-  ' pósfogo (posterior ao incêndio) para gerar a análise de severidade.';
-var descricaoRotuloIntervalo = ui.Label(descricaoIntervalo_text, estilo_subparagrafo);
+  "neste passo defina os intervalos de préfogo (anterior ao incêndio) e " +
+  " pósfogo (posterior ao incêndio) para gerar a análise de severidade.";
+var descricaoRotuloIntervalo = ui.Label(
+  descricaoIntervalo_text,
+  estilo_subparagrafo
+);
 mainPanel.add(descricaoRotuloIntervalo);
 
-// Adicionar subparagrafo com instruções no painel (da esquerda)
+// Adicione subparagrafo com instruções no painel (da esquerda)
 var descricao4_text =
-  'nota: caso não encontre imagens disponíveis,' +
-  ' aumente os intervalos. como sugestão use no mínimo 15 dias de intervalo.';
+  "nota: caso não encontre imagens disponíveis," +
+  " aumente os intervalos. como sugestão use no mínimo 15 dias de intervalo.";
 var descricaoRotulo6 = ui.Label(descricao4_text, estilo_subparagrafo);
 //mainPanel.add(descricaoRotulo6);
 
 // Parte 7: Passo 2. Criar evento para Inserir as Datas de Interesse no painel (da esquerda)---------------------
 // Criar o input do intervalo Préfogo
-// Adicionar título do input de intervalo Préfogo 
+// Adicione título do input de intervalo Préfogo
 var tituloPrefogo = ui.Label({
-  value: ' Intervalo Préfogo ',
-  style: { fontSize: '16px', fontWeight: 'bold', padding: '6px 3px 0px 9px', margin: '0', backgroundColor: colors.grey }
+  value: " Intervalo Préfogo ",
+  style: {
+    fontSize: "16px",
+    fontWeight: "bold",
+    padding: "6px 3px 0px 9px",
+    margin: "0",
+    backgroundColor: colors.grey,
+  },
 });
 
-// Adicionar barra de estilização
+// Adicione barra de estilização
 var centerDivider1 = ui.Label({
-  value: ' | ',
-  style: { color: 'd3d3d3', fontSize: '18px', padding: '5px 5px 0px 5px', margin: '0', backgroundColor: colors.grey }
+  value: " | ",
+  style: {
+    color: "d3d3d3",
+    fontSize: "18px",
+    padding: "5px 5px 0px 5px",
+    margin: "0",
+    backgroundColor: colors.grey,
+  },
 });
 
-// Adicionar a data Start-Prefire
+// Adicione a data Start-Prefire
 var start_prefire = ui.Textbox({
-  placeholder: 'YYYY-MM-DD',
-  style: { fontSize: '', width: '110px', padding: '4px 0px 0px 5px', margin: '0', backgroundColor: colors.grey },
+  placeholder: "YYYY-MM-DD",
+  style: {
+    fontSize: "",
+    width: "110px",
+    padding: "4px 0px 0px 5px",
+    margin: "0",
+    backgroundColor: colors.grey,
+  },
   onChange: function (value) {
-    //pode personalizar
-  }
+    // pode personalizar
+  },
 });
 
-// Adicionar divisor de datas
+// Adicione divisor de datas
 var dateDivider1 = ui.Label({
-  value: 'Até',
-  style: { fontSize: '12px', padding: '9px 0px 0px 5px', margin: '0', backgroundColor: colors.grey }
+  value: "Até",
+  style: {
+    fontSize: "12px",
+    padding: "9px 0px 0px 5px",
+    margin: "0",
+    backgroundColor: colors.grey,
+  },
 });
 
-// Adicionar a data End-Prefire
+// Adicione a data End-Prefire
 var end_prefire = ui.Textbox({
-  placeholder: 'YYYY-MM-DD',
-  style: { fontSize: '', width: '110px', padding: '4px 0px 0px 5px', margin: '0', backgroundColor: colors.grey },
+  placeholder: "YYYY-MM-DD",
+  style: {
+    fontSize: "",
+    width: "110px",
+    padding: "4px 0px 0px 5px",
+    margin: "0",
+    backgroundColor: colors.grey,
+  },
   onChange: function (value) {
-    //pode personalizar
-  }
+    // pode personalizar
+  },
 });
 
-// Criar o agrupamento e estilização do Pre-Fire
+// Crie o agrupamento e estilização do Pre-Fire
 var groupPrefire = ui.Panel({
-  widgets: [tituloPrefogo, centerDivider1, start_prefire, dateDivider1, end_prefire],
-  layout: ui.Panel.Layout.flow('horizontal'),
-  style: { position: 'top-left', height: '34px', padding: '0', margin: '10px 0px 0px 0px', backgroundColor: colors.grey },
+  widgets: [
+    tituloPrefogo,
+    centerDivider1,
+    start_prefire,
+    dateDivider1,
+    end_prefire,
+  ],
+  layout: ui.Panel.Layout.flow("horizontal"),
+  style: {
+    position: "top-left",
+    height: "34px",
+    padding: "0",
+    margin: "10px 0px 0px 0px",
+    backgroundColor: colors.grey,
+  },
 });
 
-// Criar o input do intervalo Pósfogo
-// Adicionar título do input de intervalo Pósfogo 
+// Crie o input do intervalo Pósfogo
+// Adicione título do input de intervalo Pósfogo
 var tituloPosfogo = ui.Label({
-  value: ' Intervalo Pósfogo ',
-  style: { fontSize: '16px', fontWeight: 'bold', padding: '6px 0px 0px 9px', margin: '0', backgroundColor: colors.grey }
+  value: " Intervalo Pósfogo ",
+  style: {
+    fontSize: "16px",
+    fontWeight: "bold",
+    padding: "6px 0px 0px 9px",
+    margin: "0",
+    backgroundColor: colors.grey,
+  },
 });
 
-// Adicionar barra de estilização
+// Adicione a barra de estilização
 var centerDivider2 = ui.Label({
-  value: '  | ',
-  style: { color: 'd3d3d3', fontSize: '18px', padding: '4px 5px 0 5px', margin: '0', backgroundColor: colors.grey }
+  value: "  | ",
+  style: {
+    color: "d3d3d3",
+    fontSize: "18px",
+    padding: "4px 5px 0 5px",
+    margin: "0",
+    backgroundColor: colors.grey,
+  },
 });
 
-// Adicionar a data Start-Postfire
+// Adicione a data Start-Postfire
 var start_postfire = ui.Textbox({
-  placeholder: 'YYYY-MM-DD',
-  style: { fontSize: '', width: '110px', padding: '4px 0px 0px 5px', margin: '0', backgroundColor: colors.grey },
+  placeholder: "YYYY-MM-DD",
+  style: {
+    fontSize: "",
+    width: "110px",
+    padding: "4px 0px 0px 5px",
+    margin: "0",
+    backgroundColor: colors.grey,
+  },
   onChange: function (value) {
-    //pode personalizar
-  }
+    // pode personalizar
+  },
 });
 
-// Adicionar divisor de datas
+// Adicione divisor de datas
 var dateDivider2 = ui.Label({
-  value: 'Até',
-  style: { fontSize: '12px', padding: '9px 0px 0px 5px', margin: '0', backgroundColor: colors.grey }
+  value: "Até",
+  style: {
+    fontSize: "12px",
+    padding: "9px 0px 0px 5px",
+    margin: "0",
+    backgroundColor: colors.grey,
+  },
 });
 
-// Adicionar a data End-Postfire
+// Adicione a data End-Postfire
 var end_postfire = ui.Textbox({
-  placeholder: 'YYYY-MM-DD',
-  style: { fontSize: '', width: '110px', padding: '4px 0px 0 5px', margin: '0', backgroundColor: colors.grey },
+  placeholder: "YYYY-MM-DD",
+  style: {
+    fontSize: "",
+    width: "110px",
+    padding: "4px 0px 0 5px",
+    margin: "0",
+    backgroundColor: colors.grey,
+  },
   onChange: function (value) {
-    //pode personalizar
-  }
+    // pode personalizar
+  },
 });
 
-// Criar o agrupamento e estilização do Post-Fire
+// Crie o agrupamento e estilização do Post-Fire
 var groupPostfire = ui.Panel({
-  widgets: [tituloPosfogo, centerDivider2, start_postfire, dateDivider2, end_postfire],
-  layout: ui.Panel.Layout.flow('horizontal'),
-  style: { position: 'top-left', height: '34px', padding: '0', margin: '10px 0 0 0', backgroundColor: colors.grey },
+  widgets: [
+    tituloPosfogo,
+    centerDivider2,
+    start_postfire,
+    dateDivider2,
+    end_postfire,
+  ],
+  layout: ui.Panel.Layout.flow("horizontal"),
+  style: {
+    position: "top-left",
+    height: "34px",
+    padding: "0",
+    margin: "10px 0 0 0",
+    backgroundColor: colors.grey,
+  },
 });
 
-// Inserir os grupos no painel (da esquerda)
+// Insira os grupos no painel (da esquerda)
 mainPanel.add(groupPrefire);
 mainPanel.add(groupPostfire);
 mainPanel.add(descricaoRotulo6);
 
 // Parte 8: Passo 3. Criar evento para executar a ferramenta no painel (da esquerda) ---------------------
-// Adicionar título do processo para executar a ferramenta (da esquerda) 
-var tituloSecundario3 = 'Passo 3: Execute a análise de severidade'
+// Adicione título do processo para executar a ferramenta (da esquerda)
+var tituloSecundario3 = "Passo 3: Execute a análise de severidade";
 var descricaoRotulo7 = ui.Label(tituloSecundario3, paragrafo_titulo);
 mainPanel.add(descricaoRotulo7);
 
-
-// Criar o botão 'Executar'
+// Crie o botão 'Executar'
 var submit = ui.Button({
-  label: symbol.engine + ' Executar',
-  onClick: process // 'process' é o algoritmo de processamento do aplicativo
+  label: symbol.engine + " Executar",
+  onClick: process, // 'process' é o algoritmo de processamento do aplicativo
 });
 
-// Criar o botão 'Limpar API'
+// Crie o botão 'Limpar API'
 var resetAll = ui.Button({
-  label: ' Limpar',
+  label: " Limpar",
   onClick: function () {
-    resetAPI()
+    resetAPI();
     //mapPanel.clear()
-  }
+  },
 });
 
 // Função para parar de desenhar
 function resetAPI() {
   mapPanel.clear(),
-  mapPanel.setOptions('Dark', { 'Dark': baseMap.darkTheme }),
-  mapPanel.setControlVisibility({ layerList: true, zoomControl: true }),
-  drawingTools.setShown(false),
-  mapPanel.add(legend)
-  // inserir aqui --------------------------------------------------------------------------------------------------------------------------- implementar aqui
+    mapPanel.setOptions("Dark", { Dark: baseMap.darkTheme }),
+    mapPanel.setControlVisibility({ layerList: true, zoomControl: true }),
+    drawingTools.setShown(false),
+    mapPanel.add(legend);
 }
 
-
-// Criar o agrupamento e estilização do 'Process'
+// Crie o agrupamento e estilização do 'Process'
 var groupProcess = ui.Panel({
   widgets: [submit, resetAll],
-  layout: ui.Panel.Layout.flow('horizontal'),
-  style: { position: 'top-left', height: '40px', padding: '0', margin: '0px 0 0 0', backgroundColor: colors.grey },
+  layout: ui.Panel.Layout.flow("horizontal"),
+  style: {
+    position: "top-left",
+    height: "40px",
+    padding: "0",
+    margin: "0px 0 0 0",
+    backgroundColor: colors.grey,
+  },
 });
 
-// Inserir o grupo no painel (da esquerda)
+// Insira o grupo no painel (da esquerda)
 mainPanel.add(groupProcess);
 
-// Adicionar descrição do intervalo no painel (da esquerda)
+// Adicione descrição do intervalo no painel (da esquerda)
 var descricaoOutput_text =
-  'nota: verifique se a área de interesse está desenhada ao executar. ' +
-  '';
+  "nota: verifique se a área de interesse está desenhada ao executar. " + "";
 var descricaoRotuloOutput = ui.Label(descricaoOutput_text, estilo_subparagrafo);
 mainPanel.add(descricaoRotuloOutput);
 
-// Adicionar hiperlink com o acesso a mais informações no painel (da esquerda)
-var descricaolink_text =
-  symbol.info + ' Exemplos de incêndios em Portugal';
-var infourl = 'https://www.notion.so/Estudos-de-Caso-Portugal-94740db606d74beeb1214a2891bf1158';
-var descricaoRotulolink = ui.Label(descricaolink_text, estilo_paragrafo, infourl);
-mainPanel.add(descricaoRotulolink);
+// Adicione hiperlink com o acesso a mais informações no painel (da esquerda)
+var descricaolink_text = symbol.info + " Exemplos de incêndios em Portugal";
+var infourl =
+  "https://www.notion.so/Estudos-de-Caso-Portugal-94740db606d74beeb1214a2891bf1158";
+var descricaoRotulolink = ui.Label(
+  descricaolink_text,
+  estilo_paragrafo,
+  infourl
+);
+//mainPanel.add(descricaoRotulolink);
 
 // Parte 9: Criar as funções do aplicativo ------------------------------
 // Função para limpar 'drawingTools'
@@ -375,10 +476,10 @@ function clearGeometry() {
   layers.get(0).geometries().remove(layers.get(0).geometries().get(0));
 }
 
-// Função para limpar geometria e ativar ferramenta 'draw' 
+// Função para limpar geometria e ativar ferramenta 'draw'
 function drawPolygon() {
   clearGeometry();
-  drawingTools.setShape('polygon');
+  drawingTools.setShape("polygon");
   drawingTools.draw();
 }
 
@@ -390,117 +491,143 @@ function consult_sen(start, end, aoi, cloud) {
   //aoi = área de interesse
   //cloud = máximo de nuvem na imagem
 
-  // Criar a 'ImageCollection' da coleção Sentinel-2 Level2A (com correção atmosférica)
-  var ImCol = 'COPERNICUS/S2_SR'
+  // Crie a 'ImageCollection' da coleção Sentinel-2 Level2A (com correção atmosférica)
+  var ImCol = "COPERNICUS/S2_SR";
   var imagery = ee.ImageCollection(ImCol);
-  var IMGSentinel = ee.ImageCollection(imagery
-    .filterDate(start, end)
-    .filterBounds(aoi)
-    .map(maskS2sr))
-    .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', cloud));
+  var IMGSentinel = ee
+    .ImageCollection(
+      imagery.filterDate(start, end).filterBounds(aoi).map(maskS2sr)
+    )
+    .filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE", cloud));
   //.median());
 
   //------------------------------------------------ Creditos: UN-SPIDER(ONU) - Inicio
   // Função para máscara de nuvem pela banda de qualidade do pixel do Sentinel-2
   function maskS2sr(image) {
-
-    // Selecionar o pixel 'QA band'
-    var qa = image.select('QA60');
+    // Selecione o pixel 'QA band'
+    var qa = image.select("QA60");
 
     // Bits 10 são 'nuvens' e 11 são 'cirrus'
     var cloudBitMask = ee.Number(2).pow(10).int();
     var cirrusBitMask = ee.Number(2).pow(11).int();
 
     // Todos devem ser definidos como (0), indicando condições claras.
-    var mask = qa.bitwiseAnd(cloudBitMask).eq(0)
+    var mask = qa
+      .bitwiseAnd(cloudBitMask)
+      .eq(0)
       .and(qa.bitwiseAnd(cirrusBitMask).eq(0));
 
-    // Retornar a 'image' mascarada
-    return image.updateMask(mask)//.divide(10000);    //erro na implementação do '.divide(10000);'
+    // Retorne a 'image' mascarada
+    return image
+      .updateMask(mask) //.divide(10000);    //erro na implementação do '.divide(10000);'
       .copyProperties(image, ["system:time_start"]);
   }
   //------------------------------------------------ Creditos: UN-SPIDER(ONU) - Fim
 
-  // Aplicar a máscara nas imagens Sentinel-2A
+  // Aplique a máscara nas imagens Sentinel-2A
   var SentinelFiltro = IMGSentinel.map(maskS2sr);
   var SentinelClip = SentinelFiltro.mosaic().clip(aoi);
 
   // Gerar o mosaico com imagens Sentinel-2A entre as datas
-  return SentinelClip
+  return SentinelClip;
 }
 
 // Parte 10: Criar os processos do aplicativo ------------------------------
-// Criar a função com o processo principal do aplicativo
+// Crie a função com o processo principal do aplicativo
 function process() {
-  // Selecionar as entradas com as configurações do usuário na User-Interface
+  // Selecione as entradas com as configurações do usuário na User-Interface
   var aoi = drawingTools.layers().get(0).getEeObject();
   var start_preF = start_prefire.getValue();
   var end_preF = end_prefire.getValue();
   var start_postF = start_postfire.getValue();
   var end_postF = end_postfire.getValue();
 
-  // Consultar as imagens Sentinel-2A
+  // Consulte as imagens Sentinel-2A
   var SentinelClip_pre = consult_sen(start_preF, end_preF, aoi, 20);
   var SentinelClip_post = consult_sen(start_postF, end_postF, aoi, 20);
 
-  // Calcular o NBR = (NIR-SWIR2) / (NIR+SWIR2)
-  var pre_nbr = SentinelClip_pre.normalizedDifference(['B8', 'B12']);
-  var post_nbr = SentinelClip_post.normalizedDifference(['B8', 'B12']);
+  // Calcule o NBR = (NIR-SWIR2) / (NIR+SWIR2)
+  var pre_nbr = SentinelClip_pre.normalizedDifference(["B8", "B12"]);
+  var post_nbr = SentinelClip_post.normalizedDifference(["B8", "B12"]);
 
-  // Calcular dNBR (índice de severidade)
+  // Calcule dNBR (índice de severidade)
   var dNBR_unscaled = pre_nbr.subtract(post_nbr);
   var dNBR = dNBR_unscaled.multiply(1000);
 
-  // Gerar as saídas no 'layer manager' na User-Interface
-  mapPanel.addLayer(aoi, {
-    color: '#ff5c33',
-    strokeWidth: 5,
-    transparent: 70
-  },
-    'Área de Interesse', true);
+  // Gere as saídas no 'layer manager' na User-Interface
+  mapPanel.addLayer(
+    aoi,
+    {
+      color: "#ff5c33",
+      strokeWidth: 5,
+      transparent: 70,
+    },
+    "Área de Interesse",
+    true
+  );
 
-  mapPanel.addLayer(SentinelClip_pre, {
-    max: 2000,
-    min: 0.0,
-    gama: 1.5,
-    bands: ['B4', 'B3', 'B2']
-  },
-    'Imagem Sentinel 2 RGB PréFogo', false);
+  mapPanel.addLayer(
+    SentinelClip_pre,
+    {
+      max: 2000,
+      min: 0.0,
+      gama: 1.5,
+      bands: ["B4", "B3", "B2"],
+    },
+    "Imagem Sentinel 2 RGB PréFogo",
+    false
+  );
 
-  mapPanel.addLayer(SentinelClip_post, {
-    max: 2000,
-    min: 0.0,
-    gamma: 1.5,
-    bands: ['B4', 'B3', 'B2']
-  },
-    'Imagem Sentinel 2 RGB PósFogo', false);
+  mapPanel.addLayer(
+    SentinelClip_post,
+    {
+      max: 2000,
+      min: 0.0,
+      gamma: 1.5,
+      bands: ["B4", "B3", "B2"],
+    },
+    "Imagem Sentinel 2 RGB PósFogo",
+    false
+  );
 
-  mapPanel.addLayer(pre_nbr, {
-    max: 2,
-    min: 0,
-    gamma: 1.0,
-    bands: ['nd']
-  },
-    'NBR PréFogo', false);
+  mapPanel.addLayer(
+    pre_nbr,
+    {
+      max: 2,
+      min: 0,
+      gamma: 1.0,
+      bands: ["nd"],
+    },
+    "NBR PréFogo",
+    false
+  );
 
-  mapPanel.addLayer(post_nbr, {
-    max: 2,
-    min: 0,
-    gamma: 1.0,
-    bands: ['nd']
-  },
-    'NBR PósFogo', false);
+  mapPanel.addLayer(
+    post_nbr,
+    {
+      max: 2,
+      min: 0,
+      gamma: 1.0,
+      bands: ["nd"],
+    },
+    "NBR PósFogo",
+    false
+  );
 
-  mapPanel.addLayer(dNBR, {
-    max: 1000,
-    min: -1000,
-    palette: ['white', 'black']
-  },
-    'dNBR escala-cinza', false);
+  mapPanel.addLayer(
+    dNBR,
+    {
+      max: 1000,
+      min: -1000,
+      palette: ["white", "black"],
+    },
+    "dNBR escala-cinza",
+    false
+  );
 
-  // Criar as classes de severidade para o dNBR (classificado)
+  // Crie as classes de severidade para o dNBR (classificado)
   var sld_intervals =
-    '<RasterSymbolizer>' +
+    "<RasterSymbolizer>" +
     '<ColorMap type="intervals" extended="false" >' +
     '<ColorMapEntry color="#d7dbdd" quantity="-500" label="Sem Dados"/>' +
     '<ColorMapEntry color="#7a8737" quantity="-250" label="Alta Regeneração" />' +
@@ -510,288 +637,261 @@ function process() {
     '<ColorMapEntry color="#ffaf38" quantity="440" label="Moderada-Baixa Severidade" />' +
     '<ColorMapEntry color="#ff641b" quantity="660" label="Moderada-Alta Severidade" />' +
     '<ColorMapEntry color="#a41fd6" quantity="2000" label="Alta Severidade" />' +
-    '</ColorMap>' +
-    '</RasterSymbolizer>';
+    "</ColorMap>" +
+    "</RasterSymbolizer>";
 
   // Adicionar o dNBR classificado no 'layer manager'
-  mapPanel.addLayer(dNBR.sldStyle(sld_intervals), {}, 'dNBR classificado');
+  mapPanel.addLayer(dNBR.sldStyle(sld_intervals), {}, "dNBR classificado");
 
-  // Limpar a edição de geometria (para dar destaque as saídas no 'layer manager')
+  // Limpe a edição de geometria (para dar destaque as saídas no 'layer manager')
   clearGeometry();
-  // Desativar o modo desenho
+  // Desative o modo desenho
   drawingTools.stop();
 
-  // Exportar os produtos da análise
-  // Exportar o dNBR (tipo .TIFF)
+  // Exporte o dNBR (tipo .TIFF)
   Export.image.toDrive({
     image: dNBR,
-    description: 'Export_dNBR',
+    description: "Export_dNBR",
     scale: 20,
-    fileNamePrefix: 'Export_dNBR',
+    fileNamePrefix: "Export_dNBR",
     region: aoi,
-    maxPixels: 1e10
+    maxPixels: 1e10,
   });
 
-  // Exportar a Área de Interesse (tipo .KML)
+  // Exporte a Área de Interesse (tipo .KML)
   var feature = ee.FeatureCollection([ee.Feature(aoi)]);
   Export.table.toDrive({
     collection: feature,
-    description: 'Export_AOI',
-    fileFormat: 'KML'
+    description: "Export_AOI",
+    fileFormat: "KML",
   });
 
-  // Configurar a User-Interface após ativar o 'Executar'
+  // Configure a User-Interface após ativar o 'Executar'
   mapPanel.centerObject(aoi);
   //mapPanel.setOptions('HYBRID');
 
+  // Resultado separado em 8 classes de severidade
+  var thresholds = ee.Image([-1000, -251, -101, 99, 269, 439, 659, 2000]);
+  var classified = dNBR.lt(thresholds).reduce("sum").toInt();
 
-
-
-
-
-// Se liga aqui
-//---------------------------------------------INICIO EXPERIMENTACAO--------------------------------------------------
-
-
-/// INICIO ESTIMATIVA PARA O CONSOLE
-// Seperate result into 8 burn severity classes
-var thresholds = ee.Image([-1000, -251, -101, 99, 269, 439, 659, 2000]);
-var classified = dNBR.lt(thresholds).reduce('sum').toInt();
-
-//==========================================================================================
-//                              ADD BURNED AREA STATISTICS
-
-// count number of pixels in entire layer
-var allpix =  classified.updateMask(classified);  // mask the entire layer
-var pixstats = allpix.reduceRegion({
-  reducer: ee.Reducer.count(),               // count pixels in a single class
-  geometry: aoi,
-  scale: 30
+  // Adicione as estatisticas de area queimada
+  // Conte o número de pixels em toda a camada
+  var allpix = classified.updateMask(classified); // mascara toda a camada
+  var pixstats = allpix.reduceRegion({
+    reducer: ee.Reducer.count(), // conte pixels para cada classe
+    geometry: aoi,
+    scale: 30,
   });
-var allpixels = ee.Number(pixstats.get('sum')); // extract pixel count as a number
+  var allpixels = ee.Number(pixstats.get("sum")); // extraia a contagem de pixels como um número
 
+  // Crie uma lista vazia para armazenar valores de área
+  var arealist = [];
 
-// create an empty list to store area values in
-var arealist = [];
+  // Crie uma função para derivar a extensão de uma classe de severidade
+  // Os argumentos são o número da classe e o nome da classe
+  var areacount = function (cnr, name) {
+    var singleMask = classified.updateMask(classified.eq(cnr)); // mascara para cada classe
+    var stats = singleMask.reduceRegion({
+      reducer: ee.Reducer.count(), // conte os pixels para cada classe
+      geometry: aoi,
+      scale: 30,
+    });
+    var pix = ee.Number(stats.get("sum"));
+    var hect = pix.multiply(900).divide(10000); // 30m x 30m --> 900 sqm
+    var perc = pix.divide(allpixels).multiply(10000).round().divide(100); // obter a porcentagem de área por classe e arredondar para 2 casas decimais
+    arealist.push({
+      Class: name,
+      Pixels: pix,
+      Hectares: hect,
+      Percentage: perc,
+    });
+  };
 
-// create a function to derive extent of one burn severity class
-// arguments are class number and class name
-var areacount = function(cnr, name) {
- var singleMask =  classified.updateMask(classified.eq(cnr));  // mask a single class
- var stats = singleMask.reduceRegion({
-  reducer: ee.Reducer.count(),               // count pixels in a single class
-  geometry: aoi,
-  scale: 30
-  });
-var pix =  ee.Number(stats.get('sum'));
-var hect = pix.multiply(900).divide(10000);                // Landsat pixel = 30m x 30m --> 900 sqm
-var perc = pix.divide(allpixels).multiply(10000).round().divide(100);   // get area percent by class and round to 2 decimals
-arealist.push({Class: name, Pixels: pix, Hectares: hect, Percentage: perc});
-};
+  // Classes de severidade em diferentes ordens
+  var labelsChart = [
+    "Sem Dados",
+    "Alta Severidade",
+    "Moderada-Alta Severidade",
+    "Moderada-Baixa Severidade",
+    "Baixa Severidade",
+    "Não Queimada",
+    "Baixa Regeneração",
+    "Alta Regeneração",
+  ];
 
-// severity classes in different order
-var labelsChart = [
-  'Sem Dados',
-  'Alta Severidade',
-  'Moderada-Alta Severidade',
-  'Moderada-Baixa Severidade',
-  'Baixa Severidade',
-  'Não Queimada',
-  'Baixa Regeneração',
-  'Alta Regeneração',
-];
+  var paletteChart = [
+    // ----------------------------------- Talvez precise ajustar
+    "d7dbdd", // (0) Sem Dados
+    "7a8737", // (1) Alta Regeneração
+    "acbe4d", // (2) Baixa Regeneração
+    "0ae042", // (3) Não Queimada
+    "fff70b", // (4) Baixa Severidade
+    "ffaf38", // (5) Moderada-Baixa Severidade
+    "ff641b", // (6) Moderada-Alta Severidade
+    "a41fd6", // (7) Alta Severidade
+  ];
 
-var paletteChart = [ // ----------------------------------- Talvez precisa ajustar
-  'd7dbdd', // (0) Sem Dados
-  '7a8737', // (1) Alta Regeneração
-  'acbe4d', // (2) Baixa Regeneração
-  '0ae042', // (3) Não Queimada
-  'fff70b', // (4) Baixa Severidade
-  'ffaf38', // (5) Moderada-Baixa Severidade
-  'ff641b', // (6) Moderada-Alta Severidade
-  'a41fd6'  // (7) Alta Severidade
-];
-
-// execute function for each class
-for (var i = 0; i < 8; i++) {
-  areacount(i, labelsChart[i]);
+  // Execute a função para cada classe
+  for (var i = 0; i < 8; i++) {
+    areacount(i, labelsChart[i]);
   }
+  //print("Área Ardida por Classe de Severidade", arealist, "--> clique na lista de objetos para cada classe");
 
-print('Área Ardida por Classe de Severidade', arealist, '--> clique na lista de objetos para cada classe');
+  // Calcule da área de interesse em Hectares
+  var areaAOI = ee.Image(1).clip(aoi).reduceRegion(ee.Reducer.sum(), aoi, 10);
+  //print("Area de Interesse em Hectares", ee.Number(areaAOI.get("constant")).multiply(100).divide(10000));
 
-
-
-// Calculo da área de interesse em Hectares
-var areaAOI = ee.Image(1).clip(aoi).reduceRegion(ee.Reducer.sum(), aoi, 10)
-print('Area de Interesse em Hectares', ee.Number(areaAOI.get('constant')).multiply(100).divide(10000))
-/// FIM ESTIMATIVA PARA O CONSOLE
-
-  // Criar o painel do Chart
+  // Crie o painel do Chart
   var chartPanel = ui.Panel({
     style: {
-      height: '200px',
-      width: '225px',
-      position: 'bottom-right',
-      shown: true
-    }
+      height: "200px",
+      width: "225px",
+      position: "bottom-right",
+      shown: true,
+    },
   });
   mapPanel.add(chartPanel);
 
-
-  
-
-  // CHART
+  // Crie o PieChart
   var labelsChart = [
-    '0-Sem Dados',
-    '1-Alta Severidade',
-    '2-Moderada-Alta Severidade',
-    '3-Moderada-Baixa Severidade',
-    '4-Baixa Severidade',
-    '5-Não Queimada',
-    '6-Baixa Regeneração',
-    '7-Alta Regeneração',
+    "0-Sem Dados",
+    "1-Alta Severidade",
+    "2-Moderada-Alta Severidade",
+    "3-Moderada-Baixa Severidade",
+    "4-Baixa Severidade",
+    "5-Não Queimada",
+    "6-Baixa Regeneração",
+    "7-Alta Regeneração",
   ];
 
+  // Crie o estrutura do Chart
+  var count = allpix.eq([0, 1, 2, 3, 4, 5, 6, 7]).rename(labelsChart);
+  //print(count);
 
-  print(dNBR)
-  // CHART https://groups.google.com/g/google-earth-engine-developers/c/k5HCj6ruKkA/m/zsTp4LdKBgAJ
-  var count = allpix.eq([0,1,2,3,4,5,6,7]).rename(labelsChart);
-  print(count)
-  var total = count.multiply(ee.Image.pixelArea()).divide(10000);
+  // Calcule com o .pixelArea() -> é o método mais adequado
+  var total = count.multiply(ee.Image.pixelArea()).round().divide(10000);
   var area = total.reduceRegion({
-    reducer:ee.Reducer.sum(),
-     geometry:aoi,
-     scale:30,
-     maxPixels: 1e11,
-    bestEffort:true,
-    });
+    reducer: ee.Reducer.sum(),
+    geometry: aoi,
+    scale: 30,
+    maxPixels: 1e11,
+    bestEffort: true,
+  });
+  // Colete os números do cálculo com o redutor
+  var area_pxa = ee.Number(area);
+  print(area_pxa);
 
-    var area_pxa = ee.Number(area);
-
-    var chart = ui.Chart.image
+  // Crie o PieChart
+  var chart = ui.Chart.image
     .regions({
       image: total,
       regions: aoi,
       reducer: ee.Reducer.sum(),
       scale: 30,
     })
-    .setChartType('PieChart').setOptions({
+    .setChartType("PieChart")
+    .setOptions({
       width: 230,
       height: 170,
-      title: 'Area por Classe (ha)',
+      title: "Area por Classe (%)",
       is3D: false,
-      colors: ([
-        'd7dbdd', // (0) Sem Dados
-        'a41fd6', // (7) Alta Severidade
-        'ff641b', // (6) Moderada-Alta Severidade
-        'ffaf38', // (5) Moderada-Baixa Severidade
-        'fff70b', // (4) Baixa Severidade
-        '0ae042', // (3) Não Queimada
-        'acbe4d', // (2) Baixa Regeneração
-        '7a8737', // (1) Alta Regeneração
-      ]),
+      colors: [
+        "d7dbdd", // (0) Sem Dados
+        "a41fd6", // (7) Alta Severidade
+        "ff641b", // (6) Moderada-Alta Severidade
+        "ffaf38", // (5) Moderada-Baixa Severidade
+        "fff70b", // (4) Baixa Severidade
+        "0ae042", // (3) Não Queimada
+        "acbe4d", // (2) Baixa Regeneração
+        "7a8737", // (1) Alta Regeneração
+      ],
     });
 
-
-    // Replace the existing chart in the chart panel with the new chart.
-    print(area_pxa)
-    chartPanel.widgets().reset([chart]);
-  //}
-
+  // Substitua o gráfico existente no painel do gráfico pelo novo gráfico.
+  chartPanel.widgets().reset([chart]);
 
 }
 
+// Parte 12: Criar a Legenda com as classes dNBR (USGS) -------------------------
+//------------------------------------------------ Creditos: UN-SPIDER(ONU) - Inicio
+// Configure a posição do painel (da legenda)
+var legend = ui.Panel({
+  style: {
+    position: "bottom-right",
+    padding: "8px 15px",
+  },
+});
 
+// Crie o título no painel (da legenda)
+var legendTitle = ui.Label({
+  value: "Classes de Severidade",
+  //dNBR Classes
+  style: {
+    fontWeight: "bold",
+    fontSize: "18px",
+    margin: "0 0 4px 0",
+    padding: "0",
+  },
+});
 
+// Adicione o título ao painel (da legenda)
+legend.add(legendTitle);
 
-//---------------------------------------------FIM EXPERIMENTACAO--------------------------------------------------
-
-
-
-
-
-
-  // Parte 12: Criar a Legenda com as classes dNBR (USGS) -------------------------
-  //------------------------------------------------ Creditos: UN-SPIDER(ONU) - Inicio
-  // Configurar a posição do painel (da legenda)
-  var legend = ui.Panel({
+// Crie e aplicar estilo na linha (Cor + Nome Classe)
+var makeRow = function (color, name) {
+  // Crie o rótulo-caixa para receber as cores das classes dNBR
+  var colorBox = ui.Label({
     style: {
-      position: 'bottom-right',
-      padding: '8px 15px'
-    }
+      backgroundColor: "#" + color,
+      // Use 'padding' para definir a largura e altura da caixa
+      padding: "8px",
+      border: "1px solid black",
+      margin: "0 0 4px 0",
+    },
   });
 
-  // Criar o título no painel (da legenda)
-  var legendTitle = ui.Label({
-    value: 'Classes de Severidade',
-    //dNBR Classes
-    style: {
-      fontWeight: 'bold',
-      fontSize: '18px',
-      margin: '0 0 4px 0',
-      padding: '0'
-    }
+  // Crie o rótulo com a descrição da classe
+  var description = ui.Label({
+    value: name,
+    style: { margin: "0 0 4px 6px" },
   });
 
-  // Adicionar o título ao painel (da legenda)
-  legend.add(legendTitle);
+  // Gere o painel Legenda com (caixa de cor + nome da classe)
+  return ui.Panel({
+    widgets: [colorBox, description],
+    layout: ui.Panel.Layout.Flow("horizontal"),
+  });
+};
 
-  // Criar e aplicar estilo na linha (Cor + Nome Classe)
-  var makeRow = function (color, name) {
+// Predefina a paleta com Cores de cada Classes de Severidade (modelo USGS)
+var palette = [
+  "d7dbdd", // (0) Sem Dados
+  "a41fd6", // (7) Alta Severidade
+  "ff641b", // (6) Moderada-Alta Severidade
+  "ffaf38", // (5) Moderada-Baixa Severidade
+  "fff70b", // (4) Baixa Severidade
+  "0ae042", // (3) Não Queimada
+  "acbe4d", // (2) Baixa Regeneração
+  "7a8737", // (1) Alta Regeneração
+];
 
-    // Criar o rótulo-caixa para receber as cores das classes dNBR
-    var colorBox = ui.Label({
-      style: {
-        backgroundColor: '#' + color,
-        // Usar 'padding' para definir a largura e altura da caixa
-        padding: '8px',
-        border: '1px solid black',
-        margin: '0 0 4px 0'
-      }
-    });
+// Predefina os Nomes de cada Classe de Severidade (modelo USGS)
+var names = [
+  "Sem Dados",
+  "Alta Severidade",
+  "Moderada-Alta Severidade",
+  "Moderada-Baixa Severidade",
+  "Baixa Severidade",
+  "Não Queimada",
+  "Baixa Regeneração",
+  "Alta Regeneração",
+];
 
-    // Criar o rótulo com a descrição da classe
-    var description = ui.Label({
-      value: name,
-      style: { margin: '0 0 4px 6px' }
-    });
+// Adicione as Cores e os Nomes de cada Classes de Severidade (modelo USGS)
+for (var i = 0; i < 8; i++) {
+  legend.add(makeRow(palette[i], names[i]));
+}
 
-    // Gerar o painel Legenda com (caixa de cor + nome da classe)
-    return ui.Panel({
-      widgets: [colorBox, description],
-      layout: ui.Panel.Layout.Flow('horizontal')
-    });
-  };
-
-  // Predefinir a paleta com Cores de cada Classes de Severidade (modelo USGS)
-  var palette = [
-    'd7dbdd', // (0) Sem Dados
-    'a41fd6', // (7) Alta Severidade
-    'ff641b', // (6) Moderada-Alta Severidade
-    'ffaf38', // (5) Moderada-Baixa Severidade
-    'fff70b', // (4) Baixa Severidade
-    '0ae042', // (3) Não Queimada
-    'acbe4d', // (2) Baixa Regeneração
-    '7a8737', // (1) Alta Regeneração
-  ];
-
-  // Predefinir os Nomes de cada Classe de Severidade (modelo USGS)
-  var names = [
-    'Sem Dados',
-    'Alta Severidade',
-    'Moderada-Alta Severidade',
-    'Moderada-Baixa Severidade',
-    'Baixa Severidade',
-    'Não Queimada',
-    'Baixa Regeneração',
-    'Alta Regeneração',
-  ];
-
-  // Adicionar as Cores e os Nomes de cada Classes de Severidade (modelo USGS)
-  for (var i = 0; i < 8; i++) {
-    legend.add(makeRow(palette[i], names[i]));
-  }
-
-  // Adicionar Legenda ao mapa
-  mapPanel.add(legend);
-  //------------------------------------------------ Creditos: UN-SPIDER(ONU) - Fim
+// Adicione Legenda ao mapa
+mapPanel.add(legend);
+//------------------------------------------------ Creditos: UN-SPIDER(ONU) - Fim
