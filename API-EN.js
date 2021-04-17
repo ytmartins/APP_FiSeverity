@@ -57,9 +57,9 @@ var estilo_paragrafo = {
 
 // Predefina o estilo de texto (de subparagrafo)
 var estilo_subparagrafo = {
-  fontSize: "13px",
+  fontSize: "14px",
   fontWeight: "50",
-  color: "#515a5a", //'#616a6b', //'#9E9E9E',
+  color: "#212f3d",//"#515a5a", //'#616a6b', //'#9E9E9E',
   backgroundColor: colors.transparent,
 };
 
@@ -85,7 +85,7 @@ var mainPanel = ui.Panel({
   style: {
     stretch: "horizontal",
     height: "60%",
-    width: "410px", //'410px' fica ajustado
+    width: "420px", //'410px' fica ajustado
     backgroundColor: colors.grey,
     border: estilo_borda,
     position: "top-left",
