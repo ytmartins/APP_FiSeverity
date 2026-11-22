@@ -427,13 +427,13 @@ var resetAll = ui.Button({
   },
 });
 
-// Função para parar de desenhar
+// Função para limpar o mapa e restaurar a legenda
 function resetAPI() {
-  mapPanel.clear(),
-    mapPanel.setOptions("Dark", { Dark: baseMap.darkTheme }),
-    mapPanel.setControlVisibility({ layerList: true, zoomControl: true }),
-    drawingTools.setShown(false),
-    mapPanel.add(legend);
+  mapPanel.clear();
+  mapPanel.setOptions("Dark", { Dark: baseMap.darkTheme });
+  mapPanel.setControlVisibility({ layerList: true, zoomControl: true });
+  drawingTools.setShown(false);
+  mapPanel.add(legend);
 }
 
 // Crie o agrupamento e estilização do 'Process'
@@ -483,7 +483,7 @@ function drawPolygon() {
   drawingTools.draw();
 }
 
-// Função para consultar imagens Sentinel-2
+// Função para consultar imagens Sentinel-2 (S2_SR_HARMONIZED + máscara via SCL)
 function consult_sen(start, end, aoi, cloud) {
   //input/entradas:
   //start = data início
@@ -491,44 +491,39 @@ function consult_sen(start, end, aoi, cloud) {
   //aoi = área de interesse
   //cloud = máximo de nuvem na imagem
 
-  // Crie a 'ImageCollection' da coleção Sentinel-2 Level2A (com correção atmosférica)
-  var ImCol = "COPERNICUS/S2_SR";
+  // Crie a 'ImageCollection' da coleção Sentinel-2 Level2A Harmonizada (com correção atmosférica)
+  var ImCol = "COPERNICUS/S2_SR_HARMONIZED";
   var imagery = ee.ImageCollection(ImCol);
-  var IMGSentinel = ee
-    .ImageCollection(
-      imagery.filterDate(start, end).filterBounds(aoi).map(maskS2sr)
-    )
-    .filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE", cloud));
-  //.median());
 
-  //------------------------------------------------ Creditos: UN-SPIDER(ONU) - Inicio
-  // Função para máscara de nuvem pela banda de qualidade do pixel do Sentinel-2
+  // Função para máscara de nuvem pela banda SCL do Sentinel-2 (substitui a antiga QA60)
   function maskS2sr(image) {
-    // Selecione o pixel 'QA band'
-    var qa = image.select("QA60");
+    var scl = image.select("SCL");
 
-    // Bits 10 são 'nuvens' e 11 são 'cirrus'
-    var cloudBitMask = ee.Number(2).pow(10).int();
-    var cirrusBitMask = ee.Number(2).pow(11).int();
+    // Remove pixels de:
+    // 1 = Saturado/Defeituoso, 3 = Sombra de nuvem,
+    // 8 = Nuvem (prob. média), 9 = Nuvem (prob. alta), 10 = Cirrus fino
+    var mask = scl
+      .neq(1)
+      .and(scl.neq(3))
+      .and(scl.neq(8))
+      .and(scl.neq(9))
+      .and(scl.neq(10));
 
-    // Todos devem ser definidos como (0), indicando condições claras.
-    var mask = qa
-      .bitwiseAnd(cloudBitMask)
-      .eq(0)
-      .and(qa.bitwiseAnd(cirrusBitMask).eq(0));
-
-    // Retorne a 'image' mascarada
     return image
-      .updateMask(mask) //.divide(10000);    //erro na implementação do '.divide(10000);'
+      .updateMask(mask)
       .copyProperties(image, ["system:time_start"]);
   }
-  //------------------------------------------------ Creditos: UN-SPIDER(ONU) - Fim
 
-  // Aplique a máscara nas imagens Sentinel-2A
-  var SentinelFiltro = IMGSentinel.map(maskS2sr);
+  // Filtre e aplique a máscara nas imagens Sentinel-2A uma única vez
+  var SentinelFiltro = imagery
+    .filterDate(start, end)
+    .filterBounds(aoi)
+    .filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE", cloud))
+    .map(maskS2sr);
+
+  // Gerar o mosaico com imagens Sentinel-2A entre as datas e recortar para a AOI
   var SentinelClip = SentinelFiltro.mosaic().clip(aoi);
 
-  // Gerar o mosaico com imagens Sentinel-2A entre as datas
   return SentinelClip;
 }
 
@@ -571,7 +566,7 @@ function process() {
     {
       max: 2000,
       min: 0.0,
-      gama: 1.5,
+      gamma: 1.5,
       bands: ["B4", "B3", "B2"],
     },
     "Imagem Sentinel 2 RGB PréFogo",
@@ -708,7 +703,7 @@ function process() {
   };
 
   // Classes de severidade em diferentes ordens
-  var labelsChart = [
+  var labelsChartOrig = [
     "Sem Dados",
     "Alta Severidade",
     "Moderada-Alta Severidade",
@@ -719,21 +714,9 @@ function process() {
     "Alta Regeneração",
   ];
 
-  var paletteChart = [
-    // ----------------------------------- Talvez precise ajustar
-    "d7dbdd", // (0) Sem Dados
-    "7a8737", // (1) Alta Regeneração
-    "acbe4d", // (2) Baixa Regeneração
-    "0ae042", // (3) Não Queimada
-    "fff70b", // (4) Baixa Severidade
-    "ffaf38", // (5) Moderada-Baixa Severidade
-    "ff641b", // (6) Moderada-Alta Severidade
-    "a41fd6", // (7) Alta Severidade
-  ];
-
   // Execute a função para cada classe
   for (var i = 0; i < 8; i++) {
-    areacount(i, labelsChart[i]);
+    areacount(i, labelsChartOrig[i]);
   }
   //print("Área Ardida por Classe de Severidade", arealist, "--> clique na lista de objetos para cada classe");
 
@@ -777,9 +760,9 @@ function process() {
     maxPixels: 1e11,
     bestEffort: true,
   });
-  // Colete os números do cálculo com o redutor
-  var area_pxa = ee.Number(area);
-  print(area_pxa);
+
+  // Imprime o dicionário com a área (em hectares) por classe
+  print("Área por classe (ha):", area);
 
   // Crie o PieChart
   var chart = ui.Chart.image
@@ -809,7 +792,6 @@ function process() {
 
   // Substitua o gráfico existente no painel do gráfico pelo novo gráfico.
   chartPanel.widgets().reset([chart]);
-
 }
 
 // Parte 12: Criar a Legenda com as classes dNBR (USGS) -------------------------
@@ -859,7 +841,7 @@ var makeRow = function (color, name) {
   // Gere o painel Legenda com (caixa de cor + nome da classe)
   return ui.Panel({
     widgets: [colorBox, description],
-    layout: ui.Panel.Layout.Flow("horizontal"),
+    layout: ui.Panel.Layout.flow("horizontal"),
   });
 };
 
