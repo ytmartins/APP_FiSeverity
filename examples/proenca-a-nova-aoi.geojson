@@ -1,0 +1,18 @@
+{
+  "type": "Feature",
+  "properties": {
+    "name": "Sardeiras de Baixo wildfire study area, Portugal",
+    "description": "Rectangular area of interest that includes the reported fire extent and surrounding land.",
+    "source": "https://fogos.icnf.pt/download/REE/2020_002/REE_2020_002.pdf"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [[
+      [-8.03, 39.75],
+      [-7.85, 39.75],
+      [-7.85, 39.90],
+      [-8.03, 39.90],
+      [-8.03, 39.75]
+    ]]
+  }
+}
